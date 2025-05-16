@@ -1,5 +1,5 @@
 import React from 'react';
-import CardGrid from '../components/CardGrid'; 
+
 import logo from '../assets/images/brava.png';
 
 function SettingsPage() {
@@ -33,7 +33,7 @@ function SettingsPage() {
     }
   ];
 
-  return <CardGrid cardData={settingsData} />;
+  return <div></div>;
 }
 
 export default SettingsPage;

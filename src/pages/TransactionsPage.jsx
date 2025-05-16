@@ -7,11 +7,10 @@ import { FaSearch } from 'react-icons/fa';
 
 
 const TransactionsPage = () => {
-  const { loading, customFetch ,user } = useAuth();
+  const { loading, customFetch ,user,hasPermission } = useAuth();
   const isAdmin = user?.role === 'ROLE_ADMIN';
   const [drData, setDrData] = useState([]);
   const [pageInfo, setPageInfo] = useState({ pageNumber: 0, totalPages: 0 });
-  
   const [filters, setFilters] = useState({
     dateRangeStart: '',  // Format: "YYYY-MM-DD"
     dateRangeEnd: '',    // Format: "YYYY-MM-DD"
@@ -22,8 +21,6 @@ const TransactionsPage = () => {
     lastCardNumber: '',
     idOfMerchant: ''
   });
-
-
 
 
 
@@ -41,7 +38,7 @@ const TransactionsPage = () => {
         formattedTimeRange = `${timeRangeStart.replaceAll(':', '')}-${timeRangeEnd.replaceAll(':', '')}`;
       }
   
-      let url = `http://localhost:9999/drs/search?page=${page}&size=${size}`;
+      let url = `/drs/search?page=${page}&size=${size}`;
 
 
 
@@ -56,9 +53,10 @@ const TransactionsPage = () => {
   
       const data = await customFetch(url, { method: 'POST' });
   
-      console.log('Response data received from API:', data);
+      console.log('data.data.content  ', data.content);
+      
   
-      if (data && data.content) {
+   if (data?.content) {
         setDrData(data.content || []);
         setPageInfo({ pageNumber: data.number, totalPages: data.totalPages });
       }
@@ -67,7 +65,6 @@ const TransactionsPage = () => {
     }
   };
   
-
   const handlePageChange = (newPage) => {
     setPageInfo((prev) => ({
       ...prev,
@@ -75,8 +72,6 @@ const TransactionsPage = () => {
     }));
     fetchData(newPage); 
   };
-
-
   const handleApplyFilters = () => {
     console.log('Applied Filters:');
     console.log('merchant id:', filters.idOfMerchant);
@@ -89,11 +84,9 @@ const TransactionsPage = () => {
     console.log('Last Card Number:', filters.lastCardNumber);
     fetchData(0);  
   };
-
   const handleTransactionDelete = (id) => {
     console.log(`Delete transaction with ID: ${id}`);
   };
-
   const handleInputChange = (e, field) => {
     setFilters({
       ...filters,
@@ -104,6 +97,27 @@ const TransactionsPage = () => {
   useEffect(() => {
     fetchData(0);
   }, []);
+
+
+
+
+
+
+
+
+const canDeleteTransactions = hasPermission('Transactions', 'delete');
+
+
+
+
+
+
+
+
+
+
+
+
 
   if (loading) return <MainAppSpinner />;
 
@@ -131,28 +145,16 @@ const TransactionsPage = () => {
               onChange={(e) => handleInputChange(e, 'dateRangeEnd')}
             />
           </div>
-          <div className="filter-item">
-            <label>Start Time:</label>
-            <input
-              type="time"
-              value={filters.timeRangeStart || ''}
-              onChange={(e) => handleInputChange(e, 'timeRangeStart')}
-            />
-          </div>
-          <div className="filter-item">
-            <label>End Time:</label>
-            <input
-              type="time"
-              value={filters.timeRangeEnd || ''}
-              onChange={(e) => handleInputChange(e, 'timeRangeEnd')}
-            />
-          </div>
+
+
+        
         </div>
 
         <div className="filter-row">
 
 
-        {isAdmin && (
+ { canDeleteTransactions && (
+
   <div className="filter-item">
     <label>Merchants:</label>
     <input
@@ -166,11 +168,12 @@ const TransactionsPage = () => {
 
 
 
+
           <div className="filter-item">
             <label>Control Number:</label>
             <input
               type="text"
-              placeholder="Ex:IVUCC00001"
+            
               value={filters.controlNumber}
               onChange={(e) => handleInputChange(e, 'controlNumber')}
             />
@@ -179,7 +182,7 @@ const TransactionsPage = () => {
             <label>Authorization Code:</label>
             <input
               type="text"
-              placeholder="Ex:AUTH1234"
+              placeholder=" "
               value={filters.authorizationCode}
               onChange={(e) => handleInputChange(e, 'authorizationCode')}
             />
@@ -188,7 +191,7 @@ const TransactionsPage = () => {
             <label>Last 4 Card Number:</label>
             <input
               type="text"
-              placeholder="Ex1234"
+              placeholder=" "
               value={filters.lastCardNumber}
               onChange={(e) => handleInputChange(e, 'lastCardNumber')}
             />

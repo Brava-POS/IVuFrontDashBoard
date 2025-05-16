@@ -1,5 +1,5 @@
 import React from 'react';
-import CardGrid from '../components/CardGrid'; 
+
 import logo from '../assets/images/brava.png'; 
 
 function TaxesPage() {
@@ -33,7 +33,7 @@ function TaxesPage() {
     }
   ];
 
-  return <CardGrid cardData={taxData} />;
+  return <div></div>;
 }
 
 export default TaxesPage;

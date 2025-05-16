@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link , useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/images/brava.png';
 
@@ -28,17 +28,12 @@ const Login = () => {
   
 
   return (
-    <div className="ivu-login-container">
+    <div >
 
-<div className="ivu-login-form">
-        <div className="login-logo-wrapper">
-          <img src={logo} alt="Brava Logo" className="login-logo" />
-          <h1 className="login-title">Brava Control</h1>
-        </div>
-
-    
-   
-
+<div >   
+ <div className="register_component-header">
+      
+  </div>
 
 
         <form onSubmit={handleLogin} className="ivu-form">
@@ -64,9 +59,12 @@ const Login = () => {
         </form>
 
         {errorMsg && <p className="ivu-status error">{errorMsg}</p>}
-
+     <p className="register_component-footer">
+       Don’t have an account? <Link to="/register">Register here</Link>
+      </p>
       
       </div>
+     
     </div>
   );
 };

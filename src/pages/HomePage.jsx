@@ -1,41 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CardGrid from '../components/CardGrid'; 
+
 import { useAuth } from '../context/AuthContext'; 
 import aditional from '../assets/images/addtax.jpg'; 
 import city from '../assets/images/citytax.png'; 
 import reduced from '../assets/images/reduced.jpg'; 
 import state from '../assets/images/statetax.png'; 
 import total from '../assets/images/total.png'; 
-import UserProfile from '../components/UserProfile';
+import MainAppSpinner from '../components/MainAppSpinner';
+import CardComponent from '../components/CardComponent';
 
 function HomePage() {
-  const { isAuthenticated } = useAuth();
+    const { axiosInstance } = useAuth();
+  const { loading,customFetch,permissions} = useAuth();
   const [summaryData, setSummaryData] = useState([]);
+    const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
 
-    const fetchData = async () => {
+  
+
+
+
+const fetchUsers = async () => {
+      setIsLoading(true);
       try {
-        const token = localStorage.getItem('accessToken');
-        const res = await fetch('http://localhost:9999/drs/sums', {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        const res = await axiosInstance.get('http://localhost:9999/merchants/search'); 
+        setUsers(res.data);
+      } catch (err) {
+        console.error('Failed to fetch users:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-        }
+     const handleSelectChange = (e) => {
+    setSelectedUser(e.target.value);
+    console.log('Selected user:', e.target.value);
+  }; 
+  
 
-        const data = await res.json();
-        console.log('sums received :', data);
+
+
+
+
+
+
+
+
+
+
+
+
+ const fetchData = async () => {
+      try {
+       const data = await customFetch('drs/sums?dateRange=20250401-20250507');
+       console.log('sums received: fom hoempage ', data);
+
+
+  
+
 
         const formattedData = [
           {
@@ -46,7 +72,7 @@ function HomePage() {
             }
           },
           {
-            image: city,
+            image: state,
             title: 'Total State Tax',
             details: {
               Amount: `$${(data.stateTax / 100).toFixed(2)}`
@@ -60,40 +86,111 @@ function HomePage() {
             }
           },
           {
-            image: city,
+            image: reduced,
             title: 'Total Reduced State Tax',
             details: {
               Amount: `$${(data.reducedTax / 100).toFixed(2)}`
             }
           },
           {
-            image: city,
+            image: aditional,
             title: 'Total Additional Amount',
             details: {
               Amount: `$${(data.additionalAmount / 100).toFixed(2)}`
             }
           },
           {
-            image: city,
+            image: total,
             title: 'Number of Records',
             details: {
               Count: data.count
             }
-          }
+          },
+          
         ];
 
         setSummaryData(formattedData);
       } catch (err) {
         console.error('Fetch error:', err);
-        navigate('/login');
+        
       }
     };
 
+
+  useEffect(() => {
+  fetchUsers
     fetchData();
-  }, [isAuthenticated, navigate]);
+  }, []);
+
+
+
+
+
+
+// useEffect(() => {
+//   if (!permissions) return;
+
+ 
+
+
+//       // console.log("Home read permission:", permissions.Home?.read);
+//       // console.log("Home update permission:", permissions.Home?.update);
+//       // console.log("Devices write permission:", permissions.Home?.write);
+//       //  console.log("Home delete permission:", permissions.Home?.delete);
+
+
+//    console.log('--- All Permissions ---');
+//     Object.entries(permissions).forEach(([section, perms]) => {
+//       console.log(`Permissions for "${section}":`);
+//       Object.entries(perms).forEach(([action, allowed]) => {
+//         console.log(`  ${action}: ${allowed}`);
+//       });
+//     });
+//     console.log('-----------------------');
+
+// }, [permissions]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+if (loading) return <MainAppSpinner/>;
+
 
   return (
-    <CardGrid cardData={summaryData} />
+
+   <>
+ <div>
+      <label htmlFor="userSelect">Select User:</label>
+      {isLoading ? (
+        <p>Loading users...</p>
+      ) : (
+        <select id="userSelect" value={selectedUser} onChange={handleSelectChange}>
+          <option value="">-- Choose a user --</option>
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.name || user.username || `User ${user.id}`}
+            </option>
+          ))}
+        </select>
+      )}
+    </div>
+    <div class ="home_page_taxes_container">
+     <CardComponent cardData={summaryData} />
+    </div>
+
+
+</>
+
+
   );
 }
 

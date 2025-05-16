@@ -46,7 +46,7 @@ const UserProfile = ({ user }) => {
           {dropdownOpen && (
 
             <div className="dropdown-menu">
-              <NavLink to="/editprofile" className="dropdown-item">
+              <NavLink to="/profile" className="dropdown-item">
                 <FiEdit style={{ marginRight: '8px' }} />
                 Edit Profile
               </NavLink>

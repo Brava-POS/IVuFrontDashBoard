@@ -300,7 +300,8 @@ const hasPermission = (label, permissionType) => {
         customFetch,
         axiosInstance,
         permissions,
-        hasPermission
+        hasPermission,
+        saveTokens
       }}
     >
       {children}

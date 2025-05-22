@@ -52,12 +52,6 @@ export default function MerchantDropdownSelector({ onSelect }) {
 
   const handleSelect = (merchant) => {
 
-
-    console.log("slected merchant " , merchant);
-console.log("slected merchant.id     " , merchant.id);
-console.log("slected merchant.merchantSerialCode    " , merchant.merchantSerialCode);
-
-
     setSelectedMerchant(merchant);
     onSelect && onSelect(merchant);
     setOpen(false);

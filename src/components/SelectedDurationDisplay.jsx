@@ -121,35 +121,3 @@ export default function SelectedDurationDisplay({ range, onApply }) {
 
 
 
-
-
-
-
-
-
-// import React from 'react';
-// import { FiCalendar } from 'react-icons/fi';
-// import { parse, format, differenceInDays } from 'date-fns';
-
-// export default function SelectedDurationDisplay({ range }) {
-//   if (!range) return null;
-
-//   const [startStr, endStr] = range.split('-');
-//   const start = parse(startStr, 'yyyyMMdd', new Date());
-//   const end = parse(endStr, 'yyyyMMdd', new Date());
-
-//   const durationDays = differenceInDays(end, start) + 1; // inclusive of both start & end
-
-//   return (
-//     <div className="selected-duration-v4">
-//       <FiCalendar size={20} className="calendar-icon" />
-//       <span className="duration-text">
-//         Selected Duration:{' '}
-//         <strong>
-//           {format(start, 'MMM dd, yyyy')} - {format(end, 'MMM dd, yyyy')}
-//         </strong>{' '}
-//         ({durationDays} {durationDays === 1 ? 'day' : 'days'})
-//       </span>
-//     </div>
-//   );
-// }

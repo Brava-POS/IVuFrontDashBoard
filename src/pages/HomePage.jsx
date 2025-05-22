@@ -14,10 +14,10 @@ import DateRangeSelector from '../components/DateRangeSelector';
 import FilterPanel from '../components/FilterPanel';
 import SelectedDurationDisplay from '../components/SelectedDurationDisplay';
 import TransactionCountCard from '../components/TransactionCountCard';
+import { format } from 'date-fns';
 
 function HomePage() {
-  const { axiosInstance } = useAuth();
-  const { loading,customFetch,permissions} = useAuth();
+    const { loading, customFetch ,user,hasPermission ,axiosInstance} = useAuth();
   const [tranactionsCount, setTranactionsCount] = useState([]);
   const [summaryData, setSummaryData] = useState([]);
   const [users, setUsers] = useState([]);
@@ -32,76 +32,7 @@ const [selectedMerchant, setSelectedMerchant] = useState('');
 const [selectedDateRange, setSelectedDateRange] = useState("");
   
 
-
-
-
-
-
-// const fetchData = async (dateRange = '', merchantId = '') => {
-//   try {
-//     let url = 'http://localhost:9999/drs/sums';
-//     const params = new URLSearchParams();
-
-//     if (dateRange) params.append('dateRange', dateRange);
-//     if (merchantId) params.append('merchantIdQuery', merchantId);
-
-//     url += `?${params.toString()}`;
-
-//     const data = await customFetch(url);
-//         const formattedData = [
-//           {
-//             image: city,
-//             title: 'Total Transactions',
-//             details: {
-//               Amount: `$${(data.txnAmount / 100).toFixed(2)}`
-//             }
-//           },
-//           {
-//             image: state,
-//             title: 'Total State Tax',
-//             details: {
-//               Amount: `$${(data.stateTax / 100).toFixed(2)}`
-//             }
-//           },
-//           {
-//             image: city,
-//             title: 'Total City Tax',
-//             details: {
-//               Amount: `$${(data.cityTax / 100).toFixed(2)}`
-//             }
-//           },
-//           {
-//             image: reduced,
-//             title: 'Total Reduced State Tax',
-//             details: {
-//               Amount: `$${(data.reducedTax / 100).toFixed(2)}`
-//             }
-//           },
-//           {
-//             image: aditional,
-//             title: 'Total Additional Amount',
-//             details: {
-//               Amount: `$${(data.additionalAmount / 100).toFixed(2)}`
-//             }
-//           },
-//           {
-//             image: total,
-//             title: 'Number of Records',
-//             details: {
-//               Count: data.count
-//             }
-//           },
-          
-//         ];
-
-//         setSummaryData(formattedData);
-//   } catch (err) {
-//     console.error('Fetch error:', err);
-//   }
-// };
-
-
-
+const canDeleteTransactions = hasPermission('Transactions', 'delete')
 
 
 const fetchData = async (dateRange = '', merchantId = '', isInitial = false) => {
@@ -168,27 +99,12 @@ const fetchData = async (dateRange = '', merchantId = '', isInitial = false) => 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 useEffect(() => {
-  fetchData('', '', true); // initial load
+  const today = format(new Date(), 'yyyyMMdd');
+  const todayRange = `${today}-${today}`;
+  setSelectedDateRange(todayRange);
+  fetchData(todayRange, '', true); 
 }, []);
-
-
 
 
 const handleDateRangeApply = (range) => {
@@ -200,9 +116,9 @@ const handleDateRangeApply = (range) => {
 
 
 const handleSelectMerchant = (merchant) => {
-  console.log('===================================00Selected Merchant: from home page =================', merchant);
-  console.log('===================================00Selected Merchant id : from home page =================', merchant.id);
-   console.log('===================================00Selected Merchant merchantSerialCode : from home page =================', merchant.merchantSerialCode);
+  console.log('========Selected Merchant: from home page ==========', merchant);
+  console.log('========Selected Merchant id : from home page ==========', merchant.id);
+   console.log('===Selected Merchant merchantSerialCode : from home page ===========', merchant.merchantSerialCode);
 
 
    fetchData(selectedDateRange, merchant?.id);
@@ -231,8 +147,23 @@ if (appLoading) return <MainAppSpinner />;
 
 return (
   <>
-    <MerchantDropdownSelector onSelect={handleSelectMerchant} />
-  <SelectedDurationDisplay range={selectedDateRange} onApply={handleDateRangeApply} />
+   
+
+
+
+{ canDeleteTransactions && (
+
+  <MerchantDropdownSelector onSelect={handleSelectMerchant} />
+)}
+
+
+
+
+
+
+
+
+    <SelectedDurationDisplay range={selectedDateRange} onApply={handleDateRangeApply} />
 
 
 
@@ -272,109 +203,3 @@ export default HomePage;
 
 
 
-
-
-
-
-
-//  const fetchData = async ( dateRange = '') => {
-//       try {
-//   const url = dateRange
-  
-//   ?  `http://localhost:9999/drs/sums?dateRange=${dateRange}`
-//       : 'http://localhost:9999/drs/sums';
-
-//       const data = await customFetch(url);
-//       // const data = await customFetch('drs/sums?dateRange=20250401-20250507');
-//        console.log('sums received: fom hoempage ', data);
-
-//         const formattedData = [
-//           {
-//             image: city,
-//             title: 'Total Transactions',
-//             details: {
-//               Amount: `$${(data.txnAmount / 100).toFixed(2)}`
-//             }
-//           },
-//           {
-//             image: state,
-//             title: 'Total State Tax',
-//             details: {
-//               Amount: `$${(data.stateTax / 100).toFixed(2)}`
-//             }
-//           },
-//           {
-//             image: city,
-//             title: 'Total City Tax',
-//             details: {
-//               Amount: `$${(data.cityTax / 100).toFixed(2)}`
-//             }
-//           },
-//           {
-//             image: reduced,
-//             title: 'Total Reduced State Tax',
-//             details: {
-//               Amount: `$${(data.reducedTax / 100).toFixed(2)}`
-//             }
-//           },
-//           {
-//             image: aditional,
-//             title: 'Total Additional Amount',
-//             details: {
-//               Amount: `$${(data.additionalAmount / 100).toFixed(2)}`
-//             }
-//           },
-//           {
-//             image: total,
-//             title: 'Number of Records',
-//             details: {
-//               Count: data.count
-//             }
-//           },
-          
-//         ];
-
-//         setSummaryData(formattedData);
-//       } catch (err) {
-//         console.error('Fetch error:', err);
-        
-//       }
-//     };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const fetcMerchants = async (dateRange = '') => {
-//   setIsLoading(true);
-//   try {
-//     // Append dateRange param only if provided
-//     const url = dateRange
-//       ? `http://localhost:9999/merchants/search?dateRange=${dateRange}`
-//       : 'http://localhost:9999/merchants/search';
-
-//     const res = await axiosInstance.get(url);
-//     setUsers(res.data);
-//   } catch (err) {
-//     console.error('Failed to fetch users:', err);
-//   } finally {
-//     setIsLoading(false);
-//   }
-// };

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import logo from '../assets/images/brava.png';
+import { MdClose } from 'react-icons/md';
 
 const Register = () => {
   const { loading, register } = useAuth();
   const navigate = useNavigate();
 
   const [step, setStep] = useState(1);
+  const [avatar, setAvatar] = useState(null);
 
   const [formData, setFormData] = useState({
     username: '',
@@ -21,6 +24,7 @@ const Register = () => {
     state: '',
     zip: '',
     country: '',
+      avatar:'',
   });
 
   const [errors, setErrors] = useState({});
@@ -111,7 +115,14 @@ const Register = () => {
     setErrors({});
     setStep(prev => prev - 1);
   };
-
+const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+};
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -146,8 +157,27 @@ const Register = () => {
       setStep(1); // Optionally reset to first step if error exists
       return;
     }
+  let avatarBase64 = null;
 
-    const { success, error } = await register(formData);
+if (avatar) {
+    avatarBase64 = await fileToBase64(avatar); // get base64 encoded image
+  }
+
+
+
+  const fullFormData = {
+    ...formData,
+    avatar: avatarBase64, 
+  };
+
+
+  // original   const { success, error } = await register(formData);
+
+const { success, error } = await register(fullFormData);  // new with avatar 
+
+
+
+
 
     if (success) {
       navigate('/nonbravaclients');
@@ -167,6 +197,8 @@ const Register = () => {
       <form onSubmit={handleSubmit} noValidate>
         {step === 1 && (
           <>
+
+          
             <input
               className="stepper-input"
               type="text"
@@ -208,6 +240,47 @@ const Register = () => {
             {errors.phone && <p className="stepper-error">{errors.phone}</p>}
           </>
         )}
+
+
+{step === 2 && (
+<div className="avatar-preview-card">
+  <div className="avatar-preview-wrapper">
+    {avatar && (
+      <span className="avatar-remove-icon" onClick={() => setAvatar(null)}>
+        <MdClose />
+      </span>
+    )}
+    <img
+      src={avatar ? URL.createObjectURL(avatar) : logo}
+      alt="Avatar Preview"
+      className="avatar-preview-image"
+    />
+  </div>
+
+  <div className="avatar-actions">
+    <label className="stepper-button" htmlFor="avatar-upload">
+      Choose Image
+    </label>
+    <input
+      id="avatar-upload"
+      type="file"
+      accept="image/*"
+      style={{ display: 'none' }}
+      onChange={(e) => setAvatar(e.target.files[0])}
+    />
+  </div>
+</div>
+
+)}
+
+
+
+
+
+
+
+
+
 
         {step === 2 && (
           <>
@@ -260,6 +333,7 @@ const Register = () => {
               onChange={handleChange}
             />
             {errors.country && <p className="stepper-error">{errors.country}</p>}
+            
           </>
         )}
 

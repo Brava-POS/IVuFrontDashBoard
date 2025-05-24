@@ -4,12 +4,12 @@ import { useAuth } from '../context/AuthContext';
 import { FiEdit, FiKey, FiCreditCard, FiLogOut } from 'react-icons/fi';
 import avatarPlaceholder from '../assets/images/avataruser.png';
 
-const UserProfile = ({ user }) => {
+const UserProfile = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
 
 
-  const {logout  } = useAuth();
+  const {logout ,user } = useAuth();
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
 
@@ -38,7 +38,7 @@ const UserProfile = ({ user }) => {
         <span className="username">{user.username}</span>
         <div className="avatar-wrapper" ref={dropdownRef}>
           <img
-            src={user.avatar || avatarPlaceholder}
+            src={user.avatarUrl || avatarPlaceholder}
             alt="User Avatar"
             className="avatar-img"
             onClick={toggleDropdown}

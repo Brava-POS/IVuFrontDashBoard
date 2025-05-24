@@ -215,6 +215,16 @@ const [permissions, setPermissions] = useState(() => {
     setLoading(true);
     try {
       const res = await axios.post(`${API_BASE}/api/register`, details);
+
+
+          console.log("data reeibved after register  res  " ,res);
+
+          console.log("data reeibved after register   res data " ,res.data);
+
+
+
+
+
       saveTokens(res.data);
       await fetchMenu();
       return { success: true };

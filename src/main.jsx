@@ -20,6 +20,8 @@ import AdminRoutes from './routes/AdminRoutes.jsx';
 import AdminMerchantRoutes from './routes/AdminMerchantRoutes.jsx';
 import GuestRoutes from './routes/GuestRoutes.jsx';
 import TopLevelLayout from './layouts/TopLevelLayout';
+import ForgetPasswordPage from './pages/ForgetPasswordPage.jsx';
+import ResetForgottenPaswordPage from './pages/ResetForgottenPaswordPage.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -88,6 +90,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               ))}
             </Route>
             <Route element={<PublicLayout />}>
+
+
+
+           <Route path="resetforgottenpassword" element={<ResetForgottenPaswordPage />} />
+                <Route path="forgetpassword" element={<ForgetPasswordPage />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="register" element={<RegisterPage />} />
             </Route>

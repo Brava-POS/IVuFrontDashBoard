@@ -4,9 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import MainAppSpinner from './MainAppSpinner';
 
 import {
-  FaEnvelope, FaMapMarkerAlt, FaStore, FaCheckCircle, FaCalendarAlt,
-  FaIdCard, FaEuroSign, FaReceipt, FaClock, FaCreditCard,
-  FaMoneyCheckAlt, FaRegThumbsUp, FaUserCircle
+  FaEnvelope, FaMapMarkerAlt, FaUserCircle, FaPhone, FaCalendarAlt
 } from 'react-icons/fa';
 
 function Profile() {
@@ -18,7 +16,7 @@ function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axiosInstance.get('/app-users/merchant/profile');
+        const response = await axiosInstance.get('/app-users/self');
         setUserData(response.data);
       } catch (err) {
         console.error('Failed to load user profile:', err);
@@ -38,85 +36,22 @@ function Profile() {
       <div className="profile_v2-card">
 
         <div className="profile_v2-usercard">
-          <img src={userData.avatar} alt="User Avatar" className="profile_v2-avatar" />
+          <img src={userData.avatarUrl} alt="User Avatar" className="profile_v2-avatar" />
           <h4 className="profile_v2-name">{userData.username?.toUpperCase()}</h4>
         </div>
 
         <div className="profile_v2-info">
-          <button className="profile_v2-edit-button" onClick={() => navigate('/')}>
+          <button className="profile_v2-edit-button" onClick={() => navigate('/editprofile')}>
             Edit
           </button>
 
           <h4 className="profile_v2-section-title">Profile</h4>
-          <div><FaUserCircle className="profile_v2-icon" /> Username: {userData.username}</div>
-          <div><FaEnvelope className="profile_v2-icon" /> Email: {userData.email}</div>
-          <div><FaMapMarkerAlt className="profile_v2-icon" /> Address: {userData.address}, {userData.city}, {userData.zip}, {userData.country}</div>
-          <div><FaCalendarAlt className="profile_v2-icon" /> Created At: {userData.createdAt}</div>
-        </div>
-
-    <div className="profile_v2-info">
-  <h4 className="profile_v2-section-title">Account</h4>
-
-  <div className="profile_v2-line">
-    <FaStore className="profile_v2-icon" /> <strong>Merchant #:</strong> {userData.merchantSerialCode}
-  </div>
-
-  <div className="profile_v2-line">
-    <FaCheckCircle className="profile_v2-icon" /> <strong>Status:</strong> {userData.merchantStatus}
-  </div>
-
-  {userData.elavonSubscriptions?.map((sub, idx) => (
-    <div key={idx} className="profile_v2-subscription-block">
-      <div className="profile_v2-line">
-        <FaIdCard className="profile_v2-icon" /> <strong>Subscription:</strong> {sub.planName}
-      </div>
-
-      <div className="profile_v2-line">
-        <FaEuroSign className="profile_v2-icon" /> <strong>{sub.planBillingCycle}</strong> - ${sub.planPrice}
-      </div>
-
-      <div className="profile_v2-line">
-        <FaCheckCircle className="profile_v2-icon" /> <strong>Status:</strong> {sub.subscrptionStatus}
-      </div>
-
-      <div className="profile_v2-line">
-        <FaClock className="profile_v2-icon" /> <strong>Next Billing:</strong> {sub.subscrptionNextBillingDate}
-      </div>
-
-      {sub.lastPayment && (
-        <>
+          <div className="profile_v2-line"><FaUserCircle className="profile_v2-icon" /> Username: {userData.username}</div>
+          <div className="profile_v2-line"><FaEnvelope className="profile_v2-icon" /> Email: {userData.email}</div>
+          <div className="profile_v2-line"><FaPhone className="profile_v2-icon" /> Phone: {userData.phone}</div>
           <div className="profile_v2-line">
-            <FaReceipt className="profile_v2-icon" /> <strong>Last Payment ID:</strong> {sub.lastPayment.sslTxnId}
+            <FaMapMarkerAlt className="profile_v2-icon" /> Address: {userData.address}, {userData.city}, {userData.state}, {userData.zip}, {userData.country}
           </div>
-          <div className="profile_v2-line">
-            <FaMoneyCheckAlt className="profile_v2-icon" /> <strong>Amount:</strong> ${sub.lastPayment.sslAmount}
-          </div>
-          <div className="profile_v2-line">
-            <FaRegThumbsUp className="profile_v2-icon" /> <strong>Result:</strong> {sub.lastPayment.sslResult}
-          </div>
-          <div className="profile_v2-line">
-            <FaClock className="profile_v2-icon" /> <strong>Time:</strong> {sub.lastPayment.sslTxnTime}
-          </div>
-        </>
-      )}
-
-      <hr className="profile_v2-subscription-divider" />
-    </div>
-  ))}
-</div>
-
-
-        <div className="profile_v2-info">
-          <h4 className="profile_v2-section-title">Devices</h4>
-          {userData.devices?.map((dev, idx) => (
-            <div key={idx} className="profile_v2-device">
-              <div><FaCreditCard className="profile_v2-icon" /> Serial Number: {dev.serialNumber}</div>
-              <div style={{ paddingLeft: '24px' }}>Provider: {dev.provider}</div>
-              <div style={{ paddingLeft: '24px' }}>Model: {dev.model}</div>
-              <div style={{ paddingLeft: '24px' }}>Status: {dev.status}</div>
-              <hr />
-            </div>
-          ))}
         </div>
 
       </div>

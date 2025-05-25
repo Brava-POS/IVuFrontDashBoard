@@ -7,6 +7,8 @@ import { MdPointOfSale } from "react-icons/md";
 import { ImProfile } from "react-icons/im";
 import { MdOutlinePayment } from "react-icons/md";
 import { TfiFiles } from "react-icons/tfi";
+import { MdAccountTree } from "react-icons/md";
+
 
 
 
@@ -21,6 +23,7 @@ export const iconMap = {
   Profile:ImProfile ,
   Billings:MdOutlinePayment,
   InformativeFiles:TfiFiles ,
+  Account:MdAccountTree
 
 
 };

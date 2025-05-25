@@ -8,7 +8,7 @@ import SettingsPage from '../pages/SettingsPage';
 
 
 const AdminRoutes = [
-   { path: 'billing', element: <BillingPage /> },
+
    { path: 'informativefile', element: <InformativeFiles /> },
    { path: 'create-transaction-page', element: <CreateTransactionPage /> },
    { path: 'update-transaction-page/:id', element: <UpdateTransactionPage /> },

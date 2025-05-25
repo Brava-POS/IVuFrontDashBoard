@@ -62,6 +62,11 @@ const Login = () => {
      <p className="register_component-footer">
        Don’t have an account? <Link to="/register">Register here</Link>
       </p>
+      <p style={{ marginTop: '1rem' }}>
+  <a href="/forgetpassword" style={{ color: 'darkred', fontWeight: 'bold' }}>
+    Forgot your password?
+  </a>
+</p>
       
       </div>
      

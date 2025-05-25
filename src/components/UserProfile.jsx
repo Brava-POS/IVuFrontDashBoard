@@ -48,9 +48,9 @@ const UserProfile = () => {
             <div className="dropdown-menu">
               <NavLink to="/profile" className="dropdown-item">
                 <FiEdit style={{ marginRight: '8px' }} />
-                Edit Profile
+                 Profile
               </NavLink>
-              <NavLink to="/changepassword"  className="dropdown-item">
+              <NavLink to="/changeprofilepassword"  className="dropdown-item">
                 <FiKey style={{ marginRight: '8px' }} />
                 Change Password
               </NavLink>

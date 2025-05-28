@@ -37,39 +37,39 @@ function ChangeForgotPassword() {
     }
   };
 
-  return (
-    <div className="forgot-wrapper">
-      {submitting && (
-        <div className="overlay">
-          <MainAppSpinner />
-        </div>
-      )}
-
-      <div className="forgot-card">
-        <h2 className="forgot-title">Reset Your Password</h2>
-        <p className="forgot-subtitle">Enter your email to receive a password reset link.</p>
-
-        <form onSubmit={handleSubmit} className="forgot-form">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="forgot-input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <button type="submit" className="forgot-button">
-            Send Reset Link
-          </button>
-         <a href="/login" style={{ color: '#ec3818', fontWeight: 'bold' }}>Login</a>
-        </form>
-         
-        
-
-
+return (
+  <div className="forgot-wrapper">
+    {submitting && (
+      <div className="forgot-overlay">
+        <MainAppSpinner />
       </div>
+    )}
+
+    <div className="forgot-card">
+      <h2 className="forgot-title">Reset Your Password</h2>
+      <p className="forgot-subtitle">Enter your email to receive a password reset link.</p>
+
+      <form onSubmit={handleSubmit} className="forgot-form">
+        <input
+          type="email"
+          placeholder="Enter your email"
+          className="forgot-input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <button type="submit" className="forgot-button">
+          Send
+        </button>
+
+<a href="/login" className="forgot-link">Return to Login</a>
+<a href="/register" className="forgot-link">Create a New Account</a>
+
+      </form>
     </div>
-  );
+  </div>
+);
+
 }
 
 export default ChangeForgotPassword;

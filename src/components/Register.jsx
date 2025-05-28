@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/images/brava.png';
 import { MdClose } from 'react-icons/md';
+import zxcvbn from 'zxcvbn';
 
 const Register = () => {
   const { loading, register } = useAuth();
@@ -10,7 +11,7 @@ const Register = () => {
 
   const [step, setStep] = useState(1);
   const [avatar, setAvatar] = useState(null);
-
+ 
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -126,7 +127,7 @@ const fileToBase64 = (file) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate all steps on submit to be safe
+ 
     const validationErrors = {};
     // Step 1 validation
     if (!formData.firstName.trim()) validationErrors.firstName = "First name is required";
@@ -154,7 +155,6 @@ const fileToBase64 = (file) => {
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setStep(1); // Optionally reset to first step if error exists
       return;
     }
   let avatarBase64 = null;
@@ -180,11 +180,16 @@ const { success, error } = await register(fullFormData);  // new with avatar
 
 
     if (success) {
-      navigate('/nonbravaclients');
+      navigate('/');
     } else {
       setStatus(error || 'Registration failed');
     }
   };
+ const passwordStrength = zxcvbn(formData.password);
+const score = passwordStrength.score;
+const strengthColors = ['#f8d7da', '#f5c6cb', '#f1a1a5', '#d9534f', '#b30000'];
+const strengthWidths = ['10%', '30%', '60%', '85%', '100%'];
+const strengthLabel = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
 
   return (
     <div className="stepper-form-container">
@@ -348,7 +353,7 @@ const { success, error } = await register(fullFormData);  // new with avatar
               onChange={handleChange}
             />
             {errors.username && <p className="stepper-error">{errors.username}</p>}
-
+<div  style={{ marginTop: 20,}}></div>
             <input
               className="stepper-input"
               type="password"
@@ -357,6 +362,36 @@ const { success, error } = await register(fullFormData);  // new with avatar
               value={formData.password}
               onChange={handleChange}
             />
+
+ {formData.password && (
+      <>
+        <div style={{
+          height: 6,
+          backgroundColor: '#f8d7da',
+          borderRadius: 3,
+          overflow: 'hidden',
+          marginTop: 8,
+        }}>
+          <div style={{
+            height: '100%',
+            width: strengthWidths[score],
+            backgroundColor: strengthColors[score],
+            transition: 'width 0.3s ease',
+          }} />
+        </div>
+        <div style={{
+          marginTop: 6,
+          color: strengthColors[score],
+          fontSize: 14,
+          fontWeight: 'bold'
+        }}>
+          Strength: {strengthLabel[score]}
+        </div>
+      </>
+    )}
+
+<div  style={{ marginTop: 20,}}></div>
+            
             {errors.password && <p className="stepper-error">{errors.password}</p>}
 
             <input

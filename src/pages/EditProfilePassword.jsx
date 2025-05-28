@@ -85,199 +85,107 @@ function EditProfilePassword() {
   const passwordStrength = zxcvbn(password);
   const score = passwordStrength.score;
 
-  return (
-    <>
-      {loading && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0, left: 0, right: 0, bottom: 0,
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
-            zIndex: 9999,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <MainAppSpinner />
-        </div>
-      )}
-
-      <div
-        className="profile_v2-wrapper"
-        style={{ display: 'flex', justifyContent: 'center', padding: 20, minHeight: '80vh' }}
-      >
-        <div
-          className="profile_v2-card"
-          style={{
-            border: '1px solid darkred',
-            borderRadius: 8,
-            padding: '2rem',
-            maxWidth: 400,
-            width: '100%',
-            backgroundColor: '#fff',
-          }}
-        >
-          <h2 style={{ color: 'darkred', marginBottom: '1.5rem', textAlign: 'center' }}>
-            Change Password
-          </h2>
-
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
-            noValidate
-          >
-            {/* Current Password */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <label style={{ fontWeight: '600', color: '#800000', marginBottom: 6 }}>
-                Current Password:
-              </label>
-              <input
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder="Current Password"
-                style={{
-                  padding: '10px',
-                  border: `1px solid ${submitted && !currentPassword ? 'red' : 'red'}`,
-                  borderRadius: '5px',
-                  color: '#800000',
-                  fontSize: 16,
-                }}
-                aria-invalid={submitted && !currentPassword}
-                aria-describedby="current-password-error"
-              />
-              {submitted && !currentPassword && (
-                <div
-                  id="current-password-error"
-                  style={{ color: 'red', marginTop: 4, fontSize: 14 }}
-                >
-                  Please enter your current password.
-                </div>
-              )}
-            </div>
-
-            {/* New Password */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <label style={{ fontWeight: '600', color: '#800000', marginBottom: 6 }}>
-                New Password:
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="New Password"
-                style={{
-                  padding: '10px',
-                  border: `1px solid ${submitted && password.length < 8 ? 'red' : 'red'}`,
-                  borderRadius: '5px',
-                  color: '#800000',
-                  fontSize: 16,
-                }}
-                aria-invalid={submitted && password.length < 8}
-                aria-describedby="password-error"
-              />
-              {submitted && password.length < 8 && (
-                <div
-                  id="password-error"
-                  style={{ color: 'red', marginTop: 4, fontSize: 14 }}
-                >
-                  Password must be at least 8 characters.
-                </div>
-              )}
-              {password && (
-                <>
-                  <div
-                    style={{
-                      height: 6,
-                      width: '100%',
-                      backgroundColor: '#f8d7da',
-                      borderRadius: 3,
-                      marginTop: 8,
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <div
-                      style={{
-                        height: '100%',
-                        width: strengthWidths[score],
-                        backgroundColor: strengthColors[score],
-                        borderRadius: 3,
-                        transition: 'width 0.5s ease, background-color 0.5s ease',
-                      }}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      marginTop: 6,
-                      fontWeight: 'bold',
-                      color: strengthColors[score],
-                      fontSize: 14,
-                      userSelect: 'none',
-                    }}
-                  >
-                    Strength: {strengthLabel(score)}
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Confirm Password */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <label style={{ fontWeight: '600', color: '#800000', marginBottom: 6 }}>
-                Confirm Password:
-              </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm Password"
-                style={{
-                  padding: '10px',
-                  border: `1px solid ${submitted && password !== confirmPassword ? 'red' : 'red'}`,
-                  borderRadius: '5px',
-                  color: '#800000',
-                  fontSize: 16,
-                }}
-                aria-invalid={submitted && password !== confirmPassword}
-                aria-describedby="confirm-password-error"
-              />
-              {submitted && password !== confirmPassword && (
-                <div
-                  id="confirm-password-error"
-                  style={{ color: 'red', marginTop: 4, fontSize: 14 }}
-                >
-                  Passwords do not match.
-                </div>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              style={{
-                backgroundColor: 'darkred',
-                color: 'white',
-                padding: '12px 20px',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                fontWeight: '600',
-                fontSize: 16,
-                alignSelf: 'center',
-                marginTop: '1rem',
-                width: '100%',
-                transition: 'background-color 0.3s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#990000')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'darkred')}
-            >
-              Save Password
-            </button>
-          </form>
-        </div>
+return (
+  <>
+    {loading && (
+      <div className="editprofilepasswordv2-spinner-overlay">
+        <MainAppSpinner />
       </div>
-    </>
-  );
+    )}
+
+    <div className="editprofilepasswordv2-wrapper">
+      <div className="editprofilepasswordv2-card">
+        <h3 className="editprofilepasswordv2-title">Change Password</h3>
+
+        <form onSubmit={handleSubmit} className="editprofilepasswordv2-form" noValidate>
+          {/* Current Password */}
+          <div className="editprofilepasswordv2-form-group">
+            <label className="editprofilepasswordv2-label">Current Password:</label>
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              placeholder="Current Password"
+              className={`editprofilepasswordv2-input ${submitted && !currentPassword ? 'invalid' : ''}`}
+              aria-invalid={submitted && !currentPassword}
+              aria-describedby="current-password-error"
+            />
+            {submitted && !currentPassword && (
+              <div id="current-password-error" className="editprofilepasswordv2-error">
+                Please enter your current password.
+              </div>
+            )}
+          </div>
+
+          {/* New Password */}
+          <div className="editprofilepasswordv2-form-group">
+            <label className="editprofilepasswordv2-label">New Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="New Password"
+              className={`editprofilepasswordv2-input ${submitted && password.length < 8 ? 'invalid' : ''}`}
+              aria-invalid={submitted && password.length < 8}
+              aria-describedby="password-error"
+            />
+            {submitted && password.length < 8 && (
+              <div id="password-error" className="editprofilepasswordv2-error">
+                Password must be at least 8 characters.
+              </div>
+            )}
+            {password && (
+              <>
+                <div className="editprofilepasswordv2-strength-bar-container">
+                  <div
+                    className="editprofilepasswordv2-strength-bar"
+                    style={{
+                      width: strengthWidths[score],
+                      backgroundColor: strengthColors[score],
+                    }}
+                  />
+                </div>
+                <div
+                  className="editprofilepasswordv2-strength-label"
+                  style={{ color: strengthColors[score] }}
+                >
+                  Strength: {strengthLabel(score)}
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Confirm Password */}
+          <div className="editprofilepasswordv2-form-group">
+            <label className="editprofilepasswordv2-label">Confirm Password:</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm Password"
+              className={`editprofilepasswordv2-input ${submitted && password !== confirmPassword ? 'invalid' : ''}`}
+              aria-invalid={submitted && password !== confirmPassword}
+              aria-describedby="confirm-password-error"
+            />
+            {submitted && password !== confirmPassword && (
+              <div id="confirm-password-error" className="editprofilepasswordv2-error">
+                Passwords do not match.
+              </div>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="editprofilepasswordv2-submit-button"
+          >
+            Save Password
+          </button>
+        </form>
+      </div>
+    </div>
+  </>
+);
+
 }
 
 export default EditProfilePassword;

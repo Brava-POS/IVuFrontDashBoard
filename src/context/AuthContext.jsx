@@ -300,6 +300,7 @@ const hasPermission = (label, permissionType) => {
     <AuthContext.Provider
       value={{
         loading,
+        setLoading,
         isAuthenticated,
         user,
         menu,

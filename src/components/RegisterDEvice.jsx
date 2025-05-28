@@ -165,7 +165,7 @@ function RegisterDevice() {
           <label>Provider</label>
           <select
             className="ivu-input"
-            style={{ backgroundColor: '#eb976f' }}
+           //  style={{ backgroundColor: '#ff8c55' }}
             value={provider}
             onChange={(e) => {
               setProvider(e.target.value);
@@ -186,7 +186,7 @@ function RegisterDevice() {
               <label>Model</label>
               <select
                 className="ivu-input"
-                style={{ backgroundColor: '#eb976f' }}
+                // style={{ backgroundColor: '#eb976f' }}
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
                 required

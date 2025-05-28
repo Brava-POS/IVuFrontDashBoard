@@ -1,0 +1,25 @@
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  color:   var(--red-3);
+  border: 2px solid var(--red-5);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+   margin-bottom: 1.5rem;
+}
+
+.back-button:hover {
+  background-color:  var(--red-5);
+  color: white;
+}
+
+.back-icon {
+  font-size: 16px;
+}
+
+ 

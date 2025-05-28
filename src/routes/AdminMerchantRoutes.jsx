@@ -8,6 +8,8 @@ import ProfilePage from '../pages/ProfilePage';
 import EditProfilePage from '../pages/EditProfilePage';
 import EditProfilePassword from '../pages/EditProfilePassword';
 import BillingPage from '../pages/BillingPage';
+import CreateTransactionPage from '../pages/CreateTransactionPage';
+import UpdateTransactionPage from '../pages/UpdateTransactionPage';
 
 
 
@@ -22,6 +24,11 @@ const AdminMerchantRoutes = [
   { path: 'account', element: <AccountPage /> },
   { path: 'changepassword', element: <ChangePassword /> },
   { path: 'view-transaction-page/:id', element: <ViewTransactionPage /> },
+  { path: 'create-transaction-page', element: <CreateTransactionPage /> },
+    { path: 'edit-transaction-page/:id', element: < UpdateTransactionPage /> },
+
+
+
   { path: 'devices', element: <Device /> },
   { path: 'profile', element: <ProfilePage /> },
    { path: 'editprofile', element: <EditProfilePage/> },

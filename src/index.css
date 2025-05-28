@@ -1,3 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+
+
+
+
+
+
+
 :root {
   --red-1: #f17a65;
   --red-2: #e96e58;
@@ -242,12 +252,12 @@ body {
 
 .sidebar-title {
   font-size: 22px;
-  font-family: var(--font-ui);
-  font-weight: bold;
-  color: var(--red-main);
-  letter-spacing: 0.8px;
+ font-family: "Orbitron", sans-serif;
+  font-weight: 700;
+  color: #3a1f0f; 
+  letter-spacing: 1px;
+ 
 }
-
 .top-bar__actions {
   display: flex;
   gap: 10px;
@@ -713,158 +723,6 @@ body {
 
 
 
-/* ========================================================================== */
-/*  8. TABLE COMPONENTS                                                       */
-/* ========================================================================== */
-
-
-.table-outer-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-
- 
-
-
-
-}
-
-.table-controls {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 12px;
-}
-
-.no-data-container {
-
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 24px;
-  background-color: var(--color-light);
-  color: var(--red-5);
-  font-family: var(--font-heading);
-  gap: 20px;
-}
-
-.create-btn {
-  display: inline-flex; 
-  align-items: center;  
-  gap: 8px;          
-  background-color: var(--red-1);
-  color: var(--color-white);
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-bottom: 10px;
-  text-decoration: none;
-}
-
-.plus-icon {
-  display: flex;
-  align-items: center;
-}
-
-.create-btn:hover {
-  background-color: var(--red-5);
-}
-
-.table-container {
-  width: 100%;
-  max-width: 100%;
-  overflow-y: auto; 
-  height: 100%; 
-  position: relative;
-
-}
-
-
-
-.data-table {
-
-  width: 100%;
-  box-shadow: none; 
-
-
-}
-
-.data-table thead th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
-  text-align: left;
-  padding: 12px 16px;
-  font-weight: bold;
-  box-shadow: none;    
-  order: none;              
-  background-color: var(--red-1); 
-
-
-}
-
-
-.data-table th,
-.data-table td {
-  border: none;
-  white-space: nowrap;
-  padding: 12px 16px;
-}
-
-
-.data-table tbody tr {
- 
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
-  box-shadow: none;         
-  border-radius: 0;         
-}
-
-
-.data-table tbody tr:hover {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-  transform: translateY(-1px);
-  transition: all 0.2s ease;
-
-}
-
-
-.action-btn {
-  margin-right: 8px;
-  padding: 6px 10px;
-  font-size: 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.view {
-  background-color: var(--red-1);
-  color: white;
-}
-
-.update {
-  background-color: var(--red-2);
-  color: white;
-}
-
-.delete {
-  background-color: var(--red-5);
-  color: white;
-}
-
-
-
-
 .public-layout-container { 
    width: 100%;
    height: 100%;
@@ -1048,7 +906,13 @@ input.ivu-input:-webkit-autofill {
   color: var(--red-5);
 }
 
+
+
+
+
+
 .ivu-form {
+
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -1081,7 +945,7 @@ input.ivu-input:-webkit-autofill {
 }
 
 .ivu-button-primary {
-  background-color: var(--red-5);
+  background-color: var(--red-2);
   color: var(--color-white);
 }
 
@@ -1102,42 +966,6 @@ input.ivu-input:-webkit-autofill {
 
 .ivu-status.error {
   color: var(--red-3);
-}
-
-
-
-/* ======================================pagination ===========================================*/
-
-.pagination {
-
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-  width: 100%;
-
-
-}
-
-.pagination button {
-  padding: 1rem 1rem;
-  border: none;
-  border-radius: 6px;
-  background: #eee;
-
-  cursor: pointer;
-}
-
-.pagination button.active {
-  background-color: var(--red-5);
-  color: white;
-  font-weight: bold;
-}
-
-.pagination button:disabled {
-  opacity: 0.5;
-  cursor: var(--red-4);
 }
 
 
@@ -1634,16 +1462,21 @@ input.ivu-input:-webkit-autofill {
 
 
 /* ***********************************userSElectedCrad****************************** */
-.dropdown-wrapper {
+
+
+.dropdown-wrapper_users {
+  width: 100%; 
   position: relative;
   display: inline-block;
-  z-index: 9999;
+  z-index: 1;
   margin-bottom: 20px;
+
 }
+
 /* Dropdown Trigger Button */
-.dropdown-button {
-  width: 360px;
-  padding: 12px 16px;
+.dropdown-button_users  {
+  width: 100%;
+  padding: 1px 10px;
   background-color: var(--red-1);
   color: white;
   border: none;
@@ -1654,34 +1487,29 @@ input.ivu-input:-webkit-autofill {
   justify-content: center;
   font-size: 15px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  position: relative;
-}
 
-.dropdown-button::after {
-  content: '▾';
-  margin-left: 8px;
-  font-size: 13px;
-}
 
-/* Dropdown Menu */
-.dropdown-menu {
+}
+.dropdown-menu_users {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 360px;
-  background-color: #fffafa;
-  border: 1px solid #f44336;
+  right: 0;
+  width: 100%; 
+  background-color: white;
+  border: 1px solid var(--red-3);
   border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   z-index: 999999;
   text-align: center;
   margin-top: 6px;
 }
 
+
+
+
 /* Search Bar */
-.search-input {
+.search-input_users {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1689,7 +1517,7 @@ input.ivu-input:-webkit-autofill {
   margin-bottom: 14px;
 }
 
-.search-input input {
+.search-input_users input {
   flex: 1;
   padding: 8px 10px;
   border: 1px solid #e57373;
@@ -1716,14 +1544,14 @@ input.ivu-input:-webkit-autofill {
 .merchant-item {
   padding: 10px;
   border-radius: 4px;
-  color: #b71c1c;
+  color: black;
   cursor: pointer;
   transition: background 0.2s;
   text-align: center;
 }
 
 .merchant-item:hover {
-  background-color: #ffcdd2;
+  background-color: var(--red-2);
 }
 
 .pagination_S {
@@ -1739,7 +1567,7 @@ input.ivu-input:-webkit-autofill {
 
 .pagination_S button {
   padding: 6px 10px;
-  background-color: #e53935;
+  background-color: var(--red-5);
   color: white;
   border: none;
   border-radius: 4px;
@@ -2277,6 +2105,11 @@ input.ivu-input:-webkit-autofill {
 }
 
 
+.edit-profile-container {
+  width: 70%;
+  margin: 0 auto;
+}
+
 .profile_v2-card {
   position: relative;
   color: #be2d2d;
@@ -2514,6 +2347,127 @@ input.ivu-input:-webkit-autofill {
   }
 }
 
+
+
+
+/* ===================Login form  =============================  */
+
+
+.login-ivu-wrapper {
+  width: 70vw;
+  max-width: 450px;
+  min-width: 320px;
+  height: 70vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+ 
+  border-radius: 12px;
+ 
+  padding: 2rem 2.5rem;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-ivu-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.login-ivu-input {
+  padding: 12px 15px;
+  font-size: 1rem;
+  border: 2px solid #ec3818;
+  border-radius: 8px;
+  color: #660000;
+
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:focus {
+    border-color: #b30000;
+    outline: none;
+    box-shadow: 0 0 8px 2px rgba(236, 56, 24, 0.5);
+  }
+}
+
+.login-ivu-button {
+  background-color: #ec3818;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 12px 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:disabled {
+    background-color: #f17a65;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    background-color: #b30000;
+  }
+}
+
+.login-ivu-status-error {
+  color: #b30000;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.login-ivu-footer {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: #660000;
+  text-align: center;
+
+  a {
+    color: #b30000;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #ec3818;
+      text-decoration: underline;
+    }
+  }
+}
+
+.login-ivu-forgot-password {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  text-align: center;
+
+  a {
+    color: #b30000;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+      color: #ec3818;
+      text-decoration: underline;
+    }
+  }
+}
+
+
+/* forgot password  */
+
+
+
+
+
+
+
 /* forget passowrd  */
 
 
@@ -2522,14 +2476,14 @@ input.ivu-input:-webkit-autofill {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+
   padding: 2rem;
 }
 
 .forgot-card {
   background: white;
   padding: 2rem 2.5rem;
-  border: 1px solid #e0b4b4;
+
   border-radius: 8px;
 
   max-width: 600px;
@@ -2537,16 +2491,7 @@ input.ivu-input:-webkit-autofill {
   text-align: center;
 }
 
-.forgot-title {
-  color: var(--red-1);
-  margin-bottom: 0.5rem;
-}
 
-.forgot-subtitle {
-  color: #800000;
-  font-size: 0.95rem;
-  margin-bottom: 1.5rem;
-}
 
 .forgot-form {
   display: flex;
@@ -2581,3 +2526,349 @@ input.ivu-input:-webkit-autofill {
   align-items: center;
   z-index: 999;
 }
+
+
+
+
+
+.forgot-wrapper {
+  width: 100vw;
+  height: 70vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 2.5rem;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.forgot-card {
+
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.forgot-title {
+  font-size: 1.6rem;
+  color: var(--red-2);
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.forgot-subtitle {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.forgot-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.forgot-input {
+  padding: 12px 15px;
+  font-size: 1rem;
+  border: 2px solid #ec3818;
+  border-radius: 8px;
+  color: #660000;
+
+}
+
+.forgot-button {
+  background-color: var(--red-2);
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 12px 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--red-5);
+  }
+}
+
+.forgot-link {
+  text-align: center;
+  display: block;
+  color: var(--red-1);
+  font-weight: bold;
+  &:hover {
+    color: #ec3818;
+    text-decoration: underline;
+  }
+}
+
+.forgot-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/*  edit profile password */
+
+
+.editprofilepasswordv2-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  min-height: 80vh;
+
+}
+
+.editprofilepasswordv2-card {
+  padding: 2rem;
+  width: 70%;
+
+}
+
+.editprofilepasswordv2-title {
+  color: #f35235;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.editprofilepasswordv2-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.editprofilepasswordv2-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.editprofilepasswordv2-label {
+  font-weight: 600;
+  color: #800000;
+  margin-bottom: 6px;
+}
+
+.editprofilepasswordv2-input {
+  padding: 10px;
+  border: 1px solid red;
+  border-radius: 5px;
+  color: #800000;
+  font-size: 16px;
+}
+
+.editprofilepasswordv2-input.invalid {
+  border-color: red;
+}
+
+.editprofilepasswordv2-error {
+  color: red;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.editprofilepasswordv2-strength-bar-container {
+  height: 6px;
+  width: 100%;
+  background-color: #f8d7da;
+  border-radius: 3px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.editprofilepasswordv2-strength-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease, background-color 0.5s ease;
+}
+
+.editprofilepasswordv2-strength-label {
+  margin-top: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  user-select: none;
+}
+
+.editprofilepasswordv2-submit-button {
+  background-color: #f35235;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  align-self: center;
+  margin-top: 1rem;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.editprofilepasswordv2-submit-button:hover {
+  background-color: darkred;
+}
+
+.editprofilepasswordv2-spinner-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* ==============================user profile v4 ========================= */
+
+
+
+.userprofilev4-user-profile {
+
+
+  position: relative;
+  display: flex;
+  align-items: center;
+
+}
+
+.userprofilev4-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userprofilev4-username {
+  font-weight: 600;
+  color: #333;
+}
+
+.userprofilev4-avatar-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.userprofilev4-avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid #ddd;
+  transition: border-color 0.3s;
+}
+
+.userprofilev4-avatar-img:hover {
+  border-color: #aaa;
+}
+
+.userprofilev4-dropdown-menu {
+  position: absolute;
+  top: 130%; 
+  right: 0; 
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  width: 300px;
+  z-index: 99999;
+  padding: 8px 0;
+
+
+}
+.userprofilev4-dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.userprofilev4-dropdown-item:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+
+
+/* ============================== view tranaction ======================================== */
+
+.view-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  font-family: Arial, sans-serif;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  
+  color: #222;
+}
+
+.detail-table {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #d32f2f; /* red border */
+  border-radius: 4px;
+}
+
+.table-row {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #d32f2f;
+  padding: 10px 14px;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-key {
+  width: 30%;
+  font-weight: bold;
+  color: #444;
+  border-right: 1px solid #d32f2f;
+  padding-right: 1rem;
+}
+
+.table-value {
+  flex: 1;
+  padding-left: 1rem;
+  color: #222;
+}
+
+.sub-items-scroll {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  margin-top: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.sub-item-inline {
+  white-space: nowrap;
+  font-size: 0.9rem;
+  background: none;
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+

@@ -1,0 +1,28 @@
+/* common icon style override */
+.swal2-icon.swal-icon-success,
+.swal2-icon.swal-icon-error,
+.swal2-icon.swal-icon-warning {
+  border-color: transparent !important;
+}
+
+/* Success icon in red */
+.swal-icon-success .swal2-success-ring,
+.swal-icon-success .swal2-success-line-tip,
+.swal-icon-success .swal2-success-line-long {
+  display: none !important;
+}
+/* Error icon in red */
+.swal-icon-error .swal2-x-mark-line-left,
+.swal-icon-error .swal2-x-mark-line-right {
+  background-color: #b00020 !important;
+}
+
+/* Warning icon in red */
+.swal-icon-warning .swal2-icon-content {
+  color: #d62828 !important;
+}
+.custom-check-icon {
+  font-size: 48px;
+  color: #e63946; /* Red palette */
+  font-weight: bold;
+}

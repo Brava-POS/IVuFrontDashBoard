@@ -1,0 +1,58 @@
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.input-label {
+  margin-bottom: 4px;
+  font-weight: 500;
+  color: #dc2626; 
+    width: 100%;
+}
+
+.input-field {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+    margin-right: 20px;
+        width: 100%;
+}
+
+.input-field.input-error {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+    width: 100%;
+}
+
+.input-error-text {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+      width: 100%;
+}
+
+.input-prefix-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-prefix {
+  position: absolute;
+  left: 12px;
+  color: #6b7280; /* gray-500 */
+  font-size: 14px;
+  pointer-events: none;
+  width: auto;           /* FIXED */
+  margin-right: 4px;
+      width: 100%;
+}
+
+.input-field-with-prefix {
+  padding-left: 28px;    /* INCREASED space for prefix */
+}
+

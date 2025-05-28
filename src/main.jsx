@@ -3,8 +3,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
 import './index.css';
+import './app-css/table.css';
+import './app-css/pagination.css';
+import './app-css/custom-swal.css';
+import './app-css/BackButton.css';
+import './app-css/RedTitle.css';
+import './app-css/FormCrud.css';
+import './app-css/Input.css';
+import './app-css/EditButton.css';
+//import './app-css/pagination.css';
+//import './app-css/pagination.css';
+//import './app-css/pagination.css';
+//import './app-css/pagination.css';
+//import './app-css/pagination.css';
+//import './app-css/pagination.css';
+//import './app-css/pagination.css';
+//import './app-css/pagination.css';
+//import './app-css/pagination.css';
+//import './app-css/pagination.css';
+
+
+
+
+
 import App from './App';
 import DashBoardLayout from './layouts/DashBoardLayout';
 import LoginPage from './pages/LoginPage';

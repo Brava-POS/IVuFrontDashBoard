@@ -22,7 +22,7 @@ const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
 
   return (
     <div className="pagination">
-      <button onClick={() => onPageChange(0)} disabled={currentPage === 0}>⏮ First</button>
+      <button onClick={() => onPageChange(0)} disabled={currentPage === 0}>⏮ First </button>
       <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 0}>◀ Prev</button>
 
       {getPageNumbers().map((number) => (

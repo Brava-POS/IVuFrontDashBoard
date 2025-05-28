@@ -1,0 +1,36 @@
+
+
+/* ======================================pagination ===========================================*/
+
+.pagination {
+
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+  width: 100%;
+
+
+}
+
+.pagination button {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  background: #eee;
+
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: var(--red-1);
+  color: black;
+  font-weight: bold;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: var(--red-4);
+}
+

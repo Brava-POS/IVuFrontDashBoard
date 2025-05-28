@@ -1,0 +1,7 @@
+.red-title {
+  color: var(--red-1);
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: left;
+}

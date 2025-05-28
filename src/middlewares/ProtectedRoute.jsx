@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-// Helper to normalize backend role format
+
 const mapBackendRole = (backendRole) => {
   if (!backendRole) return '';
-  return backendRole.replace('ROLE_', '').toLowerCase(); // e.g. ROLE_GUEST → guest
+  return backendRole.replace('ROLE_', '').toLowerCase();
 };
 
 const ProtectedRoute = ({ allowedRoles, children }) => {
@@ -17,7 +17,7 @@ const ProtectedRoute = ({ allowedRoles, children }) => {
   const normalizedRole = mapBackendRole(user?.role);
 
   if (!allowedRoles.includes(normalizedRole)) {
-    return <Navigate to="/login" replace />; // or to /forbidden
+    return <Navigate to="/login" replace />; // To Do navigate to Forbidden Page
   }
 
   return children;

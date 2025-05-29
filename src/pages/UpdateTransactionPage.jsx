@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import TableComponent from "../components/TableComponent";
 
 import { useAuth } from '../context/AuthContext';
 import MainAppSpinner from '../components/MainAppSpinner';
@@ -9,6 +10,12 @@ import BackButton from '../components/BackButton';
 import RedTitle from '../components/RedTitle';
 import Input from '../components/Input ';
 import EditButton from '../components/EditButton';
+import CreateButton from '../components/CreateButton';
+import CustomizedButton from '../components/CustomizedButton';
+import AdditionalAmountModal from '../components/AdditionalAmountModal';
+import UpdateAdditionalAmountModal from '../components/UpdateAdditionalAmountModal';
+import ButtonCustomizedAction from '../components/ButtonCustomizedAction';
+
 
 
 const picFields = [
@@ -39,11 +46,34 @@ const reverseConvertValue = (val) => {
 
 
 const UpdateTransactionPage = () => {
+
+
+
   const { axiosInstance } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
+  const [isFetching, setIsFetching] = useState(false);
+  const [additionalAmountsData, setAdditionalAmountsData] = useState([]);
+  const [initialLoad, setInitialLoad] = useState(true);
+
+const [showAddModal, setShowAddModal] = useState(false);
+const [modalLoading, setModalLoading] = useState(false);
+const [showUpdateModal, setShowUpdateModal] = useState(false);
+const [selectedAdditionalAmountId, setSelectedAdditionalAmountId] = useState(null);
+
+
+
+
+
+
+
+
+
+
+
+
   const [form, setForm] = useState({
     merchantId: null,
     merchantSerialNumber:null,
@@ -65,6 +95,68 @@ const UpdateTransactionPage = () => {
     additionalAmountTotalAmount: '',
     additionalAmounts: [],
   });
+
+ const [pageInfo, setPageInfo] = useState({ pageNumber: 0, totalPages: 0 });
+ const handleApplyFilters = () => {
+    fetchAdditionalAmounts(0);
+  };
+
+ const handlePageChange = (newPage) => {
+  fetchAdditionalAmounts(newPage); 
+   
+  };
+
+
+
+
+const deleteAdditionalAmount = async (additionalAmountId) => {
+  try {
+    setIsFetching(true);
+    const res = await axiosInstance.delete(`/additional-amounts/${additionalAmountId}`);
+    setIsFetching(false);
+
+    if ((res.status >= 200 && res.status < 300) && res.data && res.data.message === "Deleted successfully") {
+      showAlert('success', 'Delete  Successfully');
+      await fetchTransaction();
+      await fetchAdditionalAmounts(0);
+    } else {
+      showAlert('error', 'Delete failed');
+    }
+  } catch (error) {
+    setIsFetching(false);
+    showAlert('error', 'Delete failed');
+  }
+};
+  const fetchAdditionalAmounts = async (page = 0) => {
+    setIsFetching(true);
+    try {
+  let url = `/additional-amounts?page=${page}&size=10&drId=${id}`;
+     const response = await axiosInstance.get(url); 
+      const data = response.data;
+
+      if (data?.content) {
+
+
+ setAdditionalAmountsData(
+    (data.content || []).map(row => ({
+      ...row,
+     amount: `$${reverseConvertValue(row.amount)}`,
+     type: row.type && row.type.trim() ? row.type : "N/A"
+    }))
+  );
+
+        setPageInfo({ pageNumber: data.number, totalPages: data.totalPages });
+      }
+    } catch (err) {
+      console.error("Error during fetch request:", err.message);
+    } finally {
+      setIsFetching(false);
+      setInitialLoad(false);
+    }
+  };
+
+
+
 
   const fetchTransaction = async () => {
     try {
@@ -94,6 +186,13 @@ const UpdateTransactionPage = () => {
           type: item.type || '  ',
         })),
       }));
+
+
+
+
+
+
+
     } catch {
       showAlert('error', 'Something went wrong.');
     } finally {
@@ -108,15 +207,26 @@ const UpdateTransactionPage = () => {
     }));
   };
 
-  useEffect(() => {
-    if (!id) {
-      showAlert('error', 'Missing ID!');
-      navigate('/transactions');
-      return;
-    }
-    fetchTransaction();
-    // eslint-disable-next-line
-  }, []); // fetch only once
+useEffect(() => {
+  if (!id) {
+    showAlert('error', 'Missing ID!');
+    navigate('/transactions');
+    return;
+  }
+
+  // Fetch transaction, then additional amounts
+  const fetchData = async () => {
+    await fetchTransaction();
+    await fetchAdditionalAmounts(0);
+  };
+  fetchData();
+}, [id, navigate]);
+
+
+
+
+
+
 
   const validate = () => {
     const errors = {};
@@ -130,19 +240,10 @@ const UpdateTransactionPage = () => {
     return Object.keys(errors).length === 0;
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+const refreshEverything = async (page = 0) => {
+  await fetchTransaction();
+  await fetchAdditionalAmounts(page);
+};
 const sunmitTaxesNoAdditioanlAmount = async () => {
   const isValid = validate();
 
@@ -175,7 +276,9 @@ const sunmitTaxesNoAdditioanlAmount = async () => {
   console.log("res",  res);
      if ((res.status >= 200 && res.status < 300) && res.data && res.data.updated === true) {
       showAlert('success', 'Updated Successfully');
-      navigate('/transactions');
+       refreshEverything() 
+
+   //   navigate('/transactions');
     } else {
       // backend could return 200 but not updated
       showAlert('error', 'SUpdated failed');
@@ -187,7 +290,8 @@ const sunmitTaxesNoAdditioanlAmount = async () => {
 };
 
 
- 
+
+
 
   if (loading) return <MainAppSpinner />;
   return (
@@ -209,9 +313,11 @@ const sunmitTaxesNoAdditioanlAmount = async () => {
         </div>
       </div>
 
-      {/* SECTION 1 */}
+  
       <div className="createdr-section">
         <div className="createdr-section-title">Transaction Tax Details</div>
+
+           {/* SECTION 1 */}
         <Input
           label="Transaction Amount"
           name="transactionAmount"
@@ -262,55 +368,166 @@ const sunmitTaxesNoAdditioanlAmount = async () => {
           type="number"
           error={errors.reducedStateTax}
         />
-        {/* <Input
-          label="Additional Amount Total"
-          name="additionalAmountTotalAmount"
-          value={form.additionalAmountTotalAmount}
-          onChange={handleChange}
-          prefix="$"
-          step="0.01"
-          type="number"
-          error={errors.additionalAmountTotalAmount}
-        />
-        <Input
-          label="Outcome Type"
-          name="additionalAmountOutcomeType"
-          value={form.additionalAmountOutcomeType}
-          onChange={handleChange}
-        /> */}
-        <EditButton title="Edit" onClick={sunmitTaxesNoAdditioanlAmount}  />
+
+       <ButtonCustomizedAction action="edit" label="Edit" onClick={sunmitTaxesNoAdditioanlAmount} />
 
       </div>
 
-      {/* SECTION 2 */}
-      <div className="createdr-section">
-       <div className="createdr-section-title">Additional Amounts Summary</div>
-         <div className="createdr-section-sub-title">  {`Overall Total : $ ${form.additionalAmountTotalAmount}`} </div>
-         <div className="createdr-section-sub-title"> {`Type Outcome : ${form.additionalAmountOutcomeType}`} </div>
 
-        <div className="additional-summary">
-          {/* Data Rows */}
-          {form.additionalAmounts.map((item, idx) => (
-            <div key={idx} className="additional-summary-item">
-              <span className="summary-cell">{item.type}</span>
-              <span className="summary-cell">${item.amount}</span>
-              <div className="summary-actions">
-                <button 
-                  className="edit-button" 
-                  onClick={() => console.log("Edit clicked", idx)
-                }>Edit</button>
-                <button 
-                  className="remove-button" 
-                  onClick={() => handleDeleteAdditional(idx)
-                }>Remove</button>
-              </div>
-            </div>
-          ))}
+
+
+  {/* SECTION 2 */}
+
+   <div className="createdr-section">
+  <div className="createdr-section-title"> Additional Amounts </div>
+
+
+
+<div className="createdr-section-sub-title">  {`Overall Additioal Amounts Total : $ ${form.additionalAmountTotalAmount}`} </div> 
+<div className="createdr-section-sub-title">
+  {`Additioal Amounts  Type Outcome : ${form.additionalAmountOutcomeType && form.additionalAmountOutcomeType.trim() ? form.additionalAmountOutcomeType : "N/A"}`}
+</div>
      
+<ButtonCustomizedAction action="create" label="Create" onClick={() => setShowAddModal(true)}/> 
+
+     {isFetching ? (
+        <div style={{ textAlign: "center", padding: "2rem" }}>
+          <MainAppSpinner />
         </div>
-      </div>
+      ) : (
+     <TableComponent
+          visibleColumns={[
+            "type",
+            "amount",
+            
+          ]}
+          columnNameOverrides={{
+            type: "Type",
+            amount: "Amount",
+      
+          }}
+ 
+           columnOrder={['type', 'amount', ]}
+
+          currentPage={pageInfo.pageNumber}
+          totalPages={pageInfo.totalPages}
+          onPageChange={handlePageChange}
+          data={additionalAmountsData}
+         
+          createRoute="/create-transaction-page"
+          viewRoute="/view-transaction-page"
+          updateRoute="/edit-transaction-page"
+          handleDelete={ deleteAdditionalAmount }
+
+
+             showCreateButton={false}
+            showViewButton={false}
+          
+          onBulkUpdate={(rowId) => {
+    setSelectedAdditionalAmountId(rowId);
+    setShowUpdateModal(true);
+  }}
+         
+
+   
+        />
+
+  )}
+
+
+</div>
+    <AdditionalAmountModal
+  open={showAddModal}
+  onClose={() => setShowAddModal(false)}
+  drId={id}
+  loading={modalLoading}
+  onSubmit={async (payload) => {
+    setModalLoading(true);
+    try {
+      // Send to API: payload looks like { drId, amount, type }
+      // YOU CAN FORMAT amount HERE IF YOUR API REQUIRES PIC9 STRING
+      await axiosInstance.post("/additional-amounts", payload);
+      showAlert("success", "Additional amount created!");
+      setShowAddModal(false);
+      refreshEverything(0); // Refresh data
+    } catch (err) {
+      showAlert("error", (err?.response?.data?.message || "Failed to create."));
+    } finally {
+      setModalLoading(false);
+    }
+  }}
+/>
+
+<UpdateAdditionalAmountModal
+  open={showUpdateModal}
+  onClose={() => setShowUpdateModal(false)}
+  additionalAmountId={selectedAdditionalAmountId}
+  drId={id}
+  axiosInstance={axiosInstance}
+  onSuccess={() => {
+    refreshEverything(0);
+    showAlert('success', 'Additional amount updated!');
+  }}
+/>
+
     </div>
   );
 };
 
 export default UpdateTransactionPage;
+
+
+
+
+
+
+
+
+
+
+ {/* <CreateButton to="/transactions" label="Add Additional Amount "/> */}
+
+
+{/* <button
+  className="action-btn create"
+  style={{ background: "#c40a0a", color: "#fff", marginBottom: 18 }}
+  onClick={() => setShowAddModal(true)}
+>
+  + Add Additional Amount
+</button> */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // <div className="additional-summary">
+        //   {/* Data Rows */}
+        //   {form.additionalAmounts.map((item, idx) => (
+        //     <div key={idx} className="additional-summary-item">
+        //       <span className="summary-cell">{item.type}</span>
+        //       <span className="summary-cell">${item.amount}</span>
+        //       <div className="summary-actions">
+        //         <button 
+        //           className="edit-button" 
+        //           onClick={() => console.log("Edit clicked", idx)
+        //         }>Edit</button>
+        //         <button 
+        //           className="remove-button" 
+        //           onClick={() => handleDeleteAdditional(idx)
+        //         }>Remove</button>
+        //       </div>
+        //     </div>
+        //   ))}
+     
+        // </div>
+

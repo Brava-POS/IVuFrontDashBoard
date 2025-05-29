@@ -20,6 +20,17 @@ const TableComponent = ({
   columnNameOverrides = {},
   columnOrder = [],
   customCellRenderers = {},
+
+  showViewButton = true,
+  showUpdateButton = true,
+  showDeleteButton = true,
+  showCreateButton = true,
+
+  onBulkUpdate = null
+
+
+
+
 }) => {
   const navigate = useNavigate();
   const { hasPermission } = useAuth();
@@ -77,39 +88,83 @@ const TableComponent = ({
         onPageChange={onPageChange}
       />
 
-      {/* Top Action Controls */}
-      {canDeleteTransactions && (
-        <div className="table-controls top-controls">
-          <button
-            className="action-btn view"
-            disabled={!selectedRowId}
-            onClick={handleBulkView}
-          >
-            View
-          </button>
-          <button
-            className="action-btn update"
-            disabled={!selectedRowId}
-            onClick={handleBulkUpdate}
-          >
-            Update
-          </button>
-          <button
-            className="action-btn delete"
-            disabled={!selectedRowId}
-            onClick={handleBulkDelete}
-          >
-            Delete
-          </button>
-          <button
-            className="action-btn create"
-            onClick={() => navigate(createRoute)}
-          >
-            <FaPlus style={{ marginRight: "5px" }} />
-            Create
-          </button>
-        </div>
-      )}
+ {/* <ButtonCustomizedAction action="delete" label="Delete" onClick={handleDelete} />
+<ButtonCustomizedAction action="view" label="View" onClick={handleView} />
+<ButtonCustomizedAction action="update" label="Update" onClick={handleUpdate} />
+<ButtonCustomizedAction action="create" label="Create" onClick={() => setShowAddModal(true)}/> 
+
+{/* <CreateButton to="/transactions" label="Add Additional Amount "/>  */}
+
+
+{/* <CustomizedButton label="+ Add Additional Amount" onClick={() => setShowAddModal(true)} /> */}
+
+{canDeleteTransactions && (
+  <div className="table-controls top-controls">
+    {/* Conditionally rendered buttons */}
+    {showViewButton && (
+
+
+
+
+
+      
+      <button
+        className="action-btn view"
+        disabled={!selectedRowId}
+        onClick={handleBulkView}
+      >
+        View
+      </button>
+    )}
+
+
+
+
+
+{showUpdateButton && (
+  <button
+    className="action-btn update"
+    disabled={!selectedRowId}
+    onClick={() => {
+      if(onBulkUpdate){
+        onBulkUpdate(selectedRowId);
+      } else {
+        handleBulkUpdate();
+      }
+    }}
+  >
+    Update
+  </button>
+)}
+    {showDeleteButton && (
+      <button
+        className="action-btn delete"
+        disabled={!selectedRowId}
+        onClick={handleBulkDelete}
+      >
+        Delete
+      </button>
+    )}
+
+   {showCreateButton && (
+    
+    <button
+      className="action-btn create"
+      onClick={() => navigate(createRoute)}
+    >
+      <FaPlus style={{ marginRight: "5px" }} />
+      Create
+    </button>
+    )}
+
+
+  </div>
+)}
+
+
+
+
+
 
       <div className="table-container">
         <table className="data-table">
@@ -178,3 +233,5 @@ const TableComponent = ({
 };
 
 export default TableComponent;
+
+

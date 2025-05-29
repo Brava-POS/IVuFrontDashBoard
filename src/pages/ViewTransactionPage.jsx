@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import MainAppSpinner from '../components/MainAppSpinner';
+import BackButton from '../components/BackButton';
 
 // Format cents to dollars
 const formatAmount = (val) => {
@@ -89,22 +90,18 @@ const ViewTransactionPage = () => {
 
   return (
     <div className="view-container">
-      <h2 className="section-title">Transaction Details</h2>
 
-      <button
-        onClick={() => navigate('/transactions')}
-        style={{
-          backgroundColor: '#d32f2f',
-          color: 'white',
-          padding: '8px 16px',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          marginBottom: '20px'
-        }}
-      >
-        ← Back to Transactions
-      </button>
+
+
+  <div className="createdr-section-title"> Transaction Details </div>
+
+   
+
+      <BackButton to="/transactions" label="Back to Transactions " />
+
+
+   <div className="createdr-section">
+    
 
       <div>
         {/* Merchant Header */}
@@ -256,6 +253,10 @@ const ViewTransactionPage = () => {
 
 
       </div>
+
+
+</div>
+
     </div>
   );
 };

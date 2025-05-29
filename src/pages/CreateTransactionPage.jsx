@@ -10,6 +10,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format, parse } from 'date-fns';
 import TimeInput from '../components/TimeInput';
+import BackButton from '../components/BackButton';
+import Input_ from 'postcss/lib/input';
+import Input from '../components/Input ';
+import ButtonCustomizedAction from '../components/ButtonCustomizedAction';
+import { CiCircleRemove } from "react-icons/ci";
 
 const CreateTransactionPage = () => {
   const navigate = useNavigate();
@@ -19,17 +24,17 @@ const CreateTransactionPage = () => {
   const [userId, setUserId] = useState(null);
   const [formData, setFormData] = useState({
     transactionDatePos81_88L8: '',
+    transactionTimePos89_94L6: '',
     transactionAmountPos95_103L9: '',
     salesAmountPos104_112L9: '',
     stateTaxAmountPos113_121L9: '',
     cityTaxAmountPos122_130L9: '',
     reducedStateTaxPos153_163L11: '',
-    controlNumberCodePrefixPos18_19L2: '',
-    controlNumberCodePos20_29L10: '',
-    transactionTimePos89_94L6: '',
-    terminalBatchNumberPos60_62L3: '',
-    transactionSequencePos63_74L12: '',
-    terminalNumberPos44_59L16: '',
+    controlNumberCodePrefixPos18_19L2: 'BR',
+    controlNumberCodePos20_29L10: 'ASWERKLRTE',
+    terminalBatchNumberPos60_62L3: '001',
+    transactionSequencePos63_74L12: '000000000001',
+    terminalNumberPos44_59L16: '1111111111111111',
   });
   const [additionalAmounts, setAdditionalAmounts] = useState([{ amount: '', type: '  ' }]);
   const [errors, setErrors] = useState({});
@@ -84,17 +89,6 @@ const CreateTransactionPage = () => {
     return new Date(year, month, day);
   };
 
-  // Helper: Parse HHMMSS string to a Date object (today + time)
-  const parseTime = (val) => {
-    if (!val || val.length !== 6) return null;
-    const hours = Number(val.slice(0, 2));
-    const minutes = Number(val.slice(2, 4));
-    const seconds = Number(val.slice(4, 6));
-    if (hours > 23 || minutes > 59 || seconds > 59) return null;
-    const now = new Date();
-    now.setHours(hours, minutes, seconds, 0);
-    return now;
-  };
 
  
 
@@ -156,9 +150,9 @@ const getFormattedFormData = (originalFormData) => {
   const newData = { ...originalFormData };
 
   picFields.forEach(([field, len]) => {
-    if (originalFormData[field]) { // Only convert if value exists
+    if (originalFormData[field]) { 
       const converted = convertValue(originalFormData[field], len);
-      newData[field] = converted || originalFormData[field]; // Fallback to original if conversion fails
+      newData[field] = converted || originalFormData[field]; 
     }
   });
 
@@ -195,23 +189,6 @@ picFields.forEach(([field, len]) => {
   }
 });
 
-
-
-    if (!/^.{2}$/.test(formData.controlNumberCodePrefixPos18_19L2)) {
-      newErrors.controlNumberCodePrefixPos18_19L2 = 'Must be 2 characters';
-    }
-    if (!/^.{10}$/.test(formData.controlNumberCodePos20_29L10)) {
-      newErrors.controlNumberCodePos20_29L10 = 'Must be 10 characters';
-    }
-    if (!/^.{3}$/.test(formData.terminalBatchNumberPos60_62L3)) {
-      newErrors.terminalBatchNumberPos60_62L3 = 'Must be 3 characters';
-    }
-    if (!/^.{12}$/.test(formData.transactionSequencePos63_74L12)) {
-      newErrors.transactionSequencePos63_74L12 = 'Must be 12 characters';
-    }
-    if (!/^.{16}$/.test(formData.terminalNumberPos44_59L16)) {
-      newErrors.terminalNumberPos44_59L16 = 'Must be 16 characters';
-    }
 
 additionalAmounts.forEach((item, idx) => {
   const keyAmount = `additional_amount_${idx}`;
@@ -250,11 +227,6 @@ additionalAmounts.forEach((item, idx) => {
 
 
 
-
-
-
-
-
 const handleSubmit = async () => {
   console.log("Inside handleSubmit");
   if (!validate()) {
@@ -267,7 +239,7 @@ const handleSubmit = async () => {
 
     const formattedFormData = getFormattedFormData(formData);
 
-    // Format additional amounts using convertValue (not convertToPic9)
+ 
     const formattedAdditionalAmounts = additionalAmounts.map(a => ({
       amount: convertValue(a.amount, 9),
       type: a.type
@@ -306,7 +278,28 @@ return;
       confirmButtonText: 'OK',
     });
     setLoading(false);
-   navigate('/transactions');
+
+
+
+ setFormData({
+    transactionDatePos81_88L8: '',
+    transactionTimePos89_94L6: '',
+    transactionAmountPos95_103L9: '',
+    salesAmountPos104_112L9: '',
+    stateTaxAmountPos113_121L9: '',
+    cityTaxAmountPos122_130L9: '',
+    reducedStateTaxPos153_163L11: '',
+    controlNumberCodePrefixPos18_19L2: 'BR',
+    controlNumberCodePos20_29L10: 'ASWERKLRTE',
+    terminalBatchNumberPos60_62L3: '001',
+    transactionSequencePos63_74L12: '000000000001',
+    terminalNumberPos44_59L16: '1111111111111111',
+  });
+
+
+
+
+  // navigate('/transactions');
   } catch (err) {
     setLoading(false);
     const msg = err?.response?.data?.message || 'Failed to create transaction';
@@ -321,33 +314,27 @@ return;
   };
 
   return (
-    <div className="createdr-container">
-
-
-
-
-  <h2 className="createdr-title">Create DR Transaction</h2>
-
-      <button className="createdr-back-button" onClick={() => navigate('/transactions')}>
-        ← Back to Transactions
-      </button>
+<>
 
 
 
 
 
+<div className="createdr-section-title">Create New Transaction</div>
+<BackButton to="/transactions" label="Back to Transactions " />
 
-
-
-
-
-
-
-
-      <div className="filter-item">
+  <div className="filter-item">
         <MerchantDropdownSelector onSelect={handleSelectMerchant} />
       </div>
 
+
+
+     
+    <div className="createdr-section">
+
+
+
+ 
     
       <div className="createdr-form">
 
@@ -383,172 +370,106 @@ return;
   />
 </div>
 
-        <div className="createdr-input-group">
-          <label>Transaction Amount</label>
-          <input
-          maxLength={9}
-            name="transactionAmountPos95_103L9"
-            value={formData.transactionAmountPos95_103L9}
-            onChange={handleChange}
-            className="createdr-input"
-          />
-          {errors.transactionAmountPos95_103L9 && <div className="createdr-error">{errors.transactionAmountPos95_103L9}</div>}
-        </div>
 
-        <div className="createdr-input-group">
-          <label>Sales Amount</label>
-          <input
-              maxLength={8}
-            name="salesAmountPos104_112L9"
-            value={formData.salesAmountPos104_112L9}
-            onChange={handleChange}
-            className="createdr-input"
-          />
-          {errors.salesAmountPos104_112L9 && <div className="createdr-error">{errors.salesAmountPos104_112L9}</div>}
-        </div>
 
-        <div className="createdr-input-group">
-          <label>State Tax Amount</label>
-          <input
-                maxLength={8}
-            name="stateTaxAmountPos113_121L9"
+         <Input
+          label="Transaction Amount"
+          name="transactionAmountPos95_103L9"
+          value={formData.transactionAmountPos95_103L9}
+          onChange={handleChange}
+          prefix="$"
+          type="number"
+          step="0.01"
+          error={errors.transactionAmountPos95_103L9}
+        />
+
+
+
+
+
+
+
+         <Input
+          label="Sales Amount"
+          name="salesAmountPos104_112L9"
+          value={formData.salesAmountPos104_112L9}
+          onChange={handleChange}
+          prefix="$"
+          type="number"
+          step="0.01"
+          error={errors.salesAmountPos104_112L9}
+        />
+
+
+
+
+        
+         <Input
+          label="State Tax Amount"
+           name="stateTaxAmountPos113_121L9"
             value={formData.stateTaxAmountPos113_121L9}
             onChange={handleChange}
-            className="createdr-input"
-          />
-          {errors.stateTaxAmountPos113_121L9 && <div className="createdr-error">{errors.stateTaxAmountPos113_121L9}</div>}
-        </div>
+          prefix="$"
+          type="number"
+          step="0.01"
+          error={errors.stateTaxAmountPos113_121L9}
+        />
 
-        <div className="createdr-input-group">
-          <label>City Tax Amount</label>
-          <input
-              maxLength={8}
-            name="cityTaxAmountPos122_130L9"
+
+  
+
+         <Input
+          label="City Tax Amount"
+          name="cityTaxAmountPos122_130L9"
             value={formData.cityTaxAmountPos122_130L9}
             onChange={handleChange}
-            className="createdr-input"
-          />
-          {errors.cityTaxAmountPos122_130L9 && <div className="createdr-error">{errors.cityTaxAmountPos122_130L9}</div>}
-        </div>
-
-        <div className="createdr-input-group">
-          <label>Reduced State Tax</label>
-          <input
-              maxLength={9}
-            name="reducedStateTaxPos153_163L11"
-            value={formData.reducedStateTaxPos153_163L11}
-            onChange={handleChange}
-            className="createdr-input"
-          />
-          {errors.reducedStateTaxPos153_163L11 && <div className="createdr-error">{errors.reducedStateTaxPos153_163L11}</div>}
-        </div>
-
-        <div className="createdr-input-group">
-          <label>Control Number Prefix</label>
-             <input
-                maxLength={2}
-            name="controlNumberCodePrefixPos18_19L2"
-            value={formData.controlNumberCodePrefixPos18_19L2}
-            onChange={handleChange}
-            className="createdr-input"
-          />
-          {errors.controlNumberCodePrefixPos18_19L2 && (
-            <div className="createdr-error">
-              {errors.controlNumberCodePrefixPos18_19L2}
-            </div>
-          )}
-        </div>
-
-        <div className="createdr-input-group">
-          <label>Control Number Code</label>
-          <input
-             maxLength={10}
-            name="controlNumberCodePos20_29L10"
-            value={formData.controlNumberCodePos20_29L10}
-            onChange={handleChange}
-            className="createdr-input"
-          />
-          {errors.controlNumberCodePos20_29L10 && (
-            <div className="createdr-error">
-              {errors.controlNumberCodePos20_29L10}
-            </div>
-          )}
-        </div>
-
-     
-
-        <div className="createdr-input-group">
-          <label>Terminal Batch Number</label>
-          <input
-
-             maxLength={3}
-            name="terminalBatchNumberPos60_62L3"
-            value={formData.terminalBatchNumberPos60_62L3}
-            onChange={handleChange}
-            className="createdr-input"
-          />
-          {errors.terminalBatchNumberPos60_62L3 && (
-            <div className="createdr-error">
-              {errors.terminalBatchNumberPos60_62L3}
-            </div>
-          )}
-        </div>
-
-        <div className="createdr-input-group">
-          <label>Transaction Sequence</label>
-          <input
-             maxLength={12}
-            name="transactionSequencePos63_74L12"
-            value={formData.transactionSequencePos63_74L12}
-            onChange={handleChange}
-            className="createdr-input"
-          />
-          {errors.transactionSequencePos63_74L12 && (
-            <div className="createdr-error">
-              {errors.transactionSequencePos63_74L12}
-            </div>
-          )}
-        </div>
-
-        <div className="createdr-input-group">
-          <label>Terminal Number</label>
-          <input
-             maxLength={16}
-            name="terminalNumberPos44_59L16"
-            value={formData.terminalNumberPos44_59L16}
-            onChange={handleChange}
-            className="createdr-input"
-          />
-          {errors.terminalNumberPos44_59L16 && (
-            <div className="createdr-error">
-              {errors.terminalNumberPos44_59L16}
-            </div>
-          )}
-        </div>
-
-     
+          prefix="$"
+          type="number"
+          step="0.01"
+          error={errors.cityTaxAmountPos122_130L9}
+        />
 
 
-      <h3 className="createdr-subtitle">Additional Amounts</h3>
+         <Input
+          label="Reduced State Tax"
+          name="reducedStateTaxPos153_163L11"
+          value={formData.reducedStateTaxPos153_163L11}
+          onChange={handleChange}
+          prefix="$"
+          type="number"
+          step="0.01"
+          error={errors.reducedStateTaxPos153_163L11}
+        />
+
+
+
+
+<div className="createdr-section">
+
+<div className="createdr-section-title">Additional Amounts</div>
+ 
 
       
 {additionalAmounts.map((item, index) => (
-  <div key={index} className="createdr-additional">
-    <div className="createdr-input-group">
-      <label>Amount</label>
+  <div key={index} className="adding-item-row">
+
+
+
+    <div className="adding-item-group">
+    <label className="adding-item-label">Amount $</label>
       <input
         value={item.amount}
         onChange={(e) => handleAdditionalChange(index, 'amount', e.target.value)}
-        className="createdr-input"
+         className="adding-item-input"
       />
     </div>
 
-    <div className="createdr-input-group">
-      <label>Type</label>
+  <div className="adding-item-group">
+    <label className="adding-item-label">Type</label>
       <select
         value={item.type}
         onChange={(e) => handleAdditionalChange(index, 'type', e.target.value)}
-        className="createdr-input"
+      className="adding-item-input"
       >
         {typeOptions.map(opt => (
           <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -557,20 +478,63 @@ return;
     </div>
 
     <div className="createdr-delete-icon" onClick={() => handleDeleteAmount(index)}>
-      <CiSquareRemove size={20} />
+   
+
+       <CiSquareRemove  className="createdr-delete-icon"  size={20} />
     </div>
 
     {(errors[`additional_amount_${index}`] || errors[`additional_type_${index}`]) && (
       <div className="createdr-additional-error">
+
         {errors[`additional_amount_${index}`] || errors[`additional_type_${index}`]}
+       
       </div>
+
+
+
+
     )}
+
+
+     
   </div>
 ))}
 
-<button className="createdr-add-button" onClick={handleAddAnother}>
-  + Add Another
-</button>
+
+
+
+
+
+
+
+
+
+
+
+ <ButtonCustomizedAction action="create" label="Add  new Additional Amount " onClick={handleAddAnother} />
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+ <ButtonCustomizedAction action="create" label="Create new transaction" onClick={handleSubmit} />
+
+
+
+
+
+
+
+
+
 
 
 
@@ -580,14 +544,22 @@ return;
 
      
 
-        <button
-          className="createdr-submit-button"
-          onClick={handleSubmit}
-        >
-          Create Transaction
-        </button>
+  
       </div>
+
+
+      
     </div>
+
+
+    
+
+
+
+
+</>
+
+
   );
 };
 

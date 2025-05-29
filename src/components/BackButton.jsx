@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa'; // Left arrow icon
+import { FaArrowLeft } from 'react-icons/fa'; 
 
 
 const BackButton = ({ to = '/', label = 'Back' }) => {

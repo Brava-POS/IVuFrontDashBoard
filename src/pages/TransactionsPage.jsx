@@ -7,6 +7,7 @@ import SelectedDurationDisplay from "../components/SelectedDurationDisplay";
 import MerchantDropdownSelector from "../components/MerchantDropdownSelector";
 import { useParams, useNavigate } from "react-router-dom";
 import { showAlert } from '../components/SweetAlertComponent';
+import CreateButton from "../components/CreateButton";
 
 const TransactionsPage = () => {
   const navigate = useNavigate();
@@ -93,7 +94,7 @@ const deleteDR = async (id) => {
   console.log("res",  res);
      if ((res.status >= 200 && res.status < 300) && res.data && res.data.updated === true) {
       showAlert('success', 'Delete  Successfully');
-      navigate('/transactions');
+     fetchData();
     } else {
       showAlert('error', 'SUpdated failed');
     }
@@ -188,7 +189,9 @@ const deleteDR = async (id) => {
             </button>
           </div>
         </div>
-      </div>
+        <div style={{ height: '20px' }} /> 
+        <CreateButton to="/create-transaction-page" label="Add New Detailed Record "/>
+         </div>
 
   
 
@@ -230,11 +233,12 @@ const deleteDR = async (id) => {
           totalPages={pageInfo.totalPages}
           onPageChange={handlePageChange}
           data={drData}
-          showCreateButton={true}
+         
           createRoute="/create-transaction-page"
           viewRoute="/view-transaction-page"
           updateRoute="/edit-transaction-page"
           handleDelete={deleteDR}
+            showCreateButton={false}
         />
       )}
     </>

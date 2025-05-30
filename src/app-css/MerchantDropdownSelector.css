@@ -1,0 +1,225 @@
+.merchantDropdownSelector-wrapper {
+  width: 100%;
+  margin-bottom: 10px;
+
+}
+
+.merchantDropdownSelector-dropdown {
+  position: relative;
+  width: 100%;
+   
+}
+
+.merchantDropdownSelector-triggerWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.merchantDropdownSelector-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  min-height: 50px;
+  padding-right: 10px;
+   padding-left: 10px;
+  cursor: pointer;
+  position: relative;
+ 
+  border: 2px solid #d32f2f; 
+   background-color: #f08181;
+ 
+
+}
+
+
+
+.merchantDropdownSelector-trigger-2 {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  min-height: 50px;
+  padding-right: 10px;
+   padding-left: 10px;
+  cursor: pointer;
+  position: relative;
+ padding-top: 10px;
+ padding-bottom: 10px;
+ 
+   background-color: #e77777;
+ 
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.merchantDropdownSelector-selectedInfo {
+  display: flex;
+  width:100%;
+  align-items: center;
+
+  
+}
+
+.merchantDropdownSelector-avatar {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-right: 40px;
+
+}
+
+.merchantDropdownSelector-info {
+  display: flex;
+  justify-content: space-around;
+
+  width: 100%;
+  
+}
+
+.merchantDropdownSelector-name {
+ 
+  font-size: 16px;
+  color: black;
+  
+}
+
+.merchantDropdownSelector-code {
+  font-size: 16px;
+
+}
+
+.merchantDropdownSelector-resetBtn {
+  margin-left: 10px;
+
+   background-color: transparent;
+  color: black;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.merchantDropdownSelector-menu {
+  position: absolute;
+  top: 100%;
+  z-index: 99;
+   background-color: #db7171;
+  width: 100%;
+  border-radius: 8px;
+
+  margin-top: 4px;
+  padding: 20px;
+}
+
+.merchantDropdownSelector-searchBox {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  background-color: #f08181;
+  margin-bottom: 10px;
+
+  
+}
+.merchantDropdownSelector-searchInput {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 14px;
+  width: 100%;
+}
+.merchantDropdownSelector-searchInput {
+
+}
+
+.merchantDropdownSelector-clearBtn {
+  background: transparent;
+  border: none;
+  color: #e57373;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.merchantDropdownSelector-list {
+  min-height: 500px;
+  overflow-y: auto;
+   width: 100%;
+}
+
+.merchantDropdownSelector-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  height: 60px;
+  width: 100%;
+ 
+
+}
+
+.merchantDropdownSelector-item:hover {
+  background-color: #d36868; 
+  transition: background-color 0.2s ease;
+}
+.merchantDropdownSelector-item.selected {
+  background-color: #d32f2f;
+  color: white;
+}
+.merchantDropdownSelector-itemLeft {
+  display: flex;
+  align-items: center;
+}
+
+.merchantDropdownSelector-avatarLarge {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-right: 15px;
+}
+
+.merchantDropdownSelector-pagination {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 10px;
+  gap: 10px;
+}
+
+
+.merchantDropdownSelector-pagination button {
+  background: #d32f2f;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.merchantDropdownSelector-pagination button:disabled {
+  background: #c0b7b8;
+  cursor: not-allowed;
+}

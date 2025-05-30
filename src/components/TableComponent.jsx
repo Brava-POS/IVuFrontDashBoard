@@ -26,7 +26,9 @@ const TableComponent = ({
   showDeleteButton = true,
   showCreateButton = true,
 
-  onBulkUpdate = null
+  onBulkUpdate = null,
+  restoreDR = null,
+
 
 
 
@@ -41,12 +43,19 @@ const TableComponent = ({
   if (!Array.isArray(data) || data.length === 0) {
     return (
       <div className="no-data-container">
-        <div className="no-data-message">No Data Available.</div>
+        <div className="no-data-message">No Record Found </div>
       </div>
     );
   }
 
   const handleRowSelect = (id) => {
+
+
+       
+
+
+
+
     setSelectedRowId((prev) => (prev === id ? null : id));
   };
 
@@ -88,17 +97,16 @@ const TableComponent = ({
         onPageChange={onPageChange}
       />
 
- {/* <ButtonCustomizedAction action="delete" label="Delete" onClick={handleDelete} />
-<ButtonCustomizedAction action="view" label="View" onClick={handleView} />
-<ButtonCustomizedAction action="update" label="Update" onClick={handleUpdate} />
-<ButtonCustomizedAction action="create" label="Create" onClick={() => setShowAddModal(true)}/> 
 
-{/* <CreateButton to="/transactions" label="Add Additional Amount "/>  */}
-
-
-{/* <CustomizedButton label="+ Add Additional Amount" onClick={() => setShowAddModal(true)} /> */}
 
 {canDeleteTransactions && (
+
+
+
+
+
+
+
   <div className="table-controls top-controls">
     {/* Conditionally rendered buttons */}
     {showViewButton && (
@@ -146,7 +154,7 @@ const TableComponent = ({
       </button>
     )}
 
-   {showCreateButton && (
+   {/* {showCreateButton && (
     
     <button
       className="action-btn create"
@@ -155,7 +163,7 @@ const TableComponent = ({
       <FaPlus style={{ marginRight: "5px" }} />
       Create
     </button>
-    )}
+    )} */}
 
 
   </div>
@@ -163,10 +171,7 @@ const TableComponent = ({
 
 
 
-
-
-
-      <div className="table-container">
+<div className="table-container">
         <table className="data-table">
           <thead>
             <tr>
@@ -182,11 +187,16 @@ const TableComponent = ({
             </tr>
           </thead>
 
+
+
+
           <tbody>
             {data.map((row, rowIndex) => (
               <tr key={rowIndex}>
+
+{/* =====================================================================================================================0 */}
                 {/* Single-Selection Checkbox */}
-                <td style={{ textAlign: "center" }}>
+                <td >
                   <input
                     type="checkbox"
                     checked={selectedRowId === row.id}
@@ -226,8 +236,32 @@ const TableComponent = ({
               </tr>
             ))}
           </tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
         </table>
-      </div>
+ </div>
+
+
+
+
+
+
+
+
+
+
     </div>
   );
 };
@@ -235,3 +269,14 @@ const TableComponent = ({
 export default TableComponent;
 
 
+
+
+ {/* <ButtonCustomizedAction action="delete" label="Delete" onClick={handleDelete} />
+<ButtonCustomizedAction action="view" label="View" onClick={handleView} />
+<ButtonCustomizedAction action="update" label="Update" onClick={handleUpdate} />
+<ButtonCustomizedAction action="create" label="Create" onClick={() => setShowAddModal(true)}/> 
+
+{/* <CreateButton to="/transactions" label="Add Additional Amount "/>  */}
+
+
+{/* <CustomizedButton label="+ Add Additional Amount" onClick={() => setShowAddModal(true)} /> */}

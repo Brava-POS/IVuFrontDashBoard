@@ -12,7 +12,7 @@ import ButtonCustomizedAction from "../components/ButtonCustomizedAction";
 import FilterInput from "../components/FilterInput";
 import FilterCheckbox from "../components/FilterCheckbox";
 
-const TransactionsPage = () => {
+const MerchantsPage = () => {
   const navigate = useNavigate();
   const { loading,setLoading, axiosInstance, user, hasPermission } = useAuth();
   const isAdmin = user?.role === "ROLE_ADMIN";
@@ -23,14 +23,8 @@ const TransactionsPage = () => {
   const [initialLoad, setInitialLoad] = useState(true);
 
   const [filters, setFilters] = useState({
-
-    deleted :false,
-    idOfMerchant: "",
-    controlNumber: "",
-    authorizationCode: "",
-    lastCardNumber: "",
-    dateRange: "",
-    selectedMerchant: "",
+    appUserId: "",
+    merchantSerialCode: "",
   });
 
   const mounted = useRef(false);
@@ -39,13 +33,14 @@ const TransactionsPage = () => {
     setIsFetching(true);
     try {
       const activeFilters = filtersParam || filters;
-      let url = `/drs/search?page=${page}&size=10`;
+      //let url = `/drs/search?page=${page}&size=10`;
+      let url = `/merchants/search?page=${page}&size=10`;
 
       Object.entries(activeFilters).forEach(([key, value]) => {
         if (value) url += `&${key}=${value}`;
       });
 
-      const response = await axiosInstance.post(url);
+      const response = await axiosInstance.get(url);
       const data = response.data;
 
       if (data?.content) {
@@ -92,14 +87,14 @@ const TransactionsPage = () => {
 
 
 
-const deleteDR = async (id) => {
+const deleteMercahnt = async (id) => {
   try {
     setLoading(true);
-    const res = await axiosInstance.put(`/drs/update/${id}`,  { delete: true});
+    const res = await axiosInstance.delete(`/merchants/${id}`,  { delete: true});
     setLoading(false);
 
   console.log("res",  res);
-     if ((res.status >= 200 && res.status < 300) && res.data && res.data.updated === true) {
+     if ((res.status >= 200 && res.status < 300) && res.data && res.data.message === "Merchant soft-deleted successfully") {
       showAlert('success', 'Delete  Successfully');
      fetchData();
     } else {
@@ -148,14 +143,12 @@ const restoreDR = async (id) => {
   return (
     <>
 
-
-  {canDeleteTransactions && (
-        <div className="filter-item">
-          <MerchantDropdownSelector onSelect={handleSelectMerchant} />
-        </div>
-      )}
+    
 
 
+ <div className="createdr-section-title">Merchants</div>
+
+   
 
  <div className="createdr-section">
 
@@ -163,28 +156,7 @@ const restoreDR = async (id) => {
   
     
 
-  <FilterCheckbox
-    label="Deleted"
-    checked={filters.deleted}
-    onChange={(e) =>
-      setFilters((prev) => ({
-        ...prev,
-        deleted: e.target.checked,
-      }))
-    }
-  />
 
-
-
-   <div className="filter-row">
-          <div className="filter-item">
-            <SelectedDurationDisplay
-              range={filters.dateRange}
-              onApply={handleDateRangeApply}
-            />
-          </div>
-        </div>
-  
 
 
 
@@ -203,34 +175,23 @@ const restoreDR = async (id) => {
 >
 
 <FilterInput
-    label="Control Number:"
-    value={filters.controlNumber}
+    label="User ID :"
+    value={filters.appUserId}
     onChange={(e) =>
       setFilters((prev) => ({
         ...prev,
-        controlNumber: e.target.value,
+        appUserId: e.target.value,
       }))
     }
   />
 
   <FilterInput
-    label="Authorization Code"
-    value={filters.authorizationCode}
+    label="Merchant Serial Code"
+    value={filters.merchantSerialCode}
     onChange={(e) =>
       setFilters((prev) => ({
         ...prev,
-        authorizationCode: e.target.value,
-      }))
-    }
-  />
-
-  <FilterInput
-    label="Last FouCard Number"
-    value={filters.lastCardNumber}
-    onChange={(e) =>
-      setFilters((prev) => ({
-        ...prev,
-        lastCardNumber: e.target.value,
+        merchantSerialCode: e.target.value,
       }))
     }
   />
@@ -256,13 +217,19 @@ const restoreDR = async (id) => {
 >
 
 
-  <ButtonCustomizedAction action="delete" label="Clear"   onClick={() =>
-        setFilters({
-          controlNumber: '',
-          authorizationCode: '',
-          lastCardNumber: '',
-          deleted: false,
-        })
+  <ButtonCustomizedAction action="delete" label="Clear"   onClick={() =>{
+        setFilters({ appUserId: "",merchantSerialCode: "", });
+
+         fetchData(0, {
+           appUserId: "",
+           merchantSerialCode: "",
+     
+    });
+
+
+  }
+
+
       }/> 
 
 <ButtonCustomizedAction action="search" label="Search" onClick={handleApplyFilters}/> 
@@ -286,7 +253,7 @@ const restoreDR = async (id) => {
 
 
 
- <CreateButton to="/create-transaction-page" label="Add New Detailed Record "/>
+ <CreateButton to="/merhantcreate" label="Add New Mechant "/>
 
 
 
@@ -299,43 +266,41 @@ const restoreDR = async (id) => {
       ) : (
         <TableComponent
           visibleColumns={[
-            "controlNumberCode",
-            "transactionDate",
-            "transactionTime",
-            "transactionAmount",
-            "salesAmount",
-            "stateTaxAmount",
-            "reducedStateTax",
-            "cityTaxAmount",
-            "additionalAmountOutcomeType",
-            "additionalAmountTotalAmount",
+               "id",
+            "merchantSerialCode",
+             "avatarUrl",
+         
+            
           ]}
           columnNameOverrides={{
-            transactionDate: "Date",
-            controlNumberCode: "Control Number",
-            transactionDate: "Date",
-            transactionTime: "Time",
-            transactionAmount: "Transaction Amount",
-            salesAmount: "Sales Amount",
-            stateTaxAmount: "State Tax Amount",
-            reducedStateTax: "Reduced State Tax",
-            cityTaxAmount: "City Tax",
-            additionalAmountOutcomeType: "Additional Type",
-            additionalAmountTotalAmount: "Additional Tax ",
+            id: "ID",
+            merchantSerialCode: "Merchant Serial Code",
+            avatarUrl: "Logo ",
+        
           }}
-          columnOrder={[]}
-          // columnOrder={['id', 'additionalAmountTotalAmount', 'additionalAmountOutcomeType']}
+         // columnOrder={[]}
+           columnOrder={["avatarUrl","id", "merchantSerialCode"]}
 
           currentPage={pageInfo.pageNumber}
           totalPages={pageInfo.totalPages}
           onPageChange={handlePageChange}
           data={drData}
          
-          createRoute="/create-transaction-page"
-          viewRoute="/view-transaction-page"
-          updateRoute="/edit-transaction-page"
-          handleDelete={deleteDR}
+          
+          viewRoute="/merhantview"
+          updateRoute="/merhantupdate"
+          handleDelete={deleteMercahnt}
           restoreDR={restoreDR}
+
+           customCellRenderers={{
+            avatarUrl: (url) => (
+           <img
+           src={url}
+           alt="Merchant Logo"
+          style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+      />
+    ),
+  }}
 
         
         />
@@ -344,4 +309,6 @@ const restoreDR = async (id) => {
   );
 };
 
-export default TransactionsPage;
+export default MerchantsPage;
+
+

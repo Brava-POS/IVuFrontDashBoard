@@ -4,7 +4,7 @@
   gap: 8px;
   background-color: transparent;
   color:   var(--red-3);
-  border: 2px solid var(--red-5);
+  border: 2px solid var(--red-3);
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: bold;
@@ -14,7 +14,7 @@
 }
 
 .back-button:hover {
-  background-color:  var(--red-5);
+  background-color:  var(--red-1);
   color: white;
 }
 

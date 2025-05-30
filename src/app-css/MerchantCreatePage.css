@@ -1,0 +1,51 @@
+.merchant-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #b30000;
+  margin-bottom: 20px;
+}
+
+.merchant-section {
+  margin-top: 20px;
+}
+
+.merchant-filter {
+  margin-bottom: 16px;
+}
+
+.merchant-user-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: #ffe6e6;
+  border: 1px solid #ff4d4d;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.merchant-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ff4d4d;
+}
+
+.merchant-user-info {
+  font-size: 14px;
+  color: #333;
+}
+
+.merchant-no-user {
+  background-color: #ffe6e6;
+  border: 1px dashed #ff4d4d;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+  color: #cc0000;
+  font-weight: bold;
+}
+
+.merchant-submit {
+  margin-top: 30px;
+}

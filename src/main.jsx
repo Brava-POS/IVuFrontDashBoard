@@ -15,13 +15,13 @@ import './app-css/EditButton.css';
 import './app-css/CustomizedButton.css';
 import './app-css/AdditionalAmountModal.css';
 import './app-css/AddingItem.css';
-//import './app-css/pagination.css';
-//import './app-css/pagination.css';
-//import './app-css/pagination.css';
-//import './app-css/pagination.css';
-//import './app-css/pagination.css';
-//import './app-css/pagination.css';
-//import './app-css/pagination.css';
+import './app-css/DateInput.css';
+import './app-css/TimeInput.css';
+import './app-css/FilterBlock.css';
+import './app-css/MerchantDropdownSelector.css';
+import './app-css/MerchantCreatePage.css';
+import './app-css/AppuserSelector.css';
+import './app-css/UpdateMerchantPage.css';
 
 
 

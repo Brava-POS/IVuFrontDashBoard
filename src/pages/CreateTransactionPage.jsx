@@ -4,17 +4,13 @@ import { useAuth } from '../context/AuthContext';
 import Swal from 'sweetalert2';
 import { CiSquareRemove } from 'react-icons/ci';
 import MainAppSpinner from '../components/MainAppSpinner';
-import SelectedDurationDisplay from '../components/SelectedDurationDisplay';
 import MerchantDropdownSelector from '../components/MerchantDropdownSelector';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { format, parse } from 'date-fns';
-import TimeInput from '../components/TimeInput';
 import BackButton from '../components/BackButton';
-import Input_ from 'postcss/lib/input';
 import Input from '../components/Input ';
 import ButtonCustomizedAction from '../components/ButtonCustomizedAction';
-import { CiCircleRemove } from "react-icons/ci";
+import DateInput from '../components/DateInput';
+import TimeInputComponent from '../components/TimeInputComponenet';
 
 const CreateTransactionPage = () => {
   const navigate = useNavigate();
@@ -93,26 +89,36 @@ const CreateTransactionPage = () => {
  
 
 
-  const handleDateChange = (date) => {
-    if (!date) {
-      setFormData((prev) => ({ ...prev, transactionDatePos81_88L8: '' }));
-      return;
-    }
-    const formatted = format(date, 'yyyyMMdd');
-    setFormData((prev) => ({ ...prev, transactionDatePos81_88L8: formatted }));
-  };
-  const handleTimeChange = (e) => {
-    // Allow only digits and max length 6
-    let val = e.target.value.replace(/\D/g, '').slice(0, 6);
-    setFormData((prev) => ({ ...prev, transactionTimePos89_94L6: val }));
-  };
+//   const handleDateChange = (date) => {
+//     if (!date) {
+//       setFormData((prev) => ({ ...prev, transactionDatePos81_88L8: '' }));
+//       return;
+//     }
+//     const formatted = format(date, 'yyyyMMdd');
+//     setFormData((prev) => ({ ...prev, transactionDatePos81_88L8: formatted }));
+//   };
+//   const handleTimeChange = (e) => {
+//     // Allow only digits and max length 6
+//     let val = e.target.value.replace(/\D/g, '').slice(0, 6);
+//     setFormData((prev) => ({ ...prev, transactionTimePos89_94L6: val }));
+//   };
 
- // Convert time Date object to HHMMSS string
-  const formatTime = (date) => {
-    if (!date) return '';
-    return format(date, 'HHmmss');
-  };
+//  // Convert time Date object to HHMMSS string
+//   const formatTime = (date) => {
+//     if (!date) return '';
+//     return format(date, 'HHmmss');
+//   };
 
+const handleDateChange = (value) => {
+  // value comes as "YYYY-MM-DD"
+  if (!value) {
+    setFormData(prev => ({ ...prev, transactionDatePos81_88L8: '' }));
+    return;
+  }
+  // Remove dashes to get YYYYMMDD format
+  const formatted = value.replace(/-/g, '');
+  setFormData(prev => ({ ...prev, transactionDatePos81_88L8: formatted }));
+};
 
 
 
@@ -236,10 +242,7 @@ const handleSubmit = async () => {
 
   try {
     setLoading(true);
-
     const formattedFormData = getFormattedFormData(formData);
-
- 
     const formattedAdditionalAmounts = additionalAmounts.map(a => ({
       amount: convertValue(a.amount, 9),
       type: a.type
@@ -338,39 +341,29 @@ return;
     
       <div className="createdr-form">
 
-<div className="custom-datepicker-group">
-  <label className="custom-datepicker-label">Transaction Date</label>
-  <DatePicker
-    selected={parseDate(formData.transactionDatePos81_88L8)}
-    onChange={handleDateChange}
-    dateFormat="yyyyMMdd"
-    placeholderText="YYYYMMDD"
-    className={`custom-datepicker-input ${
-      errors.transactionDatePos81_88L8 ? 'custom-datepicker-error' : ''
-    }`}
-  />
-  {errors.transactionDatePos81_88L8 && (
-    <p className="custom-datepicker-error-text">{errors.transactionDatePos81_88L8}</p>
-  )}
-</div>
+
+<DateInput
+  value={
+    // convert stored YYYYMMDD to YYYY-MM-DD for input display
+    formData.transactionDatePos81_88L8
+      ? formData.transactionDatePos81_88L8.replace(
+          /^(\d{4})(\d{2})(\d{2})$/,
+          '$1-$2-$3'
+        )
+      : ''
+  }
+  onChange={handleDateChange}
+  error={errors.transactionDatePos81_88L8}
+/>
 
 
-
-
-
-
-<div className="createdr-input-group">
-  <label>Transaction Time</label>
-  <TimeInput
-    value={formData.transactionTimePos89_94L6}
-    onChange={(value) => 
-      setFormData(prev => ({ ...prev, transactionTimePos89_94L6: value }))
-    }
-    error={errors.transactionTimePos89_94L6}
-  />
-</div>
-
-
+<TimeInputComponent
+  value={formData.transactionTimePos89_94L6}
+  onChange={(value) =>
+    setFormData((prev) => ({ ...prev, transactionTimePos89_94L6: value }))
+  }
+  error={errors.transactionTimePos89_94L6}
+/>
 
          <Input
           label="Transaction Amount"
@@ -384,11 +377,6 @@ return;
         />
 
 
-
-
-
-
-
          <Input
           label="Sales Amount"
           name="salesAmountPos104_112L9"
@@ -400,10 +388,7 @@ return;
           error={errors.salesAmountPos104_112L9}
         />
 
-
-
-
-        
+     
          <Input
           label="State Tax Amount"
            name="stateTaxAmountPos113_121L9"
@@ -415,8 +400,6 @@ return;
           error={errors.stateTaxAmountPos113_121L9}
         />
 
-
-  
 
          <Input
           label="City Tax Amount"
@@ -442,8 +425,6 @@ return;
         />
 
 
-
-
 <div className="createdr-section">
 
 <div className="createdr-section-title">Additional Amounts</div>
@@ -451,6 +432,9 @@ return;
 
       
 {additionalAmounts.map((item, index) => (
+
+
+<div >
   <div key={index} className="adding-item-row">
 
 
@@ -463,6 +447,9 @@ return;
          className="adding-item-input"
       />
     </div>
+
+
+
 
   <div className="adding-item-group">
     <label className="adding-item-label">Type</label>
@@ -477,11 +464,25 @@ return;
       </select>
     </div>
 
-    <div className="createdr-delete-icon" onClick={() => handleDeleteAmount(index)}>
-   
 
-       <CiSquareRemove  className="createdr-delete-icon"  size={20} />
+
+
+
+    <div className="createdr-delete-icon" onClick={() => handleDeleteAmount(index)}>
+       <CiSquareRemove  className="createdr-delete-icon"  size={28} />
     </div>
+
+
+
+
+  
+
+
+     
+  </div>
+
+<div className="adding-item-error">
+
 
     {(errors[`additional_amount_${index}`] || errors[`additional_type_${index}`]) && (
       <div className="createdr-additional-error">
@@ -494,10 +495,13 @@ return;
 
 
     )}
+     </div>
+
+</div>
 
 
-     
-  </div>
+
+
 ))}
 
 

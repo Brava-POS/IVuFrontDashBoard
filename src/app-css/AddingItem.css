@@ -1,46 +1,47 @@
 .adding-item-row {
   display: flex;
+  justify-content: center;
+  justify-items: center;
   align-items: center;
   gap: 1rem;
 
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  border: 1px solid #ffcccc;
-  border-radius: 8px;
+
+  
+ 
+ 
 }
 
 .adding-item-group {
   display: flex;
   flex-direction: column;
   flex: 1;
+   background-color: rgb(241, 122, 122);
+   border-radius: 1px;
 }
 
 .adding-item-label {
-  font-size: 0.9rem;
-  color: #cc0000;
-  margin-bottom: 0.25rem;
+  padding-left: 0.75rem;
+  font-size: 1.1rem;
+  color: black;
+  
 }
 
 .adding-item-input {
-  padding: 0.5rem;
-  border: 1px solid #ff9999;
-  border-radius: 4px;
-
+  padding: 0.4rem;
   color: #990000;
   font-size: 1rem;
 }
 
 .adding-item-input:focus {
   outline: none;
-  border-color: #ff4d4d;
-  box-shadow: 0 0 0 2px #ffe0e0;
+
 }
 
 .adding-item-delete {
   color: #cc0000;
   font-size: 1.5rem;
   cursor: pointer;
-  padding: 0 0.5rem;
+
   user-select: none;
   transition: color 0.2s ease;
 }
@@ -51,10 +52,8 @@
 
 .adding-item-error {
   color: #d8000c;
-  background-color: #ffbaba;
   padding: 0.5rem;
   margin-top: 0.5rem;
-  border-radius: 4px;
   font-size: 0.85rem;
   flex-basis: 100%;
 }
@@ -65,8 +64,8 @@
 
   cursor: pointer;
  
-  color: #cc0000;
+  color: white;
   font-size: 1.5rem;
-  background-color: aqua;
+  background-color: rgb(238, 141, 141);
   
 }

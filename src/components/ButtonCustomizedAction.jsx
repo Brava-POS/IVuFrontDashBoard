@@ -1,6 +1,6 @@
 import React from 'react';
 import { MdOutlineAddToPhotos } from "react-icons/md";
-import { MdEdit, MdDelete, MdVisibility, MdUpdate, MdOutlineAddToPhotos as MdCreate } from "react-icons/md";
+import {   MdSearch,MdEdit, MdDelete, MdVisibility, MdUpdate, MdOutlineAddToPhotos as MdCreate } from "react-icons/md";
 
 function ButtonCustomizedAction({ onClick, label = 'Click Me', action }) {
   const renderIcon = () => {
@@ -15,6 +15,8 @@ function ButtonCustomizedAction({ onClick, label = 'Click Me', action }) {
         return <MdUpdate className="back-icon" />;
       case 'create':
         return <MdCreate className="back-icon" />;
+         case 'search': 
+        return <MdSearch className="back-icon" />;
       default:
         return <MdOutlineAddToPhotos className="back-icon" />;
     }

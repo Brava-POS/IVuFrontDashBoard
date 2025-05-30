@@ -4,6 +4,7 @@ import { DateRange } from 'react-date-range';
 import { format, parse, differenceInDays, addYears } from 'date-fns';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
+import { showAlert } from './SweetAlertComponent';
 
 export default function SelectedDurationDisplay({ range, onApply }) {
   const [open, setOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function SelectedDurationDisplay({ range, onApply }) {
     },
   ]);
 
-  // Close picker on outside click
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -38,7 +39,7 @@ export default function SelectedDurationDisplay({ range, onApply }) {
     const maxStart = addYears(end, -2);
 
     if (start > end || start < maxStart || end > today) {
-      alert('Invalid date range');
+      showAlert('error','Invalid date range');
       return;
     }
 
@@ -48,7 +49,14 @@ export default function SelectedDurationDisplay({ range, onApply }) {
   };
 
   const display = () => {
-    if (!range) return null;
+
+    if (!range) {
+    return <span className="duration-placeholder"> Select a date range</span>;
+  }
+
+
+
+
     const [startStr, endStr] = range.split('-');
     const start = parse(startStr, 'yyyyMMdd', new Date());
     const end = parse(endStr, 'yyyyMMdd', new Date());

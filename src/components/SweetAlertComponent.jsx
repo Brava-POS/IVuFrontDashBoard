@@ -11,7 +11,7 @@ export const showAlert = (type, message) => {
   Swal.fire({
     title: type.charAt(0).toUpperCase() + type.slice(1),
     text: message,
-    icon: type === 'success' ? undefined : type, // Skip built-in icon for success
+    icon: type === 'success' ? undefined : type, 
     confirmButtonText: 'OK',
     background: '#fff0f0',
     color: alertColors[type] || '#b00020',

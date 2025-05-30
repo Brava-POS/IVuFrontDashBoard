@@ -1,0 +1,36 @@
+.date-input-container {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.date-input-label {
+  display: block;
+  color: #b91c1c;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.date-input-field {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid #fca5a5;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.date-input-field:focus {
+  border-color: #f87171;
+  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.4);
+}
+
+.date-input-error {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.4);
+}
+
+.date-error-text {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}

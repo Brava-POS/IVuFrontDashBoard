@@ -388,6 +388,8 @@ const sunmitTaxesNoAdditioanlAmount = async () => {
   {`Additioal Amounts  Type Outcome : ${form.additionalAmountOutcomeType && form.additionalAmountOutcomeType.trim() ? form.additionalAmountOutcomeType : "N/A"}`}
 </div>
      
+
+     
 <ButtonCustomizedAction action="create" label="Create" onClick={() => setShowAddModal(true)}/> 
 
      {isFetching ? (

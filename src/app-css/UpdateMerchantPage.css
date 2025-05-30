@@ -1,0 +1,27 @@
+/* UpdateMerchantPage.css */
+
+.update-merchant-page {
+  padding: 2rem;
+  background-color: #fff5f5;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
+  max-width: 800px;
+  margin: auto;
+}
+
+.red-title {
+  color: #b30000;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.red-checkbox-group label {
+  margin-right: 20px;
+  font-weight: 500;
+  color: #990000;
+}
+
+input[type="checkbox"] {
+  margin-right: 6px;
+}

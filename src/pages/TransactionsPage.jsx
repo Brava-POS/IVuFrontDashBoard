@@ -330,6 +330,7 @@ const restoreDR = async (id) => {
           totalPages={pageInfo.totalPages}
           onPageChange={handlePageChange}
           data={drData}
+            restore={restoreDR}
          
           createRoute="/create-transaction-page"
           viewRoute="/view-transaction-page"

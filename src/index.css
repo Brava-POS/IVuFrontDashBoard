@@ -2872,3 +2872,26 @@ input.ivu-input:-webkit-autofill {
   flex-shrink: 0;
 }
 
+/* stepper  */
+
+.stepper-label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: black;
+}
+.stepper-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid #dc3545; /* red border */
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.3s ease;
+}
+
+.stepper-input:focus {
+  border-color: #b30000;
+  outline: none;
+}

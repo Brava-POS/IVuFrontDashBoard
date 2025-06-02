@@ -9,6 +9,8 @@ import { MdOutlinePayment } from "react-icons/md";
 import { TfiFiles } from "react-icons/tfi";
 import { MdAccountTree } from "react-icons/md";
 import { TbCreditCardPay } from "react-icons/tb";
+import { FaUsersCog } from "react-icons/fa";
+import { FaUsersRays } from "react-icons/fa6";
 
 
 
@@ -26,6 +28,8 @@ export const iconMap = {
   InformativeFiles:TfiFiles ,
   Account:MdAccountTree,
  Subscribe: TbCreditCardPay,
+Subscriptions: TbCreditCardPay,
+ Users: FaUsersRays,
 
 
 };

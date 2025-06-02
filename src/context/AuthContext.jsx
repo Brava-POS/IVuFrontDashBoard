@@ -214,7 +214,9 @@ const [permissions, setPermissions] = useState(() => {
   const register = async (details) => {
     setLoading(true);
     try {
-      const res = await axios.post(`${API_BASE}/api/register`, details);
+    //  const res = await axios.post(`${API_BASE}/app-users/registeradmin`, details);
+        const res = await axios.post(`${API_BASE}/api/register`, details);
+
 
 
           console.log("data reeibved after register  res  " ,res);
@@ -237,6 +239,26 @@ const [permissions, setPermissions] = useState(() => {
   };
 
 
+    const registerByAdmin = async (details) => {
+    setLoading(true);
+    try {
+    
+
+            console.log( "================sending  registerByAdmin ===============")
+       const res = await axiosInstance.post(`${API_BASE}/merchants/usersRoles`, details);
+
+
+       console.log( "===========================0res ====================",res)
+
+      return { success: true };
+    } catch (err) {
+      console.error(' Registration failed:', err.message);
+      return { success: false, error: err.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
 const updateMenu = (newMenu) => {
   setMenu(newMenu);
@@ -245,22 +267,6 @@ const updateMenu = (newMenu) => {
 };
 
 
-
-
-
-
-
-
-
-  // const fetchMenu = async () => {
-  //   try {
-  //     const data = await customFetch('/api/menu');
-  //     setMenu(data);
-  //     localStorage.setItem('menu', JSON.stringify(data));
-  //   } catch (err) {
-  //     console.error(' Failed to fetch menu:', err.message);
-  //   }
-  // };
 
 
 
@@ -312,7 +318,8 @@ const hasPermission = (label, permissionType) => {
         axiosInstance,
         permissions,
         hasPermission,
-        saveTokens
+        saveTokens,
+        registerByAdmin 
       }}
     >
       {children}

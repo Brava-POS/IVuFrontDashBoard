@@ -194,3 +194,85 @@
   cursor: not-allowed;
 }
 
+
+.row-inactive {
+  background-color: #fff3cd;
+  border-left: 4px solid orange;
+}
+
+.action-btn.restore {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.action-btn.restore:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
+/*  table rows  */
+
+/* General Table Row Styling */
+.row-deleted-table,
+.row-blocked-table,
+.row-inactive-table,
+.row-expired-table,
+.row-locked-table,
+.row-credentials-expired-table {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2e2e2e;
+  font-weight: 500;
+}
+
+/* Deleted */
+.row-deleted-table {
+  background-color: #f0f0f0;
+  text-decoration: line-through;
+  color: #888888;
+  opacity: 0.6;
+  border-left: 5px solid #bfbfbf;
+}
+
+/* Blocked */
+.row-blocked-table {
+  background-color: #e0e0e0;
+  border-left: 5px solid #a6a6a6;
+  font-style: italic;
+}
+
+/* Inactive */
+.row-inactive-table {
+  background-color: #d6d6d6;
+  border-left: 5px solid #999999;
+  text-decoration: line-through;
+  color: #555555;
+}
+
+/* Account Expired */
+.row-expired-table {
+  background: linear-gradient(to right, #e6e6e6, #cfcfcf);
+  border-left: 5px solid #a0a0a0;
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* Account Locked */
+.row-locked-table {
+  background-color: #bfbfbf;
+  border-left: 5px dashed #8c8c8c;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+/* Credentials Expired */
+.row-credentials-expired-table {
+  background: linear-gradient(90deg, #d9d9d9 0%, #b3b3b3 100%);
+  border-left: 5px double #7a7a7a;
+  font-weight: 600;
+  font-style: oblique;
+}

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
 import aditional from "../assets/images/addtax.jpg";
 import label from "../assets/images/label.png";
 import PaginationComponent from "./PaginationComponent";
 import { useAuth } from "../context/AuthContext";
+import AppFlexBox from "./AppFlexBox";
+import ButtonCustomizedAction from "./ButtonCustomizedAction";
 
 const TableComponent = ({
   visibleColumns,
@@ -13,24 +13,20 @@ const TableComponent = ({
   totalPages,
   onPageChange,
   data,
-  createRoute = "/create-transaction-page",
   viewRoute = "/view-transaction-page",
   updateRoute = "/update-transaction-page",
-  handleDelete = (id) => console.log(`Delete clicked for row with ID: ${id}`),
   columnNameOverrides = {},
   columnOrder = [],
   customCellRenderers = {},
-
   showViewButton = true,
   showUpdateButton = true,
   showDeleteButton = true,
-  showCreateButton = true,
-
-  onBulkUpdate = null,
-  restoreDR = null,
-
-
-
+  handleDelete = (id) => console.log(`Delete clicked for row with ID: ${id}`),
+   restore = null,
+   handleblock=(id) => console.log(`Delete clicked for row with ID: ${id}`),
+    handleAccountLocked=(id) => console.log(`Delete clicked for row with ID: ${id}`),
+    handlecrdentialsExpired=(id) => console.log(`Delete clicked for row with ID: ${id}`),
+    handleAccountExpired=(id) => console.log(`Delete clicked for row with ID: ${id}`),
 
 
 }) => {
@@ -38,7 +34,7 @@ const TableComponent = ({
   const { hasPermission } = useAuth();
   const canDeleteTransactions = hasPermission("Transactions", "delete");
 
-  const [selectedRowId, setSelectedRowId] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   if (!Array.isArray(data) || data.length === 0) {
     return (
@@ -49,30 +45,68 @@ const TableComponent = ({
   }
 
   const handleRowSelect = (id) => {
-
-
-       
-
-
-
-
-    setSelectedRowId((prev) => (prev === id ? null : id));
+    const newRow = data.find((row) => row.id === id);
+    setSelectedRow((prev) => (prev?.id === id ? null : newRow));
   };
 
   const handleBulkView = () => {
-    if (selectedRowId) navigate(`${viewRoute}/${selectedRowId}`);
+    if (selectedRow) navigate(`${viewRoute}/${selectedRow.id}`);
   };
 
   const handleBulkUpdate = () => {
-    if (selectedRowId) navigate(`${updateRoute}/${selectedRowId}`);
+    if (selectedRow) navigate(`${updateRoute}/${selectedRow.id}`);
   };
 
   const handleBulkDelete = () => {
-    if (selectedRowId) {
-      handleDelete(selectedRowId);
-      setSelectedRowId(null);
+    if (selectedRow) {
+      handleDelete(selectedRow.id);
+      setSelectedRow(null);
     }
   };
+
+
+
+ const handleBulkBlock = () => {
+    if (selectedRow) {
+      handleblock(selectedRow.id);
+      setSelectedRow(null);
+    }
+  };
+ const handleBulkAccountLocked = () => {
+    if (selectedRow) {
+      handleAccountLocked(selectedRow.id);
+      setSelectedRow(null);
+    }
+  };
+ const handleBulkCredentialsExpired = () => {
+    if (selectedRow) {
+       handlecrdentialsExpired(selectedRow.id);
+      setSelectedRow(null);
+    }
+  };
+ const handleBulkAccountExpired = () => {
+    if (selectedRow) {
+     handleAccountExpired(selectedRow.id);
+      setSelectedRow(null);
+    }
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const allKeys = Object.keys(data[0]);
   const columnKeys = [
@@ -88,90 +122,131 @@ const TableComponent = ({
     }
     return key;
   };
-
+const hasFlags = selectedRow?.blocked || selectedRow?.deleted || selectedRow?.accountExpired || selectedRow?.accountLocked || selectedRow?.credentialsExpired;
   return (
-    <div className="table-outer-container">
-      <PaginationComponent
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={onPageChange}
-      />
 
-
-
-{canDeleteTransactions && (
-
-
-
-
-
-
-
-  <div className="table-controls top-controls">
-    {/* Conditionally rendered buttons */}
-    {showViewButton && (
-
-
-
-
-
-      
-      <button
-        className="action-btn view"
-        disabled={!selectedRowId}
-        onClick={handleBulkView}
-      >
-        View
-      </button>
-    )}
-
-
-
-
-
-{showUpdateButton && (
-  <button
-    className="action-btn update"
-    disabled={!selectedRowId}
-    onClick={() => {
-      if(onBulkUpdate){
-        onBulkUpdate(selectedRowId);
-      } else {
-        handleBulkUpdate();
-      }
-    }}
-  >
-    Update
-  </button>
-)}
-    {showDeleteButton && (
-      <button
-        className="action-btn delete"
-        disabled={!selectedRowId}
-        onClick={handleBulkDelete}
-      >
-        Delete
-      </button>
-    )}
-
-   {/* {showCreateButton && (
     
-    <button
-      className="action-btn create"
-      onClick={() => navigate(createRoute)}
-    >
-      <FaPlus style={{ marginRight: "5px" }} />
-      Create
-    </button>
-    )} */}
+    <div className="table-outer-container">
+      <AppFlexBox justify="s">
+            <PaginationComponent
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={onPageChange}
+            />
+        
+      </AppFlexBox>
+
+<div style={{marginBottom:"20px"}}></div>
+      {canDeleteTransactions && (
+        <div className="table-controls top-controls">
+          
+                  <AppFlexBox justify="s">
+               
+                  {selectedRow && (
+                    <>
+                     
+                     
+                     
 
 
-  </div>
-)}
+
+
+                     
+                      {selectedRow.blocked && (
+                        <ButtonCustomizedAction
+                          action="unblock"
+                          label="Unblock"
+                          onClick={handleBulkBlock}
 
 
 
-<div className="table-container">
+
+                        />
+                      )}
+
+
+                  {selectedRow.accountExpired && (
+                    <ButtonCustomizedAction
+                      action="activate"
+                      label="Reactivate"
+                    onClick={handleBulkAccountExpired}
+                    />
+                  )}
+
+                {selectedRow.accountLocked && (
+                  <ButtonCustomizedAction
+                    action="unlock"
+                    label="Unlock"
+                   onClick={handleBulkAccountLocked}
+                  />
+                )}
+
+                {selectedRow.credentialsExpired && (
+                  <ButtonCustomizedAction
+                    action="expire"
+                    label="Reset Credentials"
+                  onClick={handleBulkCredentialsExpired}
+                  />
+                                  )}
+                    </>
+                  )}
+
+
+
+
+                  {showViewButton && (
+                    <ButtonCustomizedAction
+                      action="view"
+                      label="View"
+                      onClick={handleBulkView}
+                      disabled={!selectedRow || hasFlags}
+                    />
+                  )}
+
+                  {showUpdateButton && (
+                    <ButtonCustomizedAction
+                      action="update"
+                      label="Update"
+                      onClick={handleBulkUpdate}
+                      disabled={!selectedRow || hasFlags}
+                    />
+                  )}
+
+                  {showDeleteButton && (
+                    <ButtonCustomizedAction
+                      action="delete"
+                      label="Delete"
+                      onClick={handleBulkDelete}
+                      disabled={!selectedRow || hasFlags}
+                    />
+                  )}
+
+
+
+
+
+                    </AppFlexBox>
+
+
+
+                            </div>
+                          )
+                          
+                          
+                          
+      
+      
+      
+      }
+
+
+
+
+
+
+
+
+      <div className="table-container">
         <table className="data-table">
           <thead>
             <tr>
@@ -187,29 +262,36 @@ const TableComponent = ({
             </tr>
           </thead>
 
-
-
-
           <tbody>
             {data.map((row, rowIndex) => (
-              <tr key={rowIndex}>
+              <tr
+                key={rowIndex}
+             className={`
+                ${row.deleted ? "row-deleted-table " : ""}
+                ${row.blocked ? "row-blocked-table" : ""}
+                ${row.active === false ? "row-inactive-table" : ""}
+                ${row.accountExpired ? "row-expired-table" : ""}
+                ${row.accountLocked ? "row-locked-table" : ""}
+                ${row.credentialsExpired ? "row-credentials-expired-table" : ""}
+              `}
+              >
+               
 
-{/* =====================================================================================================================0 */}
-                {/* Single-Selection Checkbox */}
-                <td >
-                  <input
-                    type="checkbox"
-                    checked={selectedRowId === row.id}
-                    onChange={() => handleRowSelect(row.id)}
-                    style={{
-                      backgroundColor:
-                        selectedRowId === row.id ? "red" : "transparent",
-                      accentColor: selectedRowId === row.id ? "red" : "",
-                    }}
-                  />
-                </td>
+<td style={{ textAlign: "center", verticalAlign: "middle" }}>
+  <input
+    type="checkbox"
+    checked={selectedRow?.id === row.id}
+    onChange={() => handleRowSelect(row.id)}
+    style={{
+      accentColor: selectedRow?.id === row.id ? "red" : "",
+    }}
+  />
+</td>
 
-                {/* Dynamic Data Cells */}
+
+
+
+
 
                 {columnKeys
                   .filter((key) => visibleColumns.includes(key))
@@ -236,47 +318,11 @@ const TableComponent = ({
               </tr>
             ))}
           </tbody>
-
-
-
-
-
-
-
-
-
-
-
-
-
-          
         </table>
- </div>
-
-
-
-
-
-
-
-
-
-
+      </div>
     </div>
   );
 };
 
 export default TableComponent;
 
-
-
-
- {/* <ButtonCustomizedAction action="delete" label="Delete" onClick={handleDelete} />
-<ButtonCustomizedAction action="view" label="View" onClick={handleView} />
-<ButtonCustomizedAction action="update" label="Update" onClick={handleUpdate} />
-<ButtonCustomizedAction action="create" label="Create" onClick={() => setShowAddModal(true)}/> 
-
-{/* <CreateButton to="/transactions" label="Add Additional Amount "/>  */}
-
-
-{/* <CustomizedButton label="+ Add Additional Amount" onClick={() => setShowAddModal(true)} /> */}

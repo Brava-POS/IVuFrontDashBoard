@@ -42,6 +42,28 @@
 
   
 }
+
+
+.createdr-section-title-large {
+  font-size: 1.5rem;
+  color: var(--red-text);
+  font-weight: bold;
+  text-align: center;
+    margin-bottom: 0px;
+   
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 20px;
+
+  
+}
+
+
+
+
+
+
+
 .createdr-section-title-start {
   font-size: 1rem;
   color: var(--red-text);

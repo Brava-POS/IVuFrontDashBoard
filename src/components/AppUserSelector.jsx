@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import MainAppSpinner from './MainAppSpinner';
+import logo from '../assets/images/brava.png';
 
 
 export default function AppUserSelector({ onSelect }) {
@@ -100,11 +101,11 @@ const params = new URLSearchParams();
               <>
                
                   <img
-                    src={selectedMerchant.avatarUrl}
+                    src={selectedMerchant.avatarUrl?selectedMerchant.avatarUrl:logo}
                     alt={selectedMerchant.username}
                     className="merchantDropdownSelector-avatar"
                   />
-                 
+                
                     <span className="merchantDropdownSelector-name">
                       {selectedMerchant.username}
                     </span>

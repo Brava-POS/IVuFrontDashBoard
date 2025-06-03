@@ -69,36 +69,6 @@ const customCellRenderers = {
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const navigate = useNavigate();
   const { loading,setLoading, axiosInstance, user, hasPermission } = useAuth();
   const isAdmin = user?.role === "ROLE_ADMIN";

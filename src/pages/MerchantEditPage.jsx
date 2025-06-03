@@ -15,6 +15,8 @@ import CustomizedButton from '../components/CustomizedButton';
 import AdditionalAmountModal from '../components/AdditionalAmountModal';
 import UpdateAdditionalAmountModal from '../components/UpdateAdditionalAmountModal';
 import ButtonCustomizedAction from '../components/ButtonCustomizedAction';
+import AppFlexBox from '../components/AppFlexBox';
+import MainFilterInput from '../components/MainFilterInput';
 
 const UpdateMerchantPage = () => {
   const { id } = useParams();
@@ -81,21 +83,34 @@ const UpdateMerchantPage = () => {
     }
   };
 
-  if (loading || updating) return <MainAppSpinner />; // Show spinner on load or update
+  if (loading || updating) return <MainAppSpinner />; 
 
   return (
-    <div className="createdr-container update-merchant-page">
-      <h2 className="createdr-section-title red-title">Update Merchant</h2>
 
-      <Input
+
+
+  <>
+ 
+  <div className="createdr-section-title-large"> {`Update User  with serial number  ${form.merchantSerialCode}`}</div>
+     <BackButton to="/merchants" label="Back to Merchants" />
+     
+      <div className="createdr-section">
+
+
+      <div className="createdr-container">
+
+        <Input
         label="Merchant Serial Code"
         name="merchantSerialCode"
         value={form.merchantSerialCode}
-        onChange={handleChange}
-      />
+       
+      /> 
 
-      <div className="createdr-section red-checkbox-group">
-        <label>
+
+
+         <AppFlexBox justify="in">
+
+          <label>
           <input
             type="checkbox"
             name="isActive"
@@ -119,10 +134,33 @@ const UpdateMerchantPage = () => {
             onChange={handleChange}
           /> Deleted
         </label>
+
+</AppFlexBox>
+
+
       </div>
 
-      <ButtonCustomizedAction action="edit" label="Update" onClick={handleSubmit} />
-    </div>
+
+
+      </div>
+    
+
+
+
+     
+
+     
+
+
+
+
+ <ButtonCustomizedAction action="edit" label="Update" onClick={handleSubmit} />
+
+
+
+
+</>
+
   );
 };
 

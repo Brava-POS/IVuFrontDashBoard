@@ -17,7 +17,7 @@ const RegisterNewGuest = () => {
  
   const [formData, setFormData] = useState({
     username: '',
-    role: '',
+    role: 'ROLE_GUEST',
     password: '',
     confirmPassword: '',
     email: '',

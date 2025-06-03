@@ -7,10 +7,17 @@ import { VscActivateBreakpoints } from "react-icons/vsc";
 import { CiUnlock } from "react-icons/ci";
 import { FcExpired } from "react-icons/fc";
 import { FaUser, FaUserShield } from "react-icons/fa";
+import { IoMdArrowRoundBack } from "react-icons/io";
+
+
+
 
 function ButtonCustomizedAction({ onClick, label = 'Click Me', action ,disabled = false}) {
   const renderIcon = () => {
     switch (action) {
+
+        case 'back':
+        return <IoMdArrowRoundBack  className="back-icon" />;
         case 'unblock':
         return <CgUnblock  className="back-icon" />;
          case 'activate':

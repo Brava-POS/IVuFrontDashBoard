@@ -10,6 +10,9 @@ import EditProfilePassword from '../pages/EditProfilePassword';
 import BillingPage from '../pages/BillingPage';
 import CreateTransactionPage from '../pages/CreateTransactionPage';
 import UpdateTransactionPage from '../pages/UpdateTransactionPage';
+import DeviceCreatepage from '../pages/DeviceCreatepage';
+import DeviceView from '../pages/DeviceView';
+import DeviceUpdatePage from '../pages/DeviceUpdatePage';
 
 
 
@@ -30,6 +33,17 @@ const AdminMerchantRoutes = [
 
 
   { path: 'devices', element: <Device /> },
+
+   { path: 'devices-create', element: <DeviceCreatepage /> },
+      { path: 'devices-view/:id', element: <DeviceView /> },
+
+        { path: 'devices-update/:id', element: <DeviceUpdatePage/> },
+
+// devices-update
+
+
+//DeviceView
+
   { path: 'profile', element: <ProfilePage /> },
    { path: 'editprofile', element: <EditProfilePage/> },
       { path: 'changeprofilepassword', element: <EditProfilePassword/> },

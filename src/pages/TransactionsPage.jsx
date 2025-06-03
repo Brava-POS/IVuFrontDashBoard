@@ -1,46 +1,47 @@
-import React, { useState, useEffect, useRef } from "react";
-import TableComponent from "../components/TableComponent";
+import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+
+import TableComponent from "../components/TableComponent";
 import MainAppSpinner from "../components/MainAppSpinner";
-import { FaSearch } from "react-icons/fa";
 import SelectedDurationDisplay from "../components/SelectedDurationDisplay";
 import MerchantDropdownSelector from "../components/MerchantDropdownSelector";
-import { useParams, useNavigate } from "react-router-dom";
-import { showAlert } from '../components/SweetAlertComponent';
-import CreateButton from "../components/CreateButton";
 import ButtonCustomizedAction from "../components/ButtonCustomizedAction";
-import FilterInput from "../components/FilterInput";
-import FilterCheckbox from "../components/FilterCheckbox";
+import CreateButton from "../components/CreateButton";
+import { showAlert } from "../components/SweetAlertComponent";
+import BackButton from "../components/BackButton";
+import AppFlexBox from "../components/AppFlexBox";
+import MainFilterInput from "../components/MainFilterInput";
 
 const TransactionsPage = () => {
   const navigate = useNavigate();
-  const { loading,setLoading, axiosInstance, user, hasPermission } = useAuth();
+  const { axiosInstance, loading, setLoading, user, hasPermission } = useAuth();
   const isAdmin = user?.role === "ROLE_ADMIN";
 
   const [drData, setDrData] = useState([]);
   const [pageInfo, setPageInfo] = useState({ pageNumber: 0, totalPages: 0 });
   const [isFetching, setIsFetching] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
+  const mounted = useRef(false);
 
   const [filters, setFilters] = useState({
-
-    deleted :false,
+    deleted: false,
     idOfMerchant: "",
     controlNumber: "",
     authorizationCode: "",
     lastCardNumber: "",
     dateRange: "",
-    selectedMerchant: "",
   });
 
-  const mounted = useRef(false);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchData = async (page = 0, filtersParam = null) => {
     setIsFetching(true);
     try {
       const activeFilters = filtersParam || filters;
       let url = `/drs/search?page=${page}&size=10`;
-
       Object.entries(activeFilters).forEach(([key, value]) => {
         if (value) url += `&${key}=${value}`;
       });
@@ -49,255 +50,163 @@ const TransactionsPage = () => {
       const data = response.data;
 
       if (data?.content) {
-
-        console.log("dtae",data?.content)
-        setDrData(data.content || []);
+        setDrData(data.content);
         setPageInfo({ pageNumber: data.number, totalPages: data.totalPages });
       }
     } catch (err) {
-      console.error("Error during fetch request:", err.message);
+      console.error("Fetch error:", err.message);
     } finally {
       setIsFetching(false);
       setInitialLoad(false);
     }
   };
 
-  const handleApplyFilters = () => {
-    fetchData(0);
-  };
+  const handlePageChange = (newPage) => fetchData(newPage);
 
-  const handlePageChange = (newPage) => {
-    fetchData(newPage);
-  };
+  const handleApplyFilters = () => fetchData(0);
 
   const handleDateRangeApply = (range) => {
-    const updatedFilters = { ...filters, dateRange: range };
-    setFilters(updatedFilters);
-    fetchData(0, updatedFilters);
+    const updated = { ...filters, dateRange: range };
+    setFilters(updated);
+    fetchData(0, updated);
   };
 
   const handleSelectMerchant = (merchant) => {
-    const updatedFilters = { ...filters, idOfMerchant: merchant.id };
-    setFilters(updatedFilters);
-    fetchData(0, updatedFilters);
+     const updated = { ...filters, idOfMerchant: merchant?.id || "" };
+   // const updated = { ...filters, idOfMerchant: merchant.id };
+    setFilters(updated);
+    fetchData(0, updated);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-
-
-
-
-
-
-const deleteDR = async (id) => {
-  try {
-    setLoading(true);
-    const res = await axiosInstance.put(`/drs/update/${id}`,  { delete: true});
-    setLoading(false);
-
-  console.log("res",  res);
-     if ((res.status >= 200 && res.status < 300) && res.data && res.data.updated === true) {
-      showAlert('success', 'Delete  Successfully');
-     fetchData();
-    } else {
-      showAlert('error', 'SUpdated failed');
+  const deleteDR = async (id) => {
+    try {
+      setLoading(true);
+      const res = await axiosInstance.put(`/drs/update/${id}`, { delete: true });
+      if (res.data?.updated) {
+        showAlert("success", "Deleted Successfully");
+        fetchData();
+      } else {
+        showAlert("error", "Delete failed");
+      }
+    } catch {
+      showAlert("error", "Delete failed");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    setLoading(false);
-     showAlert('error', 'SUpdated failed');
-  }
-};
+  };
 
-
-
-const restoreDR = async (id) => {
-  try {
-    setLoading(true);
-    const res = await axiosInstance.put(`/drs/update/${id}`, { delete: false });
-    setLoading(false);
-
-    if (res.status >= 200 && res.status < 300 && res.data?.updated === true) {
-      showAlert('success', 'Restored Successfully');
-      fetchData(); 
-      showAlert('error', 'Restore failed');
+  const restoreDR = async (id) => {
+    try {
+      setLoading(true);
+      const res = await axiosInstance.put(`/drs/update/${id}`, { delete: false });
+      if (res.data?.updated) {
+        showAlert("success", "Restored Successfully");
+        fetchData();
+      } else {
+        showAlert("error", "Restore failed");
+      }
+    } catch {
+      showAlert("error", "Restore failed");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    setLoading(false);
-    showAlert('error', 'Restore failed');
-  }
+  };
+  const handleFilterChange = (field) => (e) => {
+  const updated = { ...filters, [field]: e.target.value };
+  setFilters(updated);
+  fetchData(0, updated);
 };
-
-
-
-
-
-
-
-
-
-
-
 
   if (loading || initialLoad) return <MainAppSpinner />;
 
-  const canDeleteTransactions = hasPermission("Transactions", "delete");
-
   return (
     <>
-
-
-  {canDeleteTransactions && (
-        <div className="filter-item">
-          <MerchantDropdownSelector onSelect={handleSelectMerchant} />
-        </div>
+ <div className="createdr-section-title-large">  Transactions</div>
+      {hasPermission("Transactions", "delete") && (
+        <MerchantDropdownSelector onSelect={handleSelectMerchant} />
       )}
 
 
 
- <div className="createdr-section">
 
-  <div className="createdr-section-title-start">Filter  by :</div>
-  
+  <AppFlexBox justify="start" wrap>
+          <SelectedDurationDisplay range={filters.dateRange} onApply={handleDateRangeApply} />
+        </AppFlexBox>
+
+
+
+
+
+
+<div className="createdr-section-title-start">Filter by:</div>
+      <div className="createdr-section">
+        
+
+        <AppFlexBox justify="start" wrap>
+         <MainFilterInput
+            label="Control Number"
+            value={filters.controlNumber}
+           onChange={handleFilterChange("controlNumber")}
+          />
+         <MainFilterInput
+            label="Authorization Code"
+            value={filters.authorizationCode}
+          onChange={handleFilterChange("authorizationCode")}
+          />
+       <MainFilterInput
+            label="Last 4 Card Number"
+            value={filters.lastCardNumber}
+           onChange={handleFilterChange("lastCardNumber")}
+          />
+        </AppFlexBox>
+
     
+        <AppFlexBox justify="start" gap="12px">
 
-  <FilterCheckbox
-    label="Deleted"
-    checked={filters.deleted}
-    onChange={(e) =>
-      setFilters((prev) => ({
-        ...prev,
-        deleted: e.target.checked,
-      }))
-    }
-  />
+        </AppFlexBox>
+      </div>
 
+<AppFlexBox justify="start" wrap>
 
-
-   <div className="filter-row">
-          <div className="filter-item">
-            <SelectedDurationDisplay
-              range={filters.dateRange}
-              onApply={handleDateRangeApply}
-            />
-          </div>
-        </div>
-  
-
-
-
-
-<div
-  style={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    gap: '12px', 
-    
-    padding: '8px',
-   
- 
-    borderRadius: '6px',
+<ButtonCustomizedAction
+  action="delete"
+  label="Clear"
+  onClick={() => {
+    const resetFilters = {
+      deleted: false,
+      idOfMerchant: "",
+      controlNumber: "",
+      authorizationCode: "",
+      lastCardNumber: "",
+      dateRange: "",
+    };
+    setFilters(resetFilters);
+    fetchData(0, resetFilters);
   }}
->
-
-<FilterInput
-    label="Control Number:"
-    value={filters.controlNumber}
-    onChange={(e) =>
-      setFilters((prev) => ({
-        ...prev,
-        controlNumber: e.target.value,
-      }))
-    }
-  />
-
-  <FilterInput
-    label="Authorization Code"
-    value={filters.authorizationCode}
-    onChange={(e) =>
-      setFilters((prev) => ({
-        ...prev,
-        authorizationCode: e.target.value,
-      }))
-    }
-  />
-
-  <FilterInput
-    label="Last FouCard Number"
-    value={filters.lastCardNumber}
-    onChange={(e) =>
-      setFilters((prev) => ({
-        ...prev,
-        lastCardNumber: e.target.value,
-      }))
-    }
-  />
+/>
 
 
+      <CreateButton to="/create-transaction-page" label="Add New Detailed Record" />
 
 
-
-</div>
-
+</AppFlexBox>
 
 
-<div
-  style={{
-    display: 'flex',
-    justifyContent: 'flex-start',
-    gap: '12px', 
-
-    padding: '8px',
- 
-    borderRadius: '6px',
-  }}
->
-
-
-  <ButtonCustomizedAction action="delete" label="Clear"   onClick={() =>
-        setFilters({
-          controlNumber: '',
-          authorizationCode: '',
-          lastCardNumber: '',
-          deleted: false,
-        })
-      }/> 
-
-<ButtonCustomizedAction action="search" label="Search" onClick={handleApplyFilters}/> 
- 
-</div>
-
-
-
-  
-
-  </div>
-
-
-
-
-    
-
-
-
-
-
-
-
- <CreateButton to="/create-transaction-page" label="Add New Detailed Record "/>
-
-
-
- 
 
       {isFetching ? (
-        <div style={{ textAlign: "center", padding: "2rem" }}>
-          <MainAppSpinner />
-        </div>
+        <MainAppSpinner />
       ) : (
         <TableComponent
+          data={drData}
+          currentPage={pageInfo.pageNumber}
+          totalPages={pageInfo.totalPages}
+          onPageChange={handlePageChange}
+          restore={restoreDR}
+          handleDelete={deleteDR}
+          restoreDR={restoreDR}
+          createRoute="/create-transaction-page"
+          viewRoute="/view-transaction-page"
+          updateRoute="/edit-transaction-page"
           visibleColumns={[
             "controlNumberCode",
             "transactionDate",
@@ -311,7 +220,6 @@ const restoreDR = async (id) => {
             "additionalAmountTotalAmount",
           ]}
           columnNameOverrides={{
-            transactionDate: "Date",
             controlNumberCode: "Control Number",
             transactionDate: "Date",
             transactionTime: "Time",
@@ -321,24 +229,8 @@ const restoreDR = async (id) => {
             reducedStateTax: "Reduced State Tax",
             cityTaxAmount: "City Tax",
             additionalAmountOutcomeType: "Additional Type",
-            additionalAmountTotalAmount: "Additional Tax ",
+            additionalAmountTotalAmount: "Additional Tax",
           }}
-          columnOrder={[]}
-          // columnOrder={['id', 'additionalAmountTotalAmount', 'additionalAmountOutcomeType']}
-
-          currentPage={pageInfo.pageNumber}
-          totalPages={pageInfo.totalPages}
-          onPageChange={handlePageChange}
-          data={drData}
-            restore={restoreDR}
-         
-          createRoute="/create-transaction-page"
-          viewRoute="/view-transaction-page"
-          updateRoute="/edit-transaction-page"
-          handleDelete={deleteDR}
-          restoreDR={restoreDR}
-
-        
         />
       )}
     </>
@@ -346,3 +238,31 @@ const restoreDR = async (id) => {
 };
 
 export default TransactionsPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

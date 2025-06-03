@@ -288,7 +288,7 @@ const restoreDR = async (id) => {
       <AppFlexBox justify="s">
         <ButtonCustomizedAction action="delete" label="Clear all Filters" onClick={resetFilters} />
         <ButtonCustomizedAction action="refresh" label="Refresh" onClick={handleApplyFilters} />
-        <CreateButton to="/merchants-create" label="Add New Merchant" />
+        <CreateButton to="/merhantcreate" label="Add New Merchant" />
       </AppFlexBox>
 
       {isFetching ? (

@@ -60,7 +60,7 @@ const UpdateMerchantPage = () => {
   };
 
   const handleSubmit = async () => {
-    setUpdating(true); // NEW
+    setUpdating(true); 
     try {
       const payload = {
         merchantSerialCode: form.merchantSerialCode,

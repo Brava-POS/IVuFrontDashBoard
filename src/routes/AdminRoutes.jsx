@@ -21,6 +21,7 @@ import UserUpdatePage from '../pages/UserUpdatePage';
 import MerchantSubscribtionsViewPage  from '../pages/MerchantSubscribtionsViewPage';
 import MerchantSubscribtionsCreatePage from '../pages/MerchantSubscribtionsCreatePage';
 import MerchantSubscribtionsUpdatePage from '../pages/MerchantSubscribtionsUpdatePage';
+import ElavonPaymentView from '../pages/ElavonPaymentView';
 
 
 
@@ -64,10 +65,9 @@ const AdminRoutes = [
   { path: 'subscriptionss-create', element: <MerchantSubscribtionsCreatePage /> },
   { path: 'subscriptions-update/:id', element: <MerchantSubscribtionsUpdatePage /> },
 
+ { path: 'elavon-payment-view/:id', element: <ElavonPaymentView /> },
 
-
-
- // Devices  
+  
 
 ];
 

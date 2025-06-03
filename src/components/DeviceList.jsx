@@ -68,15 +68,15 @@ const confirmRemove = (id) => {
     title: 'Are you sure?',
     text: 'This will remove the device permanently.',
     icon: 'warning',
-    background: '#ffffff', // clean white background
-    color: '#1a1a1a',       // almost black text
-    iconColor: '#E62B1E',   // TED red for the warning icon
+    background: '#ffffff', 
+    color: '#1a1a1a',       
+    iconColor: '#E62B1E',   
     showCancelButton: true,
     confirmButtonText: 'Yes, remove it!',
     cancelButtonText: 'Cancel',
 
-    confirmButtonColor: '#E62B1E',   // TED red
-    cancelButtonColor: '#AAAAAA',    // neutral gray
+    confirmButtonColor: '#E62B1E',   
+    cancelButtonColor: '#AAAAAA',    
 
     customClass: {
       popup: 'ted-alert',
@@ -85,7 +85,7 @@ const confirmRemove = (id) => {
     }
   }).then((result) => {
     if (result.isConfirmed) {
-      onRemove(id); // console logs or delete API call
+      onRemove(id); 
     }
   });
 };

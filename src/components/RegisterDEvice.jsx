@@ -6,9 +6,11 @@ import MainAppSpinner from './MainAppSpinner';
 
 // Import DeviceList component
 import DeviceList from './DeviceList';
+import BackButton from './BackButton';
 
 function RegisterDevice() {
-  const { axiosInstance } = useAuth();
+ 
+    const {  axiosInstance, user, hasPermission } = useAuth();
   const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
 
@@ -132,8 +134,19 @@ function RegisterDevice() {
     }
   }, [showForm]);
 
+
+
+
+
+
+
+
   if (loading) {
-    return (
+  return (
+    <>
+      <div className="createdr-section-title-large">Devices</div>
+      <BackButton to="/devices" label="Back to Devices" />
+
       <div
         style={{
           height: '100vh',
@@ -144,11 +157,16 @@ function RegisterDevice() {
       >
         <MainAppSpinner />
       </div>
-    );
-  }
+    </>
+  );
+}
 
-  if (devices.length === 0) {
-    return (
+if (devices.length === 0) {
+  return (
+    <>
+      <div className="createdr-section-title-large">Devices</div>
+      <BackButton to="/devices" label="Back to Devices" />
+
       <div
         style={{
           width: '70%',
@@ -165,7 +183,6 @@ function RegisterDevice() {
           <label>Provider</label>
           <select
             className="ivu-input"
-           //  style={{ backgroundColor: '#ff8c55' }}
             value={provider}
             onChange={(e) => {
               setProvider(e.target.value);
@@ -186,7 +203,6 @@ function RegisterDevice() {
               <label>Model</label>
               <select
                 className="ivu-input"
-                // style={{ backgroundColor: '#eb976f' }}
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
                 required
@@ -208,72 +224,81 @@ function RegisterDevice() {
           {errorMsg && <p className="ivu-status error">{errorMsg}</p>}
         </form>
       </div>
-    );
-  }
-
-  // Show device list
-  return (
-    <>
-      <DeviceList devices={devices} onRemove={handleRemoveDevice} />
-
-      <div style={{ marginTop: '20px', textAlign: 'center' }}>
-        <button
-          className="ivu-button ivu-button-primary"
-          onClick={() => setShowForm(!showForm)}
-        >
-          {showForm ? 'Cancel' : '+ Add Device'}
-        </button>
-      </div>
-
-      {showForm && (
-        <form
-  onSubmit={handleDeviceRegister}
-  className="ivu-form"
-  style={{ marginTop: '20px', marginBottom: '100px' }}
-  ref={formRef}
->
-          <label>Provider</label>
-          <select
-            className="ivu-input"
-            value={provider}
-            onChange={(e) => {
-              setProvider(e.target.value);
-              setModel('');
-            }}
-            required
-          >
-            <option value="">Select Provider</option>
-            {Object.keys(modelsByProvider).map((prov) => (
-              <option key={prov} value={prov}>{prov}</option>
-            ))}
-          </select>
-
-          {provider && (
-            <>
-              <label>Model</label>
-              <select
-                className="ivu-input"
-                value={model}
-                onChange={(e) => setModel(e.target.value)}
-                required
-              >
-                <option value="">Select Model</option>
-                {modelsByProvider[provider].map((mod) => (
-                  <option key={mod} value={mod}>{mod}</option>
-                ))}
-              </select>
-            </>
-          )}
-
-          <button type="submit" className="ivu-button ivu-button-primary" style={{ marginTop: '10px' }}>
-            Register Device
-          </button>
-
-          {errorMsg && <p className="ivu-status error">{errorMsg}</p>}
-        </form>
-      )}
     </>
   );
+}
+
+// Show device list
+return (
+  <>
+    <div className="createdr-section-title-large">Devices</div>
+    <BackButton to="/devices" label="Back to Devices" />
+
+    <DeviceList devices={devices} onRemove={handleRemoveDevice} />
+
+    <div style={{ marginTop: '20px', textAlign: 'center' }}>
+      <button
+        className="ivu-button ivu-button-primary"
+        onClick={() => setShowForm(!showForm)}
+      >
+        {showForm ? 'Cancel' : '+ Add Device'}
+      </button>
+    </div>
+
+    {showForm && (
+      <form
+        onSubmit={handleDeviceRegister}
+        className="ivu-form"
+        style={{ marginTop: '20px', marginBottom: '100px' }}
+        ref={formRef}
+      >
+        <label>Provider</label>
+        <select
+          className="ivu-input"
+          value={provider}
+          onChange={(e) => {
+            setProvider(e.target.value);
+            setModel('');
+          }}
+          required
+        >
+          <option value="">Select Provider</option>
+          {Object.keys(modelsByProvider).map((prov) => (
+            <option key={prov} value={prov}>
+              {prov}
+            </option>
+          ))}
+        </select>
+
+        {provider && (
+          <>
+            <label>Model</label>
+            <select
+              className="ivu-input"
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              required
+            >
+              <option value="">Select Model</option>
+              {modelsByProvider[provider].map((mod) => (
+                <option key={mod} value={mod}>
+                  {mod}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
+
+        <button type="submit" className="ivu-button ivu-button-primary" style={{ marginTop: '10px' }}>
+          Register Device
+        </button>
+
+        {errorMsg && <p className="ivu-status error">{errorMsg}</p>}
+      </form>
+    )}
+  </>
+);
+
 }
 
 export default RegisterDevice;

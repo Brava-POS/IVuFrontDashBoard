@@ -15,6 +15,8 @@ import FilterPanel from '../components/FilterPanel';
 import SelectedDurationDisplay from '../components/SelectedDurationDisplay';
 import TransactionCountCard from '../components/TransactionCountCard';
 import { format } from 'date-fns';
+import AppFlexBox from '../components/AppFlexBox';
+import SumComponent from '../components/SumComponent';
 
 function HomePage() {
     const { loading, customFetch ,user,hasPermission ,axiosInstance} = useAuth();
@@ -80,7 +82,15 @@ const fetchData = async (dateRange = '', merchantId = '', isInitial = false) => 
       },
    
     ];
+
+
     setSummaryData(formattedData);
+
+    console.log(formattedData);
+
+
+
+
     setTranactionsCount( {
         image: total,
         title: 'Number of Records',
@@ -116,72 +126,83 @@ const handleDateRangeApply = (range) => {
 
 
 const handleSelectMerchant = (merchant) => {
-  console.log('========Selected Merchant: from home page ==========', merchant);
-  console.log('========Selected Merchant id : from home page ==========', merchant.id);
-   console.log('===Selected Merchant merchantSerialCode : from home page ===========', merchant.merchantSerialCode);
-
-
-   fetchData(selectedDateRange, merchant?.id);
-
-
-  setSelectedMerchant(merchant); 
+fetchData(selectedDateRange, merchant?.id);
+setSelectedMerchant(merchant); 
 
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if (appLoading) return <MainAppSpinner />;
-
 return (
   <>
    
-
-
-
 { canDeleteTransactions && (
 
   <MerchantDropdownSelector onSelect={handleSelectMerchant} />
 )}
 
+<SelectedDurationDisplay range={selectedDateRange} onApply={handleDateRangeApply} />
+
+
+
+
+<AppFlexBox justify="s">
+<SumComponent
+  image={total}
+  title="Total Taxes"
+  amount={tranactionsCount.details?.Count} 
+  showDollar={false}
+  suffix="transaction"
+/>
+
+</AppFlexBox>
 
 
 
 
 
+ <div className="createdr-section">
+<AppFlexBox justify="in">
+{summaryData
+  .filter(item => item.title.trim().toLowerCase() !== 'total additional amount')
+  .map((item, index) => (
+    <SumComponent
+      key={index}
+      image={item.image}
+      title={item.title}
+      amount={item.details.Amount.replace('$', '')}
+      suffix={false}
+      showDollar={true}
+    />
+))}
 
+</AppFlexBox>
 
-    <SelectedDurationDisplay range={selectedDateRange} onApply={handleDateRangeApply} />
-
-
-
-<div style={{ width: '100%' }}>
-<TransactionCountCard data={tranactionsCount} />
 </div>
 
 
 
-   <div className="home_page_taxes_container">
-    
+
+ <div className="createdr-section">
+
+<AppFlexBox justify="in">
+{summaryData
+  .filter(item => item.title.trim().toLowerCase() == 'total additional amount')
+  .map((item, index) => (
+    <SumComponent
+      key={index}
+      image={item.image}
+      title={item.title}
+      amount={item.details.Amount.replace('$', '')}
+      suffix={false}
+      showDollar={true}
+    />
+))}
+
+</AppFlexBox>
 
 
-      {cardLoading ? <MainAppSpinner /> : <CardComponent cardData={summaryData} />}
-    </div>
-
-
-
+</div>
 
 
 

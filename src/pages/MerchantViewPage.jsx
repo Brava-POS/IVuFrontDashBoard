@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import  placeHolder  from '../assets/images/placeHolder.png';
+
+
 
 
 import {
@@ -50,7 +53,7 @@ function MerchantViewPage() {
 <BackButton to="/merchants" label="Back to Merchants" />
         <div className="profile_v2-info">
              <div className="profile_v2-usercard">
-          <img src={userData.avatar} alt="User Avatar" className="profile_v2-avatar" />
+          <img src={userData.avatar ? userData.avatar:placeHolder} alt="User Avatar" className="profile_v2-avatar" />
           <h4 className="profile_v2-name">{userData.username?.toUpperCase()}</h4>
         </div>
 

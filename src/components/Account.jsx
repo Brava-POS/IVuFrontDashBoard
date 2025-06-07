@@ -43,9 +43,7 @@ function Account() {
         </div>
 
         <div className="profile_v2-info">
-          <button className="profile_v2-edit-button" onClick={() => navigate('/')}>
-            Edit
-          </button>
+        
 
           <h4 className="profile_v2-section-title">Profile</h4>
           <div><FaUserCircle className="profile_v2-icon" /> Username: {userData.username}</div>

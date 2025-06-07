@@ -15,29 +15,59 @@ import MainFilterInput from "../components/MainFilterInput";
 import AppFlexBox from "../components/AppFlexBox";
 import logo from '../assets/images/brava.png';
 import RoleToggle from "../components/RoleToggle";
+import  placeHolder  from '../assets/images/placeHolder.png';
 
-const DevicePage = () => {
+const LeadsPage = () => {
 
-
+// Define column lists and mappings outside JSX
 const visibleColumns = [
-"serialNumber","deviceProvider","deviceModal","status","registeredAt"
-  
-  
+  "id", "userRole", "avatarUrl", "username", "email", "active", "blocked",
+  "accountExpired", "credentialsExpired", "accountLocked", "notificationsEnabled",
+  "createdAt", "updatedAt", "createdByIp", "lastLoginAt", "lastLoginIp",
 ];
 
 const columnOrder = [
- "serialNumber","deviceProvider","deviceModal","status","registeredAt"
+  "avatarUrl", "active", "blocked", "id", "userRole",
+  "firstName", "middleName", "lastName", "secondLastName",
+  "phone", "address", "city", "state", "zip",
+  "country", "language", "timezone",
 ];
 
 const columnNameOverrides = {
-   serialNumber: "Serial Number",
-   deviceProvider: "Provider",
-    deviceModal: "AModalr",
-    status: "Status",
-    registeredAt: "registered At",
-  
+  id: "User ID",
+  userRole: "User Role",
+  avatarUrl: "Avatar",
+  username: "Username",
+  email: "Email",
+  active: "Active",
+  blocked: "Blocked",
+  accountExpired: "Account Expired",
+  credentialsExpired: "Credentials Expired",
+  accountLocked: "Account Locked",
+  notificationsEnabled: "Notifications Enabled",
+  createdAt: "Created At",
+  updatedAt: "Updated At",
+  createdByIp: "Created From IP",
+  lastLoginAt: "Last Login At",
+  lastLoginIp: "Last Login IP",
 };
-const customCellRenderers = {};
+
+const customCellRenderers = {
+  avatarUrl: (url) => (
+    <img
+      src={url ?url:placeHolder}
+      alt="User Avatar"
+      style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+    />
+  ),
+  active: (val) => (val ? "Yes" : "No"),
+  deleted: (val) => (val ? "Yes" : "No"),
+  blocked: (val) => (val ? "Yes" : "No"),
+  accountExpired: (val) => (val ? "Yes" : "No"),
+  credentialsExpired: (val) => (val ? "Yes" : "No"),
+  accountLocked: (val) => (val ? "Yes" : "No"),
+  notificationsEnabled: (val) => (val ? "Yes" : "No"),
+};
 
 
   const navigate = useNavigate();
@@ -50,24 +80,39 @@ const customCellRenderers = {};
   const [initialLoad, setInitialLoad] = useState(true);
 
   const [filters, setFilters] = useState({
-     id:"",
-      merchantId: "",
-      status: "",
-   serialNumber: "",
-    deviceBrand: "",
-    deviceModel: "",
-
+  role:"guest",
+  deleted: false,
+  active: null,
+  blocked: null,
+  accountExpired: null,
+  credentialsExpired: null,
+  accountLocked: null,
+  notificationsEnabled: null,
+  id: "",
+  username: "",
+  email: "",
+  state: "",
+  phone: "",
+  city: "",
 });
 
 const resetFilters =()=>{
 
 setFilters({
-    id:"",
-    merchantId: "",
-   status: "",
-   serialNumber: "",
-    deviceBrand: "",
-    deviceModel: "",
+   role: null,
+  deleted: false,
+  active: true,
+  blocked: null,
+  accountExpired: null,
+  credentialsExpired: null,
+  accountLocked: null,
+  notificationsEnabled: null,
+  id: "",
+  username: "",
+  email: "",
+  state: "",
+  phone: "",
+  city: "",
 });
 
 
@@ -79,12 +124,12 @@ setFilters({
   credentialsExpired: null,
   accountLocked: null,
   notificationsEnabled: null,
-    id:"",
-    merchantId: "",
-   status: "",
-   serialNumber: "",
-    deviceBrand: "",
-    deviceModel: "",
+  id: "",
+  username: "",
+  email: "",
+  state: "",
+  phone: "",
+  city: "",
 });
 
 
@@ -97,7 +142,7 @@ setFilters({
     setIsFetching(true);
     try {
       const activeFilters = filtersParam || filters;
-      let url = `/devices?page=${page}&size=10`;
+      let url = `/app-users/searchguests?page=${page}&size=10`;
       Object.entries(activeFilters).forEach(([key, value]) => {
   if (value !== "" && value !== null && value !== undefined) {
     url += `&${key}=${value}`;
@@ -136,7 +181,7 @@ setFilters({
   };
 
   const handleSelectMerchant = (merchant) => {
-  const updatedFilters = { ...filters, merchantId: merchant?.id || "" };
+    const updatedFilters = { ...filters, idOfMerchant: merchant.id };
     setFilters(updatedFilters);
     fetchData(0, updatedFilters);
   };
@@ -159,11 +204,11 @@ useEffect(() => {
 const handleDelete = async (id) => {
   try {
     setLoading(true);
-    const res = await axiosInstance.delete(`/devices/${id}`,  { delete: true});
+    const res = await axiosInstance.delete(`/app-users/${id}`,  { delete: true});
     setLoading(false);
 
   console.log("res",  res);
-     if ((res.status >= 200 && res.status < 300) && res.data && res.data.message === "Deleted successfully") {
+     if ((res.status >= 200 && res.status < 300) && res.data && res.data.message === "User marked as deleted successfully") {
       showAlert('success', 'Delete  Successfully');
      fetchData();
     } else {
@@ -279,42 +324,10 @@ const  handleAccountExpired = async (id) => {
     <>
 
   
-  <div className="createdr-section-title-large">  Devices</div>
-
-
-  {hasPermission("Transactions", "delete") && (
-        <MerchantDropdownSelector onSelect={handleSelectMerchant} />
-      )}
+  <div className="createdr-section-title-large">Leads</div>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* 
-"s" → flex-start
-
-"e" → flex-end
-
-"in" → space-between
-
-"around" → space-around
-
-"even" → space-evenly */}
 
 
  <div className="createdr-section-title-start">Filter  by :</div>
@@ -323,10 +336,83 @@ const  handleAccountExpired = async (id) => {
 
 
 
+<FilterCheckbox
+  label="Only Active"
+  checked={filters.active === true}
+  onChange={(e) => {
+    const isChecked = e.target.checked;
+    setFilters((prev) => ({
+      ...prev,
+      active: isChecked ? true : null,
+      blocked: isChecked ? false : prev.blocked,
+      accountExpired: isChecked ? false : prev.accountExpired,
+      credentialsExpired: isChecked ? false : prev.credentialsExpired,
+      accountLocked: isChecked ? false : prev.accountLocked,
+      deleted: isChecked ? false : prev.deleted,
+    }));
+  }}
+/>
 
 
 
 
+
+
+
+  <FilterCheckbox
+  label=" Credentials Expired"
+  checked={filters.credentialsExpired === true}
+  onChange={(e) =>
+    setFilters((prev) => ({
+      ...prev,
+      credentialsExpired: e.target.checked ? true : null,
+    }))
+  }
+/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <FilterCheckbox
+    label="Blocked"
+    checked={filters.blocked=== true}
+    onChange={(e) =>
+      setFilters((prev) => ({
+        ...prev,
+        blocked: e.target.checked? true : null,
+      }))
+    }
+  />
+
+<FilterCheckbox
+  label="Account Locked"
+  checked={filters.accountLocked === true}
+  onChange={(e) =>
+    setFilters((prev) => ({
+      ...prev,
+      accountLocked: e.target.checked ? true : null,
+    }))
+  }
+/>
+<FilterCheckbox
+  label=" Account Expired"
+  checked={filters.accountExpired === true}
+  onChange={(e) =>
+    setFilters((prev) => ({
+      ...prev,
+      accountExpired: e.target.checked ? true : null,
+    }))
+  }
+/>
 
 
 
@@ -339,14 +425,8 @@ const  handleAccountExpired = async (id) => {
 
 
 
-
-
-
-
-
-
 <MainFilterInput
-  label="Device ID"
+  label="User ID"
   value={filters.id}
   onChange={(e) =>
     setFilters((prev) => ({ ...prev, id: e.target.value }))
@@ -354,38 +434,46 @@ const  handleAccountExpired = async (id) => {
 />
 
 
-
-
 <MainFilterInput
-  label="Status"
-  value={filters.status}
+  label="Username"
+  value={filters.username}
   onChange={(e) =>
-    setFilters((prev) => ({ ...prev, status: e.target.value }))
-  }
-/>
-
-<MainFilterInput
-  label="Serial Number"
-  value={filters.serialNumber}
-  onChange={(e) =>
-    setFilters((prev) => ({ ...prev, serialNumber: e.target.value }))
-  }
-/>
-
-<MainFilterInput
-  label="Provider"
-  value={filters.deviceBrand}
-  onChange={(e) =>
-    setFilters((prev) => ({ ...prev, deviceBrand: e.target.value }))
+    setFilters((prev) => ({ ...prev, username: e.target.value }))
   }
 />
 
 
+
 <MainFilterInput
-  label="Modal"
-  value={filters.deviceModel}
+  label="Email"
+  value={filters.email}
   onChange={(e) =>
-    setFilters((prev) => ({ ...prev, deviceModel: e.target.value }))
+    setFilters((prev) => ({ ...prev, email: e.target.value }))
+  }
+/>
+
+<MainFilterInput
+  label="Phone"
+  value={filters.phone}
+  onChange={(e) =>
+    setFilters((prev) => ({ ...prev, phone: e.target.value }))
+  }
+/>
+
+<MainFilterInput
+  label="City"
+  value={filters.city}
+  onChange={(e) =>
+    setFilters((prev) => ({ ...prev, city: e.target.value }))
+  }
+/>
+
+
+<MainFilterInput
+  label="State"
+  value={filters.state}
+  onChange={(e) =>
+    setFilters((prev) => ({ ...prev, state: e.target.value }))
   }
 />
 
@@ -414,12 +502,7 @@ const  handleAccountExpired = async (id) => {
 
 <ButtonCustomizedAction action="refresh" label="Refresh" onClick={handleApplyFilters}/>
 
-
-   {canDeleteTransactions && ( <CreateButton to="/devices-create" label="Add New Device"/>)}
-
-
-
-
+<CreateButton to="/users-create" label="Add New User"/>
 
 </AppFlexBox>
    {isFetching ? (
@@ -437,8 +520,8 @@ const  handleAccountExpired = async (id) => {
     totalPages={pageInfo.totalPages}
     onPageChange={handlePageChange}
     data={drData}
-    viewRoute="/devices-view"
-    updateRoute="/devices-update"
+    viewRoute="/users-view"
+    updateRoute="/users-update"
     handleDelete={handleDelete}
 
     handleblock={handleblock}
@@ -456,13 +539,4 @@ const  handleAccountExpired = async (id) => {
   );
 };
 
-export default DevicePage;
-
-
-
-
-
-
-
-
-
+export default LeadsPage;

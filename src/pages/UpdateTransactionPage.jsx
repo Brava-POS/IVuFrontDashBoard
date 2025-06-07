@@ -15,6 +15,7 @@ import CustomizedButton from '../components/CustomizedButton';
 import AdditionalAmountModal from '../components/AdditionalAmountModal';
 import UpdateAdditionalAmountModal from '../components/UpdateAdditionalAmountModal';
 import ButtonCustomizedAction from '../components/ButtonCustomizedAction';
+import  placeHolder  from '../assets/images/placeHolder.png';
 
 
 
@@ -299,19 +300,87 @@ const sunmitTaxesNoAdditioanlAmount = async () => {
       <RedTitle title={`Update Transaction with control number: ${form.controlNumberCode}`} />
       <BackButton to="/transactions" label="Back to Transactions " />
       {/* Merchant Header */}
+
+
+
+
+      
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-        {form.appUserAvatar && (
-          <img
-            src={form.appUserAvatar}
-            alt="Merchant Avatar"
-            style={{ width: '60px', height: '60px', borderRadius: '50%', marginRight: '20px' }}
-          />
-        )}
+
+      
+            
         <div>
+
+
+
+       {form.appUserAvatar ? (
+  <img
+    src={form.appUserAvatar}
+    alt="User Avatar"
+    style={{
+      width: '60px',
+      height: '60px',
+      borderRadius: '50%',
+      marginRight: '20px',
+      objectFit: 'cover'
+    }}
+  />
+) : (
+ 
+   <img
+    src={placeHolder}
+    alt="User Avatar"
+    style={{
+      width: '60px',
+      height: '60px',
+      borderRadius: '50%',
+      marginRight: '20px',
+      objectFit: 'cover'
+    }}
+  />
+ 
+)}
+
           <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{form.merchantSerialNumber}</div>
           <div style={{ color: '#555' }}>{form.merchantTaxId}</div>
         </div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+ 
+
+
+
+
+
+
+
+
+
+
+
+
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
       <div className="createdr-section">

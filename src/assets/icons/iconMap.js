@@ -11,6 +11,10 @@ import { MdAccountTree } from "react-icons/md";
 import { TbCreditCardPay } from "react-icons/tb";
 import { FaUsersCog } from "react-icons/fa";
 import { FaUsersRays } from "react-icons/fa6";
+import { GrUserAdmin } from "react-icons/gr";
+import { FaUsersViewfinder } from "react-icons/fa6";
+import { FaUsersBetweenLines } from "react-icons/fa6";
+import { VscFileSubmodule } from "react-icons/vsc"; // informative files
 
 
 
@@ -28,8 +32,10 @@ export const iconMap = {
   InformativeFiles:TfiFiles ,
   Account:MdAccountTree,
  Subscribe: TbCreditCardPay,
-Subscriptions: TbCreditCardPay,
- Users: FaUsersRays,
+  Subscriptions: TbCreditCardPay,
+ Users: FaUsersBetweenLines,
+  Leads: FaUsersViewfinder,
+   Admins: GrUserAdmin,
 
 
 };

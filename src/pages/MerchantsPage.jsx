@@ -9,6 +9,7 @@ import FilterCheckbox from "../components/FilterCheckbox";
 import MainFilterInput from "../components/MainFilterInput";
 import AppFlexBox from "../components/AppFlexBox";
 import logo from '../assets/images/brava.png';
+import  placeHolder  from '../assets/images/placeHolder.png';
 
 const MerchantsPage = () => {
   const { loading, setLoading, axiosInstance } = useAuth();
@@ -62,7 +63,7 @@ const [filters, setFilters] = useState({
               avatarUrl
               : (url) => (
                       <img
-                        src={url ?url:logo}
+                        src={url ?url:placeHolder}
                         alt="User Avatar"
                         style={{ width: "40px", height: "40px", borderRadius: "50%" }}
                       />

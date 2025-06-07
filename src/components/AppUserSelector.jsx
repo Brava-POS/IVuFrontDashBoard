@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import MainAppSpinner from './MainAppSpinner';
 import logo from '../assets/images/brava.png';
+import { CiSquareRemove } from "react-icons/ci";
+import  placeHolder  from '../assets/images/placeHolder.png';
 
 
 export default function AppUserSelector({ onSelect }) {
@@ -101,7 +103,7 @@ const params = new URLSearchParams();
               <>
                
                   <img
-                    src={selectedMerchant.avatarUrl?selectedMerchant.avatarUrl:logo}
+                    src={selectedMerchant.avatarUrl?selectedMerchant.avatarUrl:placeHolder}
                     alt={selectedMerchant.username}
                     className="merchantDropdownSelector-avatar"
                   />
@@ -121,7 +123,7 @@ const params = new URLSearchParams();
                   onClick={handleReset}
                   title="Reset to All Users"
                 >
-                  Reset
+                <CiSquareRemove style={{ fontSize: '28px', color: 'black' }} />
                 </button>
 
 
@@ -175,7 +177,7 @@ const params = new URLSearchParams();
                   >
                     <div className="merchantDropdownSelector-itemLeft">
                       <img
-                        src={merchant.avatarUrl}
+                        src={merchant.avatarUrl ? merchant.avatarUrl:placeHolder}
                         alt={merchant.username}
                         className="merchantDropdownSelector-avatarLarge"
                       />

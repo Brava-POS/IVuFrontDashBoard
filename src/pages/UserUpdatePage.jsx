@@ -10,6 +10,8 @@ import Input from '../components/Input ';
 import ButtonCustomizedAction from '../components/ButtonCustomizedAction';
 import { MdClose } from 'react-icons/md';
 import zxcvbn from 'zxcvbn';
+import  placeHolder  from '../assets/images/placeHolder.png';
+
 
 const UserUpdatePage = () => {
   const { axiosInstance } = useAuth();
@@ -22,30 +24,6 @@ const UserUpdatePage = () => {
 const [newPassword, setNewPassword] = useState('');
 const [confirmPassword, setConfirmPassword] = useState('');
 
-// const handlePasswordChange = async () => {
-//   if (newPassword !== confirmPassword) {
-//     showAlert('error', 'Passwords do not match');
-//     return;
-//   }
-
-//   try {
-//     setLoading(true);
-//     const res = await axiosInstance.put(`/app-users/${id}`, { password: newPassword });
-
-//     if (res.status === 200 && res.data?.message) {
-//       showAlert('success', 'Password updated successfully');
-//       setShowPasswordModal(false);
-//       setNewPassword('');
-//       setConfirmPassword('');
-//     } else {
-//       showAlert('error', 'Password update failed');
-//     }
-//   } catch (err) {
-//     Swal.fire('Password update failed', err?.response?.data?.message || '', 'error');
-//   } finally {
-//     setLoading(false);
-//   }
-// };
 
 
 const handlePasswordChange = async () => {
@@ -128,7 +106,19 @@ const fileToBase64 = (file) => {
     const fetchUser = async () => {
       try {
         const res = await axiosInstance.get(`/app-users/${id}`);
-        setForm({ ...form, ...res.data });
+
+
+const normalizedData = Object.fromEntries(
+  Object.entries(res.data).map(([key, value]) => [key, value ?? ""])
+);
+setForm({ ...form, ...normalizedData });
+
+
+
+
+
+
+    //    setForm({ ...form, ...res.data });
         if (res.data.avatarUrl) {
         setAvatar(res.data.avatarUrl);
 }
@@ -172,15 +162,12 @@ const validateForm = () => {
     newErrors.firstName = "First name is required";
   }
 
-  if (!form.lastName.trim()) {
-    newErrors.lastName = "Last name is required";
-  }
 
-  if (!form.phone.trim()) {
-    newErrors.phone = "Phone is required";
-  } else if (!/^\d+$/.test(form.phone.trim())) {
-    newErrors.phone = "Phone must be numeric";
-  }
+
+if (form.phone && form.phone.trim() && !/^\d+$/.test(form.phone.trim())) {
+  newErrors.phone = "Phone must be numeric";
+}
+
 
   setErrors(newErrors);
   return Object.keys(newErrors).length === 0;
@@ -244,7 +231,7 @@ const handleSubmit = async () => {
 
     if (res.status === 200 && res.data?.message) {
       showAlert('success', res.data.message);
-      navigate('/users');
+    //  navigate('/users');
     } else {
       showAlert('error', 'Update failed');
     }
@@ -268,8 +255,17 @@ const handleSubmit = async () => {
 
   return (
     <div className="createdr-container">
-      <RedTitle title={`Update User: ${form.username}`} />
-      <BackButton to="/users" label="Back to Users" />
+      <RedTitle title={`Update : ${form.username}`} />
+
+
+
+     <ButtonCustomizedAction
+        onClick={() => navigate(-1)}  
+        label="Back"
+        action="back" 
+      />
+
+
 
 
 
@@ -285,10 +281,26 @@ const handleSubmit = async () => {
       </span>
     )}
     <img
-      src={avatar instanceof File ? URL.createObjectURL(avatar) : avatar}
-      alt="Avatar Preview"
-      className="avatar-preview-image"
-    />
+  src={
+    avatar
+      ? avatar instanceof File
+        ? URL.createObjectURL(avatar)
+        : avatar
+      : placeHolder
+  }
+  onError={(e) => (e.target.src = placeHolder)}
+  alt="Avatar Preview"
+  className="avatar-preview-image"
+/>
+
+
+
+
+
+
+
+
+
   </div>
 
   <div className="avatar-actions">
@@ -392,7 +404,7 @@ const handleSubmit = async () => {
         <div className="createdr-section-title">User Details</div>
 
         {[
-          "email", "username", "password", "firstName", "middleName", "lastName",
+          "email", "username",  "firstName", "middleName", "lastName",
           "secondLastName", "phone", "address", "city", "state", "zip",
           "country", "language", "timezone"
         ].map((field) => (

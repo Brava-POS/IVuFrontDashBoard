@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import MainAppSpinner from '../components/MainAppSpinner';
 import BackButton from '../components/BackButton';
+import  placeHolder  from '../assets/images/placeHolder.png';
 
 // Format cents to dollars
 const formatAmount = (val) => {
@@ -105,22 +106,59 @@ const ViewTransactionPage = () => {
 
       <div>
         {/* Merchant Header */}
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-          {transaction.appUserAvatar && (
-            <img
-              src={transaction.appUserAvatar}
-              alt="Merchant Avatar"
-              style={{
-                width: '60px', height: '60px',
-                borderRadius: '50%', marginRight: '20px'
-              }}
-            />
-          )}
+
+
+
+       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+
+
+
+       {transaction.appUserAvatar ? (
+  <img
+    src={transaction.appUserAvatar}
+    alt="User Avatar"
+    style={{
+      width: '60px',
+      height: '60px',
+      borderRadius: '50%',
+      marginRight: '20px',
+      objectFit: 'cover'
+    }}
+  />
+) : (
+ 
+   <img
+    src={placeHolder}
+    alt="User Avatar"
+    style={{
+      width: '60px',
+      height: '60px',
+      borderRadius: '50%',
+      marginRight: '20px',
+      objectFit: 'cover'
+    }}
+  />
+ 
+)}
+
           <div>
             <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{transaction.merchantUserrname}</div>
             <div style={{ color: '#555' }}>{transaction.merchantSerialNumber}</div>
           </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         {/* Standard Fields */}
         {Object.entries(transaction).map(([key, value], index) => {

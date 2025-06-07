@@ -92,7 +92,7 @@ body {
 
 .top-level-header {
   height: 60px;
-  background-color: var(--red-4);
+   background-color: var(--red-3);
   color: white;
   display: flex;
   align-items: center;
@@ -121,7 +121,7 @@ body {
 
 /* Sidebar */
 .sidebar {
-  width: 180px;
+  width: 220px;
   background-color: var(--red-3);
   color: white;
   padding: 20px 16px;
@@ -146,19 +146,19 @@ body {
 
 .sidebar .nav-link {
   text-decoration: none;
-  color: white;
-  font-weight: 500;
+   color: white; 
+
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
   border-radius: 6px;
-  transition: background 0.2s ease;
+
 }
 
-.sidebar .nav-link:hover {
-  background-color: var(--red-2);
-}
+/* .sidebar .nav-link:hover {
+  background-color: var(--red-5);
+} */
 
 /* Main Content - scrollable area */
 .main-content {
@@ -186,7 +186,7 @@ body {
   background: #f9f9f9;
 }
 
-/* Responsive (if needed later) */
+
 @media (max-width: 768px) {
   .sidebar {
     width: 200px;
@@ -199,7 +199,7 @@ body {
 }
 
 
-/*  Non layout css */
+
 
 
 

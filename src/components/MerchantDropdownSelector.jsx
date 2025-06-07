@@ -2,7 +2,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import MainAppSpinner from './MainAppSpinner';
-
+import  placeHolder  from '../assets/images/placeHolder.png';
+import { TbCreditCardPay } from "react-icons/tb";
+import { CiSquareRemove } from "react-icons/ci";
 
 export default function MerchantDropdownSelector({ onSelect }) {
   const { axiosInstance } = useAuth();
@@ -79,7 +81,7 @@ export default function MerchantDropdownSelector({ onSelect }) {
               <>
                 <div className="merchantDropdownSelector-selectedInfo">
                   <img
-                    src={selectedMerchant.avatarUrl}
+                    src={selectedMerchant.avatarUrl ? selectedMerchant.avatarUrl :placeHolder}
                     alt={selectedMerchant.username}
                     className="merchantDropdownSelector-avatar"
                   />
@@ -97,7 +99,9 @@ export default function MerchantDropdownSelector({ onSelect }) {
                   onClick={handleReset}
                   title="Reset to All Merchants"
                 >
-                  Reset
+
+                        <CiSquareRemove style={{ fontSize: '28px', color: 'black' }} />
+                 
                 </button>
               </>
             ) : (
@@ -151,7 +155,7 @@ export default function MerchantDropdownSelector({ onSelect }) {
                   >
                     <div className="merchantDropdownSelector-itemLeft">
                       <img
-                        src={merchant.avatarUrl}
+                        src={merchant.avatarUrl ? merchant.avatarUrl :placeHolder}
                         alt={merchant.username}
                         className="merchantDropdownSelector-avatarLarge"
                       />

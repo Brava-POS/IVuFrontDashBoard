@@ -25,7 +25,7 @@ import './app-css/UpdateMerchantPage.css';
 import './app-css/UpdateMerchantPage.css';
 
  import './app-css/RoleToggle.css';
-// import './app-css/UpdateMerchantPage.css';
+ import './app-css/SumCard.css';
 // import './app-css/UpdateMerchantPage.css';
 // import './app-css/UpdateMerchantPage.css';
 // import './app-css/UpdateMerchantPage.css';

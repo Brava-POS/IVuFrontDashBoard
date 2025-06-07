@@ -7,6 +7,9 @@ import { MdClose } from 'react-icons/md';
 import zxcvbn from 'zxcvbn';
 import BackButton from '../components/BackButton';
 import { showAlert } from '../components/SweetAlertComponent';
+import  placeHolder  from '../assets/images/placeHolder.png';
+import ButtonCustomizedAction from './ButtonCustomizedAction';
+
 
 const RegisterNewGuest = () => {
   const { loading,registerByAdmin  } = useAuth();
@@ -200,7 +203,13 @@ const strengthLabel = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
 
 
 <>
- <BackButton to="/users" label="Back to Users" />
+ <ButtonCustomizedAction
+        onClick={() => navigate(-1)}  
+        label="Back"
+        action="back" 
+      />
+
+
 
 
 
@@ -271,7 +280,7 @@ const strengthLabel = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
       </span>
     )}
     <img
-      src={avatar ? URL.createObjectURL(avatar) : logo}
+      src={avatar ? URL.createObjectURL(avatar) : placeHolder}
       alt="Avatar Preview"
       className="avatar-preview-image"
     />

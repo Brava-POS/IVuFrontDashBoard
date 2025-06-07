@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import  placeHolder  from '../assets/images/placeHolder.png';
 
 
 import {
@@ -10,6 +11,7 @@ import {
 } from 'react-icons/fa';
 import MainAppSpinner from '../components/MainAppSpinner';
 import BackButton from '../components/BackButton';
+import ButtonCustomizedAction from '../components/ButtonCustomizedAction';
 
 function UsersViewPage() {
   const { axiosInstance } = useAuth();
@@ -42,11 +44,17 @@ function UsersViewPage() {
 
 return (
     <>
-      <BackButton to="/users" label="Back to Users" />
+    <ButtonCustomizedAction
+        onClick={() => navigate(-1)}  
+        label="Back"
+        action="back" 
+      />
+
+
 
       <div className="profile_v2-info">
         <div className="profile_v2-usercard">
-          <img src={userData.avatarUrl} alt="User Avatar" className="profile_v2-avatar" />
+          <img src={userData.avatarUrl ? userData.avatarUrl:placeHolder} alt="User Avatar" className="profile_v2-avatar" />
           <h4 className="profile_v2-name">{userData.username?.toUpperCase()}</h4>
         </div>
 

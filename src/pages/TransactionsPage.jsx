@@ -14,8 +14,10 @@ import AppFlexBox from "../components/AppFlexBox";
 import MainFilterInput from "../components/MainFilterInput";
 
 const TransactionsPage = () => {
+ 
   const navigate = useNavigate();
   const { axiosInstance, loading, setLoading, user, hasPermission } = useAuth();
+    const canDeleteTransactions = hasPermission("Transactions", "delete");
   const isAdmin = user?.role === "ROLE_ADMIN";
 
   const [drData, setDrData] = useState([]);
@@ -185,8 +187,8 @@ const TransactionsPage = () => {
   }}
 />
 
-
-      <CreateButton to="/create-transaction-page" label="Add New Detailed Record" />
+     {canDeleteTransactions && ( <CreateButton to="/create-transaction-page" label="Add New Detailed Record" />)}
+     
 
 
 </AppFlexBox>
@@ -207,6 +209,7 @@ const TransactionsPage = () => {
           createRoute="/create-transaction-page"
           viewRoute="/view-transaction-page"
           updateRoute="/edit-transaction-page"
+          showViewButton = {true}
           visibleColumns={[
             "controlNumberCode",
             "transactionDate",

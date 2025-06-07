@@ -1,8 +1,12 @@
 import React, { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 
+//const API_BASE = "https://api.atmbrava.com";
+//const API_BASE = 'http://localhost:9999';
+//const API_BASE = 'https://api.atmbrava.com/';
+const API_BASE = "http://3.23.187.147:9999/";
+//3.23.187.147
 
-const API_BASE = 'http://localhost:9999';
 
 const AuthContext = createContext();
 AuthContext.displayName = 'AuthContext';

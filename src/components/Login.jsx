@@ -30,7 +30,7 @@ const Login = () => {
  return (
   <div className="login-ivu-wrapper">
     <form onSubmit={handleLogin} className="login-ivu-form">
-    Testing ... ui realase rebuild 
+
       <input
         className="login-ivu-input"
         type="text"

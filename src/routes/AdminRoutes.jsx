@@ -21,6 +21,7 @@ import MerchantSubscribtionsUpdatePage from "../pages/MerchantSubscribtionsUpdat
 import ElavonPaymentView from "../pages/ElavonPaymentView";
 import LeadsPage from "../pages/LeadsPage";
 import AdminsPage from "../pages/AdminsPage";
+import InformativeFile from "../pages/InformativeFile";
 
 const AdminRoutes = [
   { path: "informativefile", element: <InformativeFiles /> },
@@ -62,6 +63,26 @@ const AdminRoutes = [
   },
 
   { path: "elavon-payment-view/:id", element: <ElavonPaymentView /> },
+
+
+ // InformativeFilesd
+
+  { path: "informativefiles", element: <InformativeFile /> },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ];
 
 export default AdminRoutes;

@@ -15,8 +15,8 @@ const MerchantCreatePage = () => {
   const [loading, setLoading] = useState(false);
   const [appUser, setAppUser] = useState(null);
   const [formData, setFormData] = useState({
-    processorId: 1,
-    institutionId: 1,
+   merchantNumber:"134567888",
+    merchantTaxId: 12344444,
     appUserId: null
   });
 const handleSelectMerchant = (user) => {
@@ -49,9 +49,9 @@ const handleSelectMerchant = (user) => {
 
       setAppUser(null);
       setFormData({
-        processorId: 1,
-        institutionId: 1,
-        appUserId: null
+          merchantNumber:"134566888",
+    merchantTaxId: 1234444,
+    appUserId: null
       });
 
     } catch (err) {

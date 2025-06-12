@@ -22,6 +22,7 @@ import ElavonPaymentView from "../pages/ElavonPaymentView";
 import LeadsPage from "../pages/LeadsPage";
 import AdminsPage from "../pages/AdminsPage";
 import InformativeFile from "../pages/InformativeFile";
+import InformativeFileParser from "../pages/InformativeFileParser";
 
 const AdminRoutes = [
   { path: "informativefile", element: <InformativeFiles /> },
@@ -68,8 +69,9 @@ const AdminRoutes = [
  // InformativeFilesd
 
   { path: "informativefiles", element: <InformativeFile /> },
+  { path: "informativefiles-parser", element: <InformativeFileParser /> },
 
-
+   
 
 
 

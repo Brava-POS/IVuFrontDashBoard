@@ -15,6 +15,35 @@
   border-radius: 6px;
 }
 
+
+
+
+
+.createdr-section-if {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  /* Elevation/Shadow only */
+  background: transparent;
+  border: none;
+  box-shadow:
+    0 2px 8px 0 rgba(132, 32, 41, 0.10),
+    0 0.5px 1.5px 0 rgba(132, 32, 41, 0.08);
+  /* Optional: transition for a little fade */
+  transition: box-shadow 0.2s;
+}
+
+.createdr-section-if:hover {
+  box-shadow:
+    0 4px 24px 0 rgba(132, 32, 41, 0.20),
+    0 1.5px 4px 0 rgba(132, 32, 41, 0.09);
+}
+
+
+
+
+
 .createdr-sectionv2 {
   display: flex;
   width: 100%;

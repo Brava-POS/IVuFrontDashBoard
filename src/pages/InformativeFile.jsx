@@ -4,8 +4,10 @@ import TableComponent from "../components/TableComponent";
 import MainAppSpinner from "../components/MainAppSpinner";
 import ButtonCustomizedAction from "../components/ButtonCustomizedAction";
 import AppFlexBox from "../components/AppFlexBox";
+import { useNavigate } from "react-router-dom";
 
 const InformativeFile = () => {
+    const navigate = useNavigate();
   const { axiosInstance, loading, setLoading } = useAuth();
   const [files, setFiles] = useState([]);
   const [continuationToken, setContinuationToken] = useState(null);
@@ -21,7 +23,7 @@ const InformativeFile = () => {
       let response;
 
       if (dateParam) {
-        const searchUrl = `/s3/search/informative-files?date=${dateParam}${
+        const searchUrl = `/informative-files/search?date=${dateParam}${
           token ? `&continuationToken=${token}` : ""
         }`;
         response = await axiosInstance.get(searchUrl);
@@ -56,7 +58,7 @@ const InformativeFile = () => {
     const filename = selectedFile.replace("informative-files/", "");
     try {
       const response = await axiosInstance.get(
-        `/s3/download/informative-files/${filename}`,
+        `/informative-files/download/${filename}`,
         { responseType: "blob" }
       );
       const blob = new Blob([response.data], { type: "text/plain" });
@@ -70,6 +72,31 @@ const InformativeFile = () => {
       console.error("Download failed", error);
     }
   };
+
+
+
+const handleParse = async () => {
+  if (!selectedFile) return;
+  const filename = selectedFile.replace("informative-files/", "");
+  try {
+    const response = await axiosInstance.get(`/informative-files/parse?filename=${filename}`);
+
+    if (response.status === 200 && response.data) {
+      console.log("Parsed Data:", response.data);
+      navigate('/informativefiles-parser', { state: {fielname :filename, parsedData: response.data } });
+    } else {
+      console.error("Invalid response format", response);
+    }
+
+  } catch (error) {
+    console.error("Parsing failed", error);
+  }
+};
+
+
+
+
+
 
  const handleSearchByDate = () => {
   console.log("Searching with date:", date);
@@ -162,10 +189,21 @@ const InformativeFile = () => {
         {selectedFile && (
           <ButtonCustomizedAction
             action="download"
-            label="Download Selected File"
+            label="Parse Selected File"
+            onClick={handleParse}
+          />
+        )}
+
+      {selectedFile && (
+          <ButtonCustomizedAction
+            action="download"
+            label="Download   Selected File"
             onClick={handleDownload}
           />
         )}
+
+
+
       </AppFlexBox>
 
 

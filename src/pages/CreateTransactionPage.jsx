@@ -19,6 +19,9 @@ const CreateTransactionPage = () => {
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState(null);
   const [formData, setFormData] = useState({
+    posEntryModePos75_76L2: '',// slect between / default  "M " , "S " , "I " , "P " , "O " , "MO", "SO","IO", "PO", "OO"
+    transactionTypePos165_166L2: '',// selct netween //  default DB, CR, VP, VR, NA
+    paymentMethodPos14_17L4: '',// select //  default CASH, CHCK, DEBT, CRED, EBTC, EBTF, MULT, GIFT, STCR
     transactionDatePos81_88L8: '',
     transactionTimePos89_94L6: '',
     transactionAmountPos95_103L9: '',
@@ -169,6 +172,31 @@ const getFormattedFormData = (originalFormData) => {
     const newErrors = {};
 
 
+
+if (!formData.posEntryModePos75_76L2) {
+  newErrors.posEntryModePos75_76L2 = 'POS Entry Mode is required';
+}
+
+if (!formData.transactionTypePos165_166L2) {
+  newErrors.transactionTypePos165_166L2 = 'Transaction Type is required';
+}
+
+if (!formData.paymentMethodPos14_17L4) {
+  newErrors.paymentMethodPos14_17L4 = 'Payment Method is required';
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
  if (!/^\d{8}$/.test(formData.transactionDatePos81_88L8)) {
       newErrors.transactionDatePos81_88L8 = 'Date must be in YYYYMMDD format';
     }
@@ -284,20 +312,23 @@ return;
 
 
 
- setFormData({
-    transactionDatePos81_88L8: '',
-    transactionTimePos89_94L6: '',
-    transactionAmountPos95_103L9: '',
-    salesAmountPos104_112L9: '',
-    stateTaxAmountPos113_121L9: '',
-    cityTaxAmountPos122_130L9: '',
-    reducedStateTaxPos153_163L11: '',
-    controlNumberCodePrefixPos18_19L2: 'BR',
-    controlNumberCodePos20_29L10: 'ASWERKLRTE',
-    terminalBatchNumberPos60_62L3: '001',
-    transactionSequencePos63_74L12: '000000000001',
-    terminalNumberPos44_59L16: '1111111111111111',
-  });
+//  setFormData({
+  //  posEntryModePos75_76L2: '',// slect between / default  "M " , "S " , "I " , "P " , "O " , "MO", "SO","IO", "PO", "OO"
+  //   transactionTypePos165_166L2: '',// selct netween //  default DB, CR, VP, VR, NA
+  //   paymentMethodPos14_17L4: '',// select //  default CASH, CHCK, DEBT, CRED, EBTC, EBTF, MULT, GIFT, STCR
+//     transactionDatePos81_88L8: '',
+//     transactionTimePos89_94L6: '',
+//     transactionAmountPos95_103L9: '',
+//     salesAmountPos104_112L9: '',
+//     stateTaxAmountPos113_121L9: '',
+//     cityTaxAmountPos122_130L9: '',
+//     reducedStateTaxPos153_163L11: '',
+//     controlNumberCodePrefixPos18_19L2: 'BR',
+//     controlNumberCodePos20_29L10: 'ASWERKLRTE',
+//     terminalBatchNumberPos60_62L3: '001',
+//     transactionSequencePos63_74L12: '000000000001',
+//     terminalNumberPos44_59L16: '1111111111111111',
+//   });
 
 
 
@@ -340,8 +371,76 @@ return;
  
     
       <div className="createdr-form">
+{/* POS Entry Mode */}
+<div className="createdr-form-group">
+  <label htmlFor="posEntryModePos75_76L2">POS Entry Mode</label>
+  <select
+    name="posEntryModePos75_76L2"
+    value={formData.posEntryModePos75_76L2}
+    onChange={handleChange}
+    className="createdr-form-input"
+  >
+    <option value="">Select Mode</option>
+    <option value="M ">M</option>
+    <option value="S ">S</option>
+    <option value="I ">I</option>
+    <option value="P ">P</option>
+    <option value="O ">O</option>
+    <option value="MO">MO</option>
+    <option value="SO">SO</option>
+    <option value="IO">IO</option>
+    <option value="PO">PO</option>
+    <option value="OO">OO</option>
+  </select>
+</div>
+{errors.posEntryModePos75_76L2 && (
+  <div className="createdr-error">{errors.posEntryModePos75_76L2}</div>
+)}
+{/* Transaction Type */}
+<div className="createdr-form-group">
+  <label htmlFor="transactionTypePos165_166L2">Transaction Type</label>
+  <select
+    name="transactionTypePos165_166L2"
+    value={formData.transactionTypePos165_166L2}
+    onChange={handleChange}
+    className="createdr-form-input"
+  >
+    <option value="">Select Type</option>
+    <option value="DB">DB</option>
+    <option value="CR">CR</option>
+    <option value="VP">VP</option>
+    <option value="VR">VR</option>
+    <option value="NA">NA</option>
+  </select>
+</div>
+{errors.transactionTypePos165_166L2 && (
+  <div className="createdr-error">{errors.transactionTypePos165_166L2}</div>
+)}
+{/* Payment Method */}
+<div className="createdr-form-group">
+  <label htmlFor="paymentMethodPos14_17L4">Payment Method</label>
+  <select
+    name="paymentMethodPos14_17L4"
+    value={formData.paymentMethodPos14_17L4}
+    onChange={handleChange}
+    className="createdr-form-input"
+  >
+    <option value="">Select Method</option>
+    <option value="CASH">CASH</option>
+    <option value="CHCK">CHCK</option>
+    <option value="DEBT">DEBT</option>
+    <option value="CRED">CRED</option>
+    <option value="EBTC">EBTC</option>
+    <option value="EBTF">EBTF</option>
+    <option value="MULT">MULT</option>
+    <option value="GIFT">GIFT</option>
+    <option value="STCR">STCR</option>
+  </select>
+</div>
 
-
+{errors.paymentMethodPos14_17L4 && (
+  <div className="createdr-error">{errors.paymentMethodPos14_17L4}</div>
+)}
 <DateInput
   value={
     // convert stored YYYYMMDD to YYYY-MM-DD for input display

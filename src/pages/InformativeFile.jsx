@@ -81,7 +81,7 @@ const handleParse = async () => {
   try {
     const response = await axiosInstance.get(`/informative-files/parse?filename=${filename}`);
 
-    if (response.status === 200 && response.data) {
+    if (response.status === 201 && response.data) {
       console.log("Parsed Data:", response.data);
       navigate('/informativefiles-parser', { state: {fielname :filename, parsedData: response.data } });
     } else {

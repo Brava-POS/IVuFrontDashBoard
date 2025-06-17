@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AppFlexBox from "../components/AppFlexBox";
 import BackButton from "../components/BackButton";
 import RedTitle from '../components/RedTitle';
+import { BsDot } from "react-icons/bs";
 
 
 const FIELD_LABELS = {
@@ -124,10 +125,10 @@ const FIELD_LABELS = {
 }
 
 function ExpandableSection({ title, children }) {
-  const [isExpanded, setIsExpanded] = React.useState(false);
-  const sectionRef = React.useRef(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const sectionRef = useRef(null);
 
-  React.useEffect(() => {
+useEffect(() => {
     const handleClick = (event) => {
       if (!isExpanded) return;
 
@@ -165,7 +166,32 @@ function ExpandableSection({ title, children }) {
   );
 }
 
-function FHSection({ data }) {
+const RawStringDisplay = ({ raw }) => {
+  if (!raw) return null;
+
+  const rendered = raw.split("").map((char, index) => {
+    if (char === " ") {
+      return <BsDot key={index} style={{ color: "#aaa", display: "inline" }} />;
+    }
+    return <span key={index}>{char}</span>;
+  });
+
+  return (
+    <div className="createdr-section-if">
+      <pre style={{
+        whiteSpace: "pre-wrap",
+        fontFamily: "monospace",
+        fontSize: "18px",
+        wordBreak: "break-word",
+        overflowWrap: "anywhere"
+      }}>
+        {rendered}
+      </pre>
+    </div>
+  );
+};
+
+function FHSection({ data ,raw}) {
   if (!data) return null;
   const keys = [
     "recordType", "filler1", "fileProcessingDate", "fileType",
@@ -173,7 +199,18 @@ function FHSection({ data }) {
   ];
   return (
     <ExpandableSection title="File Header (FH)">
+
+
       <div className="createdr-section">
+
+
+
+  <RawStringDisplay raw={raw} />
+
+
+
+
+
         {keys.map((key) =>
           <div className="createdr-section-if" key={key}>
             <div style={{ fontWeight: "bold", color: "#5e1f04", fontStyle: "italic", fontSize: "18px", marginBottom: "8px" }}>
@@ -183,11 +220,15 @@ function FHSection({ data }) {
           </div>
         )}
       </div>
+
+
+
+
     </ExpandableSection>
   );
 }
 
-function MHSection({ data }) {
+function MHSection({ data,raw }) {
   if (!data) return null;
   const keys = [
     "recordType", "filler1", "fileProcessingDate", "filler2",
@@ -198,6 +239,7 @@ function MHSection({ data }) {
   return (
     <ExpandableSection title="Merchant Header (MH)">
       <div className="createdr-section">
+          <RawStringDisplay raw={raw} />
         {keys.map((key) =>
           <div className="createdr-section-if" key={key}>
             <div style={{ fontWeight: "bold", color: "#5e1f04", fontStyle: "italic", fontSize: "18px", marginBottom: "8px" }}>
@@ -211,7 +253,7 @@ function MHSection({ data }) {
   );
 }
 
-function BHCASHSection({ data }) {
+function BHCASHSection({ data,raw }) {
   if (!data) return null;
   const keys = [
     "recordType", "paymentIndicator", "fileProcessingDate", "filler1",
@@ -221,6 +263,7 @@ function BHCASHSection({ data }) {
   return (
     <ExpandableSection title="Batch Header Cash (BHCASH)">
       <div className="createdr-section">
+          <RawStringDisplay raw={raw} />
         {keys.map((key) =>
           <div className="createdr-section-if" key={key}>
             <div style={{ fontWeight: "bold", color: "#5e1f04", fontStyle: "italic", fontSize: "18px", marginBottom: "8px" }}>
@@ -234,7 +277,32 @@ function BHCASHSection({ data }) {
   );
 }
 
-function BTCASHSection({ data }) {
+function BHCARDSection({ data,raw }) {
+  if (!data) return null;
+  const keys = [
+    "recordType", "paymentIndicator", "fileProcessingDate", "filler1",
+    "processorCertificationNumber", "institutionNumber", "merchantTaxId",
+    "merchantNumber", "filler2"
+  ];
+  return (
+    <ExpandableSection title="Batch Header Card (BHCARD)">
+      <div className="createdr-section">
+          <RawStringDisplay raw={raw} />
+        {keys.map((key) =>
+          <div className="createdr-section-if" key={key}>
+            <div style={{ fontWeight: "bold", color: "#5e1f04", fontStyle: "italic", fontSize: "18px", marginBottom: "8px" }}>
+              {FIELD_LABELS[key] || key}
+            </div>
+            <div><FieldDisplay field={key} value={data[key]} /></div>
+          </div>
+        )}
+      </div>
+    </ExpandableSection>
+  );
+}
+
+
+function BTCASHSection({ data,raw }) {
   if (!data) return null;
   const keys = [
     "recordType", "paymentIndicator", "fileProcessingDate", "filler1",
@@ -245,6 +313,7 @@ function BTCASHSection({ data }) {
   return (
     <ExpandableSection title="Batch Trailer Cash (BTCASH)">
       <div className="createdr-section">
+          <RawStringDisplay raw={raw} />
         {keys.map((key) =>
           <div className="createdr-section-if" key={key}>
             <div style={{ fontWeight: "bold", color: "#5e1f04", fontStyle: "italic", fontSize: "18px", marginBottom: "8px" }}>
@@ -258,7 +327,32 @@ function BTCASHSection({ data }) {
   );
 }
 
-function MTSection({ data }) {
+function BTCARDSection({ data,raw }) {
+  if (!data) return null;
+  const keys = [
+    "recordType", "paymentIndicator", "fileProcessingDate", "filler1",
+    "processorCertificationNumber", "institutionNumber", "merchantTaxId",
+    "merchantNumber", "totalBatchRecords", "totalBatchSalesAmount",
+    "totalBatchStateTaxAmount", "totalBatchCityTaxAmount", "filler2"
+  ];
+  return (
+    <ExpandableSection title="Batch Trailer Card (BTCARD)">
+      <div className="createdr-section">
+          <RawStringDisplay raw={raw} />
+        {keys.map((key) =>
+          <div className="createdr-section-if" key={key}>
+            <div style={{ fontWeight: "bold", color: "#5e1f04", fontStyle: "italic", fontSize: "18px", marginBottom: "8px" }}>
+              {FIELD_LABELS[key] || key}
+            </div>
+            <div><FieldDisplay field={key} value={data[key]} /></div>
+          </div>
+        )}
+      </div>
+    </ExpandableSection>
+  );
+}
+
+function MTSection({ data ,raw}) {
   if (!data) return null;
   const keys = [
     "recordType", "filler1", "fileProcessingDate", "filler2", "processorCertificationNumber",
@@ -269,6 +363,7 @@ function MTSection({ data }) {
   return (
     <ExpandableSection title="Merchant Trailer (MT)">
       <div className="createdr-section">
+          <RawStringDisplay raw={raw} />
         {keys.map((key) =>
           <div className="createdr-section-if" key={key}>
             <div style={{ fontWeight: "bold", color: "#5e1f04", fontStyle: "italic", fontSize: "18px", marginBottom: "8px" }}>
@@ -282,7 +377,7 @@ function MTSection({ data }) {
   );
 }
 
-function ITSection({ data }) {
+function ITSection({ data ,raw}) {
   if (!data) return null;
   const keys = [
     "recordType", "filler1", "fileProcessingDate", "filler2", "processorCertificationNumber",
@@ -293,6 +388,7 @@ function ITSection({ data }) {
   return (
     <ExpandableSection title="Institution Trailer (IT)">
       <div className="createdr-section">
+          <RawStringDisplay raw={raw} />
         {keys.map((key) =>
           <div className="createdr-section-if" key={key}>
             <div style={{ fontWeight: "bold", color: "#5e1f04", fontStyle: "italic", fontSize: "18px", marginBottom: "8px" }}>
@@ -306,7 +402,7 @@ function ITSection({ data }) {
   );
 }
 
-function FTSection({ data }) {
+function FTSection({ data,raw }) {
   if (!data) return null;
   const keys = [
     "recordType", "filler1", "fileProcessingDate", "filler2",
@@ -315,6 +411,7 @@ function FTSection({ data }) {
   return (
     <ExpandableSection title="File Trailer (FT)">
       <div className="createdr-section">
+          <RawStringDisplay raw={raw} />
         {keys.map((key) =>
           <div className="createdr-section-if" key={key}>
             <div style={{ fontWeight: "bold", color: "#5e1f04", fontStyle: "italic", fontSize: "18px", marginBottom: "8px" }}>
@@ -328,7 +425,7 @@ function FTSection({ data }) {
   );
 }
 
-function IHSection({ data }) {
+function IHSection({ data,raw }) {
   if (!data) return null;
   const keys = [
     "recordType", "filler1", "fileProcessingDate", "filler2",
@@ -337,6 +434,7 @@ function IHSection({ data }) {
   return (
     <ExpandableSection title="Institution Header (IH)">
       <div className="createdr-section">
+          <RawStringDisplay raw={raw} />
         {keys.map((key) =>
           <div className="createdr-section-if" key={key}>
             <div style={{ fontWeight: "bold", color: "#5e1f04", fontStyle: "italic", fontSize: "18px", marginBottom: "8px" }}>
@@ -350,7 +448,7 @@ function IHSection({ data }) {
   );
 }
 
-function DrSection({ title, data }) {
+function DrSection({ title, data,raw }) {
   if (!data || !Array.isArray(data) || !data.length) return null;
   
   const recordKeys = Object.keys(data[0]).filter(key => key !== 'rawString');
@@ -416,7 +514,8 @@ function DrSection({ title, data }) {
 function InformativeFileParser() {
   const location = useLocation();
   const navigate = useNavigate();
-  const parsedData = location.state?.parsedData;
+  const parsedData = location.state?.parsedData?.parsedInformativeFile;
+   const parsMerhantList = location.state?.parsedData?.parsedInformativeFile.merchantSections;
    const nameOfFile= location.state?.fielname;
 
   if (!parsedData) {
@@ -436,19 +535,82 @@ function InformativeFileParser() {
 
        <RedTitle title={`Parsing Informative file : ${nameOfFile}`} /> 
     <div className="createdr-section-if" >
-      <FHSection data={parsedData.fh} />
-      <IHSection data={parsedData.ih} />
-      <MHSection data={parsedData.mh} />
-      <BHCASHSection data={parsedData.bhCash} />
-      <DrSection data={parsedData.cashDrs} title="Cash DRs Records" />  
-      <DrSection data={parsedData.cardDrs} title="Card DRs Records" />       
-      <BTCASHSection data={parsedData.btCash} />
-      <MTSection data={parsedData.mt} />
-      <ITSection data={parsedData.it} />
-      <FTSection data={parsedData.ft} />
+      <FHSection data={parsedData.fh_parsed}    raw={parsedData.fh_raw}    />
+      <IHSection data={parsedData.ih_parsed} raw={parsedData.ih_raw}  />
+
+     {parsMerhantList &&
+     Object.entries(parsMerhantList).map(([merchantId, merchantData], index) => (
+
+
+
+      //  <ExpandableSection title={merchantData.mh_parsed.merchantName}> 
+
+ <ExpandableSection title="Merchant"> 
+
+       <div key={merchantId || index} className="merchant-section">
+      <MHSection data={merchantData.mh_parsed} raw={merchantData.mh_raw}   />
+      <BHCASHSection data={merchantData.BHCash_parsed} raw={merchantData.BHCash_raw}  />
+      <DrSection data={merchantData.cashDrs_parsed} title="Cash DRs Records"   /> 
+      <BTCASHSection data={merchantData.BtCash_parsed} raw={merchantData.BtCash_raw}  />
+      <BHCARDSection data={merchantData.BHCard_parsed} raw={merchantData.BHCard_raw}  />
+      <DrSection data={merchantData.cardDrs_parsed} title="Card DRs Records" />   
+      <BTCARDSection data={merchantData.BtCard_parsed} raw={merchantData.BtCard_raw}  />
+      <MTSection data={merchantData.mt_parsed} raw={merchantData.mt_raw}   />
+    </div>
+
+</ExpandableSection>
+
+
+
+
+
+
+))}
+
+
+      <ITSection data={parsedData.it_parsed} raw={parsedData.it_raw}  />
+      <FTSection data={parsedData.ft_parsed}  raw={parsedData.ft_raw}  />
     </div>
     </>
   );
 }
 
 export default InformativeFileParser;
+
+
+
+// return (
+//   <>
+//     <BackButton to="/informativefiles" label="Back to Informative Files " />
+//     <RedTitle title={`Parsing Informative file : ${nameOfFile}`} />
+
+//     <div className="createdr-section-if">
+//       <FHSection data={parsedData.fh_parsed} raw={parsedData.fh_raw} />
+//       <IHSection data={parsedData.ih_parsed} raw={parsedData.ih_raw} />
+
+//       {parsMerhantList &&
+//         Object.entries(parsMerhantList).map(([merchantId, merchantData], index) => {
+//           const merchantName =
+//             merchantData?.mh_parsed?.merchantName || `Merchant #${index + 1}`;
+
+//           return (
+//             <ExpandableSection key={merchantId || index} title={merchantName}>
+//               <div className="merchant-section">
+//                 <MHSection data={merchantData.mh_parsed} raw={merchantData.mh_raw} />
+//                 <BHCASHSection data={merchantData.BHCash_parsed} raw={merchantData.BHCash_raw} />
+//                 <DrSection data={merchantData.cashDrs_parsed} title="Cash DRs Records" />
+//                 <BTCASHSection data={merchantData.BtCash_parsed} raw={merchantData.BtCash_raw} />
+//                 <BHCARDSection data={merchantData.BHCard_parsed} raw={merchantData.BHCard_raw} />
+//                 <DrSection data={merchantData.cardDrs_parsed} title="Card DRs Records" />
+//                 <BTCARDSection data={merchantData.BtCard_parsed} raw={merchantData.BtCard_raw} />
+//                 <MTSection data={merchantData.mt_parsed} raw={merchantData.mt_raw} />
+//               </div>
+//             </ExpandableSection>
+//           );
+//         })}
+
+//       <ITSection data={parsedData.it_parsed} raw={parsedData.it_raw} />
+//       <FTSection data={parsedData.ft_parsed} raw={parsedData.ft_raw} />
+//     </div>
+//   </>
+// );

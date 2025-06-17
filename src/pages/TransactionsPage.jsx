@@ -39,6 +39,14 @@ const TransactionsPage = () => {
     fetchData();
   }, []);
 
+
+
+
+
+
+
+
+
   const fetchData = async (page = 0, filtersParam = null) => {
     setIsFetching(true);
     try {
@@ -51,6 +59,7 @@ const TransactionsPage = () => {
       const response = await axiosInstance.post(url);
       const data = response.data;
 
+      console.log("drs",data.content)
       if (data?.content) {
         setDrData(data.content);
         setPageInfo({ pageNumber: data.number, totalPages: data.totalPages });
@@ -212,6 +221,11 @@ const TransactionsPage = () => {
           showViewButton = {true}
           visibleColumns={[
             "controlNumberCode",
+               "processed",
+            "informativeFileName",
+            "batchType",
+            //  "bhcashIndicator",
+            // "bhcardIndicator",
             "transactionDate",
             "transactionTime",
             "transactionAmount",
@@ -223,6 +237,11 @@ const TransactionsPage = () => {
             "additionalAmountTotalAmount",
           ]}
           columnNameOverrides={{
+             processed :"Processed",
+             informativeFileName:"File Name",
+              batchType: "Batch Type",
+            //   bhcashIndicator:"Batch Type",
+            // bhcardIndicator:"Batch Type",
             controlNumberCode: "Control Number",
             transactionDate: "Date",
             transactionTime: "Time",
@@ -234,6 +253,19 @@ const TransactionsPage = () => {
             additionalAmountOutcomeType: "Additional Type",
             additionalAmountTotalAmount: "Additional Tax",
           }}
+
+            customCellRenderers = {{
+                processed: (val) => (val ? "Yes" : "No"),
+                 batchType: (val) => val || "Pending",
+                   informativeFileName: (val) => val || "Pending",
+                
+              }
+                }
+
+
+         columnOrder = {["processed","batchType","informativeFileName"]}
+
+
         />
       )}
     </>

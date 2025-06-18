@@ -243,25 +243,107 @@ const [permissions, setPermissions] = useState(() => {
   };
 
 
-    const registerByAdmin = async (details) => {
-    setLoading(true);
-    try {
+
+
+
+
+
+
+
+const registerByAdmin = async (details) => {
+  setLoading(true);
+  try {
+    const res = await axiosInstance.post(`${API_BASE}/merchants/usersRoles`, details);
+    return { success: true };
+  } catch (err) {
+    let errorDetails = {};
+
+    if (err.response) {
+      const { status, data } = err.response;
+      const { message, errors, error: rawError } = data;
+
+      if (status === 400 || status === 409) {
+        if (errors) {
+          errorDetails = errors;
+        } else if (message || rawError) {
+          errorDetails.general = message || rawError;
+        }
+      } else {
+        errorDetails.general = 'Something went wrong. Please try again.';
+      }
+    } else {
+      errorDetails.general = 'Network error. Please check your connection.';
+    }
+
+    return { success: false, error: errorDetails };
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+
+//     const registerByAdmin = async (details) => {
+//     setLoading(true);
+//     try {
     
 
-            console.log( "================sending  registerByAdmin ===============")
-       const res = await axiosInstance.post(`${API_BASE}/merchants/usersRoles`, details);
+//  console.log( "================sending  registerByAdmin ===============")
+//        const res = await axiosInstance.post(`${API_BASE}/merchants/usersRoles`, details);
 
 
-       console.log( "===========================0res ====================",res)
+//        console.log( "===========================res ====================",res)
 
-      return { success: true };
-    } catch (err) {
-      console.error(' Registration failed:', err.message);
-      return { success: false, error: err.message };
-    } finally {
-      setLoading(false);
-    }
-  };
+//       return { success: true };
+
+
+
+
+
+//     } catch (err) {
+
+// console.log( "err ",err)
+// console.log( "err.response  ",err.response) // pass error.response to 
+// console.log( "err.response.status ",err.response.status)
+
+
+
+//      let errorData = {};
+//     if (err.response && err.response.status === 400) {
+//        console.log( "===========================res ====================",res)
+//       const data = err.response.data;
+//       if (data.validationErrors) {
+//         errorData = data.validationErrors;
+
+
+//  console.log( "==Validation Errors ===",errorData)
+
+
+
+//       } else if (data.error) {
+//         errorData.general = data.error;
+//       }
+//     }
+
+//     return { success: false, error: errorData };
+
+
+
+
+
+
+
+
+
+
+
+
+
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
 
 const updateMenu = (newMenu) => {

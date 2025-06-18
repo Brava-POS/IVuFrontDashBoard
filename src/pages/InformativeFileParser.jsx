@@ -538,34 +538,33 @@ function InformativeFileParser() {
       <FHSection data={parsedData.fh_parsed}    raw={parsedData.fh_raw}    />
       <IHSection data={parsedData.ih_parsed} raw={parsedData.ih_raw}  />
 
-     {parsMerhantList &&
-     Object.entries(parsMerhantList).map(([merchantId, merchantData], index) => (
-
-
-
-      //  <ExpandableSection title={merchantData.mh_parsed.merchantName}> 
-
- <ExpandableSection title="Merchant"> 
-
-       <div key={merchantId || index} className="merchant-section">
-      <MHSection data={merchantData.mh_parsed} raw={merchantData.mh_raw}   />
-      <BHCASHSection data={merchantData.BHCash_parsed} raw={merchantData.BHCash_raw}  />
-      <DrSection data={merchantData.cashDrs_parsed} title="Cash DRs Records"   /> 
-      <BTCASHSection data={merchantData.BtCash_parsed} raw={merchantData.BtCash_raw}  />
-      <BHCARDSection data={merchantData.BHCard_parsed} raw={merchantData.BHCard_raw}  />
-      <DrSection data={merchantData.cardDrs_parsed} title="Card DRs Records" />   
-      <BTCARDSection data={merchantData.BtCard_parsed} raw={merchantData.BtCard_raw}  />
-      <MTSection data={merchantData.mt_parsed} raw={merchantData.mt_raw}   />
-    </div>
-
-</ExpandableSection>
+   
 
 
 
 
 
 
-))}
+
+{parsMerhantList &&
+  Object.entries(parsMerhantList).map(([merchantId, merchantData], index) => {
+    const merchantName =`Merchant # ${index + 1}`;
+
+    return (
+      <div key={merchantId || index} className="merchant-section">
+        <ExpandableSection title={merchantName}>
+          <MHSection data={merchantData.mh_parsed} raw={merchantData.mh_raw} />
+          <BHCASHSection data={merchantData.BHCash_parsed} raw={merchantData.BHCash_raw} />
+          <DrSection data={merchantData.cashDrs_parsed} title="Cash DRs Records" />
+          <BTCASHSection data={merchantData.BtCash_parsed} raw={merchantData.BtCash_raw} />
+          <BHCARDSection data={merchantData.BHCard_parsed} raw={merchantData.BHCard_raw} />
+          <DrSection data={merchantData.cardDrs_parsed} title="Card DRs Records" />
+          <BTCARDSection data={merchantData.BtCard_parsed} raw={merchantData.BtCard_raw} />
+          <MTSection data={merchantData.mt_parsed} raw={merchantData.mt_raw} />
+        </ExpandableSection>
+      </div>
+    );
+  })}
 
 
       <ITSection data={parsedData.it_parsed} raw={parsedData.it_raw}  />

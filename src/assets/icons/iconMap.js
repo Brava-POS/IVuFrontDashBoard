@@ -33,9 +33,11 @@ export const iconMap = {
   Account:MdAccountTree,
  Subscribe: TbCreditCardPay,
   Subscriptions: TbCreditCardPay,
- Users: FaUsersBetweenLines,
+  Users: FaUsersBetweenLines,
   Leads: FaUsersViewfinder,
    Admins: GrUserAdmin,
+   "Informative Files":VscFileSubmodule ,
+ 
 
 
 };

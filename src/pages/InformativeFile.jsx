@@ -21,12 +21,15 @@ const InformativeFile = () => {
     setIsLoading(true);
     try {
       let response;
-
+    
       if (dateParam) {
         const searchUrl = `/informative-files/search?date=${dateParam}${
           token ? `&continuationToken=${token}` : ""
         }`;
         response = await axiosInstance.get(searchUrl);
+
+      
+
       } else {
         const payload = {
           pageSize: 10,
@@ -36,6 +39,8 @@ const InformativeFile = () => {
           "/s3/list/paginated/informative-files",
           payload
         );
+
+       
       }
 
       setFiles((prevFiles) => {
@@ -214,14 +219,14 @@ const handleParse = async () => {
         <table className="data-table">
           <thead>
             <tr>
-              <th style={{ textAlign: "center" }}>Select</th>
+              <th >Select</th>
               <th>Filename</th>
             </tr>
           </thead>
           <tbody>
             {files.map((file, index) => (
               <tr key={index}>
-                <td style={{ textAlign: "center" }}>
+                <td >
                   <input
                     type="radio"
                     name="selectedFile"
@@ -229,7 +234,7 @@ const handleParse = async () => {
                     onChange={() => setSelectedFile(file)}
                   />
                 </td>
-                <td>{file}</td>
+               <td>{file.split('/').pop().split('.')[0]}</td>
               </tr>
             ))}
           </tbody>

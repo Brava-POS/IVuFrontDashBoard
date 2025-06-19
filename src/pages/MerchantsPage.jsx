@@ -41,6 +41,10 @@ const [filters, setFilters] = useState({
     "deleted",
     "createdAt",
     "updatedAt",
+     "avatarUrl",
+   
+
+
   ];
 
   const columnOrder = [...visibleColumns];

@@ -244,7 +244,7 @@ function FHSection({ data, raw, level = 0 }) {
   );
 }
 
-function MHSection({ data, raw, level = 0 }) {
+function MHSection({ data, raw, level = 0 , totals}) {
   if (!data) return null;
   const keys = [
     "recordType", "filler1", "fileProcessingDate", "filler2",
@@ -252,8 +252,11 @@ function MHSection({ data, raw, level = 0 }) {
     "merchantNumber", "merchantName", "merchantCity", "merchantState",
     "merchantZipCode", "filler3"
   ];
+   const totalsString = totals
+    ? `– Total Records: ${totals.totalRecords} | Sales Tax: ${totals.salesAmount} $ | State Tax: ${totals.stateTax} $ | City Tax: ${totals.cityTax} $`
+    : '';
   return (
-    <ExpandableSection title="Merchant Header (MH)" level={level}>
+      <ExpandableSection title={`Merchant Header (MH) ${totalsString}`} level={level}>
       <div className="createdr-section">
         <RawStringDisplay raw={raw} />
         {keys.map((key) =>
@@ -440,28 +443,44 @@ function FTSection({ data, raw, level = 0 }) {
   );
 }
 
-function IHSection({ data, raw, level = 0 }) {
+function IHSection({ data, raw, level = 0, totals }) {
   if (!data) return null;
+
   const keys = [
     "recordType", "filler1", "fileProcessingDate", "filler2",
     "processorCertificationNumber", "institutionNumber", "institutionName", "filler3"
   ];
+
+  const totalsString = totals
+    ? `– Total Records: ${totals.totalRecords} | Sales Tax: ${totals.salesAmount} $ | State Tax: ${totals.stateTax} $ | City Tax: ${totals.cityTax} $`
+    : '';
+
   return (
-    <ExpandableSection title="Institution Header (IH)" level={level}>
+    <ExpandableSection title={`IH ${totalsString}`} level={level}>
       <div className="createdr-section">
+
         <RawStringDisplay raw={raw} />
-        {keys.map((key) =>
+
+        {keys.map((key) => (
           <div className="createdr-section-if" key={key}>
-            <div style={{ fontWeight: "bold", color: "#5e1f04", fontStyle: "italic", fontSize: "18px", marginBottom: "8px" }}>
+            <div style={{
+              fontWeight: "bold",
+              color: "#5e1f04",
+              fontStyle: "italic",
+              fontSize: "18px",
+              marginBottom: "8px"
+            }}>
               {FIELD_LABELS[key] || key}
             </div>
             <div><FieldDisplay field={key} value={data[key]} /></div>
           </div>
-        )}
+        ))}
+
       </div>
     </ExpandableSection>
   );
 }
+
 
 function DrSection({ title, data, level = 0 }) {
   if (!data || !Array.isArray(data) || !data.length) return null;
@@ -534,7 +553,45 @@ function InformativeFileParser() {
   const parsMerhantList = location.state?.parsedData?.parsedInformativeFile.merchantSections;
   const nameOfFile = location.state?.fielname;
 
+const rawDate = parsedData?.fh_parsed?.fileProcessingDate?.value;
+
+
+
+let readableDate = '';
+if (rawDate && rawDate.length === 8) {
+  const year = rawDate.slice(0, 4);
+  const month = rawDate.slice(4, 6);
+  const day = rawDate.slice(6, 8);
+  const formattedDate = new Date(`${year}-${month}-${day}`);
+
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+  };
+
+ 
+  const parts = new Intl.DateTimeFormat('en-US', options).formatToParts(formattedDate);
+
+  const partMap = Object.fromEntries(parts.map(p => [p.type, p.value]));
+
+ 
+  readableDate = `${partMap.year} ${partMap.weekday}, ${partMap.month} ${partMap.day}`;
+}
+
+
+
+
+
+
+
   if (!parsedData) {
+
+
+
+
+
     return (
       <div>
         <h2>No parsed data found.</h2>
@@ -546,26 +603,50 @@ function InformativeFileParser() {
   return (
     <>
       <BackButton to="/informativefiles" label="Back to Informative Files " />
-      <RedTitle title={`Parsing Informative file : ${nameOfFile}`} />
+      <RedTitle title={` ${readableDate}`} />
+      <RedTitle title={`${parsedData.fh_parsed.processorName.value} ${parsedData.fh_parsed.processorCertificationNumber.value}`} />
+      <RedTitle title={`${nameOfFile}`} />
+      <RedTitle title={`Total Records  : ${parsedData.ft_parsed.totalFileRecords.value}`}/>
       <div className="createdr-section-if" >
+
+
+
+
+
+
+
         <FHSection data={parsedData.fh_parsed} raw={parsedData.fh_raw} level={0} />
-        <IHSection data={parsedData.ih_parsed} raw={parsedData.ih_raw} level={0} />
+
+     
+    
+        <IHSection data={parsedData.ih_parsed} raw={parsedData.ih_raw} level={0} 
+         totals={{
+              totalRecords: parsedData.ft_parsed.totalFileRecords.value,
+              salesAmount: parsedData.it_parsed.totalInstitutionSalesAmount.value,
+              stateTax: parsedData.it_parsed.totalInstitutionStateTaxAmount.value,
+              cityTax: parsedData.it_parsed.totalInstitutionCityTaxAmount.value
+             }} />
 
         {parsMerhantList &&
           Object.entries(parsMerhantList).map(([merchantId, merchantData], index) => {
-            const merchantName = `Merchant #${index + 1} ${merchantData?.mh_parsed?.merchantName?.value }   `;
+
+            const merchantName = `Merchant #${index + 1} ${merchantData?.mh_parsed?.merchantName?.value }`;
+            const merchantTotalRecords = `Merchant #${index + 1} ${merchantData?.mh_parsed?.recordType?.value }`;
+            const merchantTotalsalesTax = `Merchant #${index + 1} ${merchantData?.mh_parsed?.totalMerchantSalesAmount?.value }`;
+            const merchantTotalsatateTax = `Merchant #${index + 1} ${merchantData?.mh_parsed?.otalMerchantStateTaxAmount?.value }`;
+            const merchantTotalCityTax = `Merchant #${index + 1} ${merchantData?.mh_parsed?.totalMerchantCityTaxAmount?.value }`;
 
 
 
-            // const hasCash = merchantData.BHCash_parsed || merchantData.BtCash_parsed || (merchantData.cashDrs_parsed && merchantData.cashDrs_parsed.length > 0);
-            // const hasCard = merchantData.BHCard_parsed || merchantData.BtCard_parsed || (merchantData.cardDrs_parsed && merchantData.cardDrs_parsed.length > 0);
+      
             const hasCash = merchantData.cashDrs_parsed && merchantData.cashDrs_parsed.length > 0;
             const hasCard = merchantData.cardDrs_parsed && merchantData.cardDrs_parsed.length > 0;
 
             return (
               <div key={merchantId || index} className="merchant-section">
                 <ExpandableSection title={merchantName} level={1}>
-                  <MHSection data={merchantData.mh_parsed} raw={merchantData.mh_raw} level={2} />
+                  <MHSection data={merchantData.mh_parsed} raw={merchantData.mh_raw} level={2}
+                   />
 
               
                   {hasCash && (

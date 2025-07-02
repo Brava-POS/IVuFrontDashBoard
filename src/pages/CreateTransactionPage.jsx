@@ -20,7 +20,7 @@ const CreateTransactionPage = () => {
   const [userId, setUserId] = useState(null);
   const [formData, setFormData] = useState({
     posEntryModePos75_76L2: '',// slect between / default  "M " , "S " , "I " , "P " , "O " , "MO", "SO","IO", "PO", "OO"
-    transactionTypePos165_166L2: '',// selct netween //  default DB, CR, VP, VR, NA
+    transactionTypePos165_166L2: '',// selct Bnetween //  default DB, CR, VP, VR, NA
     paymentMethodPos14_17L4: '',// select //  default CASH, CHCK, DEBT, CRED, EBTC, EBTF, MULT, GIFT, STCR
     transactionDatePos81_88L8: '',
     transactionTimePos89_94L6: '',
@@ -92,25 +92,6 @@ const CreateTransactionPage = () => {
  
 
 
-//   const handleDateChange = (date) => {
-//     if (!date) {
-//       setFormData((prev) => ({ ...prev, transactionDatePos81_88L8: '' }));
-//       return;
-//     }
-//     const formatted = format(date, 'yyyyMMdd');
-//     setFormData((prev) => ({ ...prev, transactionDatePos81_88L8: formatted }));
-//   };
-//   const handleTimeChange = (e) => {
-//     // Allow only digits and max length 6
-//     let val = e.target.value.replace(/\D/g, '').slice(0, 6);
-//     setFormData((prev) => ({ ...prev, transactionTimePos89_94L6: val }));
-//   };
-
-//  // Convert time Date object to HHMMSS string
-//   const formatTime = (date) => {
-//     if (!date) return '';
-//     return format(date, 'HHmmss');
-//   };
 
 const handleDateChange = (value) => {
   // value comes as "YYYY-MM-DD"
@@ -133,7 +114,7 @@ const convertValue = (val, length) => {
 
   if (!val || val.trim() === '') return null; // Return null for empty values
 
-  // Ensure it's a valid number format
+  // Ensure it is a valid number format
   if (!/^-?\d+(\.\d{1,2})?$/.test(val)) return null;
 
   const number = parseFloat(val);
@@ -312,25 +293,6 @@ return;
 
 
 
-//  setFormData({
-  //  posEntryModePos75_76L2: '',// slect between / default  "M " , "S " , "I " , "P " , "O " , "MO", "SO","IO", "PO", "OO"
-  //   transactionTypePos165_166L2: '',// selct netween //  default DB, CR, VP, VR, NA
-  //   paymentMethodPos14_17L4: '',// select //  default CASH, CHCK, DEBT, CRED, EBTC, EBTF, MULT, GIFT, STCR
-//     transactionDatePos81_88L8: '',
-//     transactionTimePos89_94L6: '',
-//     transactionAmountPos95_103L9: '',
-//     salesAmountPos104_112L9: '',
-//     stateTaxAmountPos113_121L9: '',
-//     cityTaxAmountPos122_130L9: '',
-//     reducedStateTaxPos153_163L11: '',
-//     controlNumberCodePrefixPos18_19L2: 'BR',
-//     controlNumberCodePos20_29L10: 'ASWERKLRTE',
-//     terminalBatchNumberPos60_62L3: '001',
-//     transactionSequencePos63_74L12: '000000000001',
-//     terminalNumberPos44_59L16: '1111111111111111',
-//   });
-
-
 
 
   // navigate('/transactions');
@@ -371,6 +333,9 @@ return;
  
     
       <div className="createdr-form">
+
+
+
 {/* POS Entry Mode */}
 <div className="createdr-form-group">
   <label htmlFor="posEntryModePos75_76L2">POS Entry Mode</label>
@@ -396,6 +361,9 @@ return;
 {errors.posEntryModePos75_76L2 && (
   <div className="createdr-error">{errors.posEntryModePos75_76L2}</div>
 )}
+
+
+
 {/* Transaction Type */}
 <div className="createdr-form-group">
   <label htmlFor="transactionTypePos165_166L2">Transaction Type</label>
@@ -416,8 +384,11 @@ return;
 {errors.transactionTypePos165_166L2 && (
   <div className="createdr-error">{errors.transactionTypePos165_166L2}</div>
 )}
+
+
+
 {/* Payment Method */}
-<div className="createdr-form-group">
+<div className="createdr-form-group ">
   <label htmlFor="paymentMethodPos14_17L4">Payment Method</label>
   <select
     name="paymentMethodPos14_17L4"
@@ -441,6 +412,12 @@ return;
 {errors.paymentMethodPos14_17L4 && (
   <div className="createdr-error">{errors.paymentMethodPos14_17L4}</div>
 )}
+
+
+
+
+
+
 <DateInput
   value={
     // convert stored YYYYMMDD to YYYY-MM-DD for input display

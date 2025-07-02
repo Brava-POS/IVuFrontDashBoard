@@ -19,6 +19,8 @@ function Account() {
     const fetchProfile = async () => {
       try {
         const response = await axiosInstance.get('/app-users/merchant/profile');
+
+        console.log("response ===",response)
         setUserData(response.data);
       } catch (err) {
         console.error('Failed to load user profile:', err);
@@ -64,62 +66,115 @@ function Account() {
   </div>
 </div>
 
-{/* Subscription Card */}
-<div className="profile_v2-info">
-  <h4 className="profile_v2-section-title">Subscription</h4>
-  {userData.elavonSubscriptions?.map((sub, idx) => (
-    <div key={idx}>
-      <div className="profile_v2-line">
-        <FaIdCard className="profile_v2-icon" /> <strong>Plan:</strong> {sub.planName}
-      </div>
-      <div className="profile_v2-line">
-        <FaEuroSign className="profile_v2-icon" /> <strong>{sub.planBillingCycle}</strong> - ${sub.planPrice}
-      </div>
-      <div className="profile_v2-line">
-        <FaCheckCircle className="profile_v2-icon" /> <strong>Status:</strong> {sub.subscrptionStatus}
-      </div>
-      <div className="profile_v2-line">
-        <FaClock className="profile_v2-icon" /> <strong>Next Billing:</strong> {sub.subscrptionNextBillingDate}
-      </div>
-    </div>
-  ))}
-</div>
-
-{/* Payment Card */}
-<div className="profile_v2-info">
-  <h4 className="profile_v2-section-title">Payment</h4>
-  {userData.elavonSubscriptions?.map((sub, idx) =>
-    sub.lastPayment ? (
-      <div key={idx}>
-        <div className="profile_v2-line">
-          <FaReceipt className="profile_v2-icon" /> <strong>Payment ID:</strong> {sub.lastPayment.sslTxnId}
-        </div>
-        <div className="profile_v2-line">
-          <FaMoneyCheckAlt className="profile_v2-icon" /> <strong>Amount:</strong> ${sub.lastPayment.sslAmount}
-        </div>
-        <div className="profile_v2-line">
-          <FaRegThumbsUp className="profile_v2-icon" /> <strong>Result:</strong> {sub.lastPayment.sslResult}
-        </div>
-        <div className="profile_v2-line">
-          <FaClock className="profile_v2-icon" /> <strong>Time:</strong> {sub.lastPayment.sslTxnTime}
-        </div>
-      </div>
-    ) : null
-  )}
-</div>
-
-        <div className="profile_v2-info">
-          <h4 className="profile_v2-section-title">Devices</h4>
-          {userData.devices?.map((dev, idx) => (
-            <div key={idx} className="profile_v2-device">
-              <div><FaCreditCard className="profile_v2-icon" /> Serial Number: {dev.serialNumber}</div>
-              <div style={{ paddingLeft: '24px' }}>Provider: {dev.provider}</div>
-              <div style={{ paddingLeft: '24px' }}>Model: {dev.model}</div>
-              <div style={{ paddingLeft: '24px' }}>Status: {dev.status}</div>
-              <hr />
+{/* Subscription Section - only if at least one has meaningful data */}
+{Array.isArray(userData.elavonSubscriptions) &&
+  userData.elavonSubscriptions.some(
+    sub =>
+      sub.planName ||
+      sub.planBillingCycle ||
+      sub.planPrice ||
+      sub.subscrptionStatus ||
+      sub.subscrptionNextBillingDate
+  ) && (
+    <div className="profile_v2-info">
+      <h4 className="profile_v2-section-title">Subscription</h4>
+      {userData.elavonSubscriptions.map((sub, idx) =>
+        sub.planName ||
+        sub.planBillingCycle ||
+        sub.planPrice ||
+        sub.subscrptionStatus ||
+        sub.subscrptionNextBillingDate ? (
+          <div key={idx}>
+            <div className="profile_v2-line">
+              <FaIdCard className="profile_v2-icon" /> <strong>Plan:</strong>{' '}
+              {sub.planName || 'N/A'}
             </div>
-          ))}
-        </div>
+            <div className="profile_v2-line">
+              <FaEuroSign className="profile_v2-icon" />{' '}
+              <strong>{sub.planBillingCycle || 'N/A'}</strong> - $
+              {sub.planPrice || '0.00'}
+            </div>
+            <div className="profile_v2-line">
+              <FaCheckCircle className="profile_v2-icon" /> <strong>Status:</strong>{' '}
+              {sub.subscrptionStatus || 'N/A'}
+            </div>
+            <div className="profile_v2-line">
+              <FaClock className="profile_v2-icon" /> <strong>Next Billing:</strong>{' '}
+              {sub.subscrptionNextBillingDate || 'N/A'}
+            </div>
+          </div>
+        ) : null
+      )}
+    </div>
+)}
+
+
+{/* Payment Section - only if at least one has lastPayment */}
+{Array.isArray(userData.elavonSubscriptions) &&
+  userData.elavonSubscriptions.some(sub => sub.lastPayment) && (
+    <div className="profile_v2-info">
+      <h4 className="profile_v2-section-title">Payment</h4>
+      {userData.elavonSubscriptions.map((sub, idx) =>
+        sub.lastPayment ? (
+          <div key={idx}>
+            <div className="profile_v2-line">
+              <FaReceipt className="profile_v2-icon" />
+              <strong>Payment ID:</strong> {sub.lastPayment.sslTxnId}
+            </div>
+            <div className="profile_v2-line">
+              <FaMoneyCheckAlt className="profile_v2-icon" />
+              <strong>Amount:</strong> ${sub.lastPayment.sslAmount}
+            </div>
+            <div className="profile_v2-line">
+              <FaRegThumbsUp className="profile_v2-icon" />
+              <strong>Result:</strong> {sub.lastPayment.sslResult}
+            </div>
+            <div className="profile_v2-line">
+              <FaClock className="profile_v2-icon" />
+              <strong>Time:</strong> {sub.lastPayment.sslTxnTime}
+            </div>
+          </div>
+        ) : null
+      )}
+    </div>
+)}
+
+{/* Devices Section - only if devices array contains at least one non-null device */}
+{Array.isArray(userData.devices) &&
+  userData.devices.some(
+    dev =>
+      dev.serialNumber ||
+      dev.provider ||
+      dev.model ||
+      dev.status
+  ) && (
+    <div className="profile_v2-info">
+      <h4 className="profile_v2-section-title">Devices</h4>
+      {userData.devices.map((dev, idx) =>
+        dev.serialNumber || dev.provider || dev.model || dev.status ? (
+          <div key={idx} className="profile_v2-device">
+            <div>
+              <FaCreditCard className="profile_v2-icon" /> Serial Number:{' '}
+              {dev.serialNumber || 'N/A'}
+            </div>
+            <div style={{ paddingLeft: '24px' }}>
+              Provider: {dev.provider || 'N/A'}
+            </div>
+            <div style={{ paddingLeft: '24px' }}>
+              Model: {dev.model || 'N/A'}
+            </div>
+            <div style={{ paddingLeft: '24px' }}>
+              Status: {dev.status || 'N/A'}
+            </div>
+            <hr />
+          </div>
+        ) : null
+      )}
+    </div>
+)}
+
+
+
 
       </div>
     </div>

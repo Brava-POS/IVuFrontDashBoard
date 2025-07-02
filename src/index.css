@@ -2895,3 +2895,118 @@ input.ivu-input:-webkit-autofill {
   border-color: #b30000;
   outline: none;
 }
+
+
+/* Container spacing */
+.createdr-form-group {
+  margin-bottom: 1rem;
+}
+
+/* Labels */
+.createdr-form-group label,
+.adding-item-label,
+.date-input-label,
+.input-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+  color: #8b0000; 
+}
+
+/* create tranaction page  */
+
+.createdr-form-input,
+.adding-item-input,
+.input-field,
+.date-input-field {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cc4b4b;
+  border-radius: 4px;
+  background-color: #fff5f5;
+  color: #2c0000;
+  font-size: 1rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.input-prefix {
+  color: #800000;
+}
+
+.input-field-with-prefix {
+  padding-left: 2.25rem;
+}
+
+
+.createdr-form-input:focus,
+.adding-item-input:focus,
+.input-field:focus,
+.date-input-field:focus {
+  outline: none;
+  border-color: #b30000;
+  box-shadow: 0 0 0 2px rgba(179, 0, 0, 0.2);
+}
+
+
+.input-error,
+.date-input-error,
+.createdr-form-input.error,
+.adding-item-input.error {
+  border-color: #e53935;
+  background-color: #ffebeb;
+}
+
+.createdr-error,
+.date-error-text,
+.input-error-text,
+.adding-item-error,
+.createdr-additional-error {
+  color: #b00020;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+
+.button-customized-action.create {
+  background-color: #b71c1c;
+  color: #fff;
+}
+
+.button-customized-action.create:hover {
+  background-color: #a31515;
+}
+
+
+.createdr-delete-icon {
+  color: #b00020;
+  cursor: pointer;
+  margin-left: 1rem;
+}
+
+.createdr-delete-icon:hover {
+  color: #d32f2f;
+}
+
+
+
+
+
+/* Billing page   */
+
+.invoice-free-plan-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  text-align: center;
+}
+
+.centered-message h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.centered-message p {
+  font-size: 18px;
+  color: #333;
+}
